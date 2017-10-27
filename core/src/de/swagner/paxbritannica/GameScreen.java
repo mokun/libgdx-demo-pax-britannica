@@ -549,8 +549,12 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		GameInstance.getInstance().explosionParticles.draw(gameBatch);
 
         font.setColor(Color.WHITE);
-		font.draw(gameBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), -40, height - 50);
+		font.draw(gameBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), -90, height - 45);
         //font.drawMultiLine(gameBatch, "your text", x, y, widthOfTheLine, HAlignment.LEFT);
+
+		font.draw(gameBatch, "Health" ,-85, height - 80);
+		font.draw(gameBatch, "Kills" ,0, height - 80);
+		font.draw(gameBatch, "Score" ,80, height - 80);
 
         int[][] counts = GameInstance.getInstance().getCounts();
 
@@ -572,19 +576,21 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
                 double health = factoryMap.get(i).healthPercentage()* 100.0;
 
-                font.draw(gameBatch, "Health : " + Math.round(health * 10.0) / 10.0 + " %",
-                        -80, height - 60 - i * 15);
+                font.draw(gameBatch,
+		        				Math.round(health * 10.0) / 10.0 + " %",
+                              -80, height - 85 - i * 20);
 
-                font.draw(gameBatch, //GameInstance.getInstance().obtainShipColor(i)
-                        "Kills : ["
-                                + counts[i - 1][0]
+                font.draw(gameBatch,
+                                counts[i - 1][0]
                                 + " " + counts[i - 1][1]
                                 + " " + counts[i - 1][2]
                                 //+ " " + counts[3]
                                 + "]",
-                        20, height - 60 - i * 15);
-                font.draw(gameBatch, "Score : " + counts[i - 1][3],
-                        120, height - 60 - i * 15);
+                              0, height - 85 - i * 20);
+
+                font.draw(gameBatch,
+	        					" " + counts[i - 1][3],
+                              90, height - 85 - i * 20);
             }
         }
 

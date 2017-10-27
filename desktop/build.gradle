@@ -3,12 +3,8 @@ apply plugin: "java"
 sourceCompatibility = 1.7
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-dependencies {
-    compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-}
-
 project.ext.mainClassName = "de.swagner.paxbritannica.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("../android/assets");
+project.ext.assetsDir = new File("../android/assets")
 
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
@@ -42,7 +38,7 @@ eclipse {
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {
   doLast {
     def classpath = new XmlParser().parse(file(".classpath"))
-    new Node(classpath, "classpathentry", [ kind: 'src', path: 'assets' ]);
+    new Node(classpath, "classpathentry", [ kind: 'src', path: 'assets' ])
     def writer = new FileWriter(file(".classpath"))
     def printer = new XmlNodePrinter(new PrintWriter(writer))
     printer.setPreserveWhitespace(true)

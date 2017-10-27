@@ -151,7 +151,7 @@ public class Ship extends Sprite {
 	public void damage(float amount)
 	{
 		hitPoints = Math.max(hitPoints - amount, 0);
-
+/*
 		if (this instanceof FactoryProduction) {
 			int size = playerList.size;
 			String s = "";
@@ -168,9 +168,9 @@ public class Ship extends Sprite {
 				//}
 			}
 		}
-
+*/
 	}
-
+/*
 	// Gets ship color in order to print log
 	private String obtainShipColor(int id) {
 		if (id == 1)
@@ -183,7 +183,7 @@ public class Ship extends Sprite {
 			return "Yellow";
 		return "";
 	}
-
+*/
 	public void destruct() {
 		if (this instanceof FactoryProduction) {
 			factoryDestruct();
@@ -260,9 +260,10 @@ public class Ship extends Sprite {
 		float oldHealth = healthPercentage();
 		float oldHit = hitPoints;
 		hitPoints = hitPoints + (int) (maxHitPoints * .1);
+/*
 		Gdx.app.log("[SH] Hit Points (", oldHit + "   ->   " + hitPoints + ")      Health : (" + Math.round(oldHealth*1000.0)/10.0
 				+ " %   ->   " + Math.round(healthPercentage()*1000.0)/10.0 + " %)");
-
+*/
 
 	}
 

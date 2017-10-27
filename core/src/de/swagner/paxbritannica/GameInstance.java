@@ -163,7 +163,7 @@ public class GameInstance {
 				}
 
 				counts[playerID-1][3] = sum;
-
+/*
 				Gdx.app.log("[GI] ", obtainShipColor(playerID)
 						+ "    ["
 						+ counts[playerID-1][0]
@@ -172,7 +172,7 @@ public class GameInstance {
 						//+ " " + counts[3]
 						+ "]"
 						+ "    Scores : " + sum);
-
+*/
 			}
 		}
 	}
@@ -180,7 +180,7 @@ public class GameInstance {
 	public int[][] getCounts() {
 		return counts;
 	}
-
+/*
 	// Gets ship color in order to print log
 	public String obtainShipColor(int id) {
 		if (id == 1)
@@ -193,7 +193,7 @@ public class GameInstance {
 			return "Yellow";
 		return "";
 	}
-
+*/
 	public void laser_hit(Vector2 pos, Vector2 vel) {
 		sparkParticles.addLaserExplosion(pos, vel);
 	}
