@@ -20,8 +20,8 @@ public class Fighter extends Ship {
 
 	public FighterAI ai = new FighterAI(this);
 
-	public Fighter(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public Fighter(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 
 		turnSpeed = 120f;
 		accel = 120.0f;
@@ -77,7 +77,7 @@ public class Fighter extends Ship {
 			shots -= 1;
 			cooldown = shotCooldownTime;
 
-			GameInstance.getInstance().bullets.add(new Laser(id,collisionCenter, facing));
+			GameInstance.getInstance().bullets.add(new Laser(id, 0, collisionCenter, facing));
 		}
 	}
 

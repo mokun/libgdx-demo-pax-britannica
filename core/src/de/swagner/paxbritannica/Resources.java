@@ -88,7 +88,9 @@ public class Resources {
 	public Sprite aButton = atlas.createSprite("abutton");
 	public Sprite aCpuButton = atlas.createSprite("acpubutton");
 	public Sprite aPlayerButton = atlas.createSprite("aplayerbutton");
-	
+
+	public Sprite aTeamButton = atlas.createSprite("ateambutton");
+
 	public Sprite cpuButton = atlas.createSprite("cpubutton");
 	public Sprite playerButton = atlas.createSprite("playerbutton");
 

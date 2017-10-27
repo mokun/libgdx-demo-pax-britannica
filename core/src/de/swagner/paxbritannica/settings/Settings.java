@@ -57,8 +57,8 @@ public class Settings extends DefaultScreen implements InputProcessor {
 	float time = 0;
 	float fade = 1.0f;
 
-	private int width = 800;
-	private int height = 480;
+	public int width = 800;
+	public int height = 480;
 	
 	public Settings(Game game) {
 		super(game);
@@ -387,4 +387,13 @@ public class Settings extends DefaultScreen implements InputProcessor {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
 }

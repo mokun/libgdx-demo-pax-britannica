@@ -9,8 +9,8 @@ public class Bullet extends Ship {
 	public float damage=0;
 	public float bulletSpeed = 0f;
 
-	public Bullet(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public Bullet(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 	}
 
 	@Override

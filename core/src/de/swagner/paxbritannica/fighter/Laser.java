@@ -11,8 +11,8 @@ public class Laser extends Bullet {
 
 	float delta;
 	
-	public Laser(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public Laser(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 		
 		bulletSpeed = 1000;
 		damage = 10;

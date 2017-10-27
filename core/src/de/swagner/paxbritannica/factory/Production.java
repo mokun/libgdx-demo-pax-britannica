@@ -138,19 +138,20 @@ public class Production {
 
 		if (unitType == 1) {
 			factory.resourceAmount -= fighterCost;
-			GameInstance.getInstance().fighters.add(new Fighter(factory.id, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
+			GameInstance.getInstance().fighters.add(new Fighter(factory.id, factory.team, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
 		} else if (unitType == 2) {
 			spawn_pos.sub(10, 10);
 			factory.resourceAmount -= bomberCost;
-			GameInstance.getInstance().bombers.add(new Bomber(factory.id, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
+			GameInstance.getInstance().bombers.add(new Bomber(factory.id, factory.team, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
 		} else if (unitType == 3) {
 			spawn_pos.sub(25, 25);
 			factory.resourceAmount -= frigateCost;
-			GameInstance.getInstance().frigates.add(new Frigate(factory.id, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
+			GameInstance.getInstance().frigates.add(new Frigate(factory.id, factory.team, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
 		} else if (unitType == 4) {
 			factory.resourceAmount -= upgradeCost;
 			factory.upgradesUsed += 1;
 			factory.harvestRate += (factory.harvestRateUpgrade/factory.upgradesUsed);
+			factory.addHitPoints();
 		}
 	}
 

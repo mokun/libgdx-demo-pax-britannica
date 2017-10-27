@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 import de.swagner.paxbritannica.Constants;
 import de.swagner.paxbritannica.GameInstance;
@@ -22,8 +23,11 @@ public class FactoryProduction extends Ship {
 
 	public boolean button_held = false;
 	
-	private boolean drawDamage= false;
+	private boolean drawDamage = false;
+
 	float delta;
+
+	private String sCache = "";
 
 	private Sprite heavy_damage1 = new Sprite();
 	private Sprite heavy_damage2 = new Sprite();
@@ -38,8 +42,12 @@ public class FactoryProduction extends Ship {
 	
 	private Vector2 facing90 = new Vector2();
 
-	public FactoryProduction(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	//private Array<Integer> playerList;
+
+	public FactoryProduction(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
+
+		//playerList = GameInstance.getInstance().getPlayerList();
 
 		turnSpeed = 2.0f;
 		accel = 5.0f;
@@ -69,6 +77,8 @@ public class FactoryProduction extends Ship {
 			break;
 		}
 
+		Gdx.app.log("[FP] ", obtainShipColor(id) + " (Player " + id + ", Team " + team + ")");
+
 		light_damage1.set(Resources.getInstance().factoryLightDamage1);
 		light_damage2.set(Resources.getInstance().factoryLightDamage2);
 		light_damage3.set(Resources.getInstance().factoryLightDamage3);
@@ -79,6 +89,19 @@ public class FactoryProduction extends Ship {
 
 		this.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
 		
+	}
+
+	// Gets ship color in order to print log
+	private String obtainShipColor(int id) {
+		if (id == 1)
+			return "Blue";
+		else if (id == 2)
+			return "Red";
+		else if (id == 3)
+			return "Green";
+		else if (id == 4)
+			return "Yellow";
+		return "";
 	}
 
 	@Override
@@ -93,6 +116,22 @@ public class FactoryProduction extends Ship {
 		// ugh. . . sprite needs to be more flexible
 		drawDamage = false;
 		float health = healthPercentage();
+/*
+		double h = health;
+
+		int size = playerList.size;
+		String s = "";
+		for (int i = 0 ; i < size; i++) {
+			if (playerList.get(i) == id) {
+				String name = obtainShipColor(id);
+				s = name + " Ship (Team " + team + ") : " + Math.round(h*1000.0)/10.0 + " %";
+				if (!sCache.equals(s)) {
+					Gdx.app.log("", s);
+					sCache = s;
+				}
+			}
+		}
+*/
 		int animation = (int) (Math.floor(aliveTime * 20) % 3 + 1);
 
 		if (health < Constants.lowHealthThreshold) {

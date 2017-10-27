@@ -7,8 +7,8 @@ import de.swagner.paxbritannica.Resources;
 
 public class Bomb extends Bullet {
 
-	public Bomb(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public Bomb(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 		bulletSpeed = 150;
 		this.velocity = new Vector2().set(facing).scl(bulletSpeed);
 		damage = 300;

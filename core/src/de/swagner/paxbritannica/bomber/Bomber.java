@@ -11,8 +11,8 @@ public class Bomber extends Ship {
 
 	public BomberAI ai = new BomberAI(this);
 
-	public Bomber(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public Bomber(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 
 		turnSpeed = 45f;
 		accel = 45.0f;
@@ -44,7 +44,7 @@ public class Bomber extends Ship {
 
 	public void shoot(int approach) {
 		 Vector2 bombFacing = new Vector2().set(facing).rotate(90*approach);
-		 GameInstance.getInstance().bullets.add(new Bomb(id, collisionCenter, bombFacing));
+		 GameInstance.getInstance().bullets.add(new Bomb(id, 0, collisionCenter, bombFacing));
 		
 	}
 

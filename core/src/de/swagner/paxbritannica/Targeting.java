@@ -11,6 +11,14 @@ import de.swagner.paxbritannica.frigate.Frigate;
 
 public class Targeting {
 
+	// is friendly fire allowed ?
+	public static boolean friendlyFire = true;
+
+	// Set if friendly fire is allowed or not
+	public static void setFriendlyFire(boolean value) {
+		friendlyFire = value;
+	}
+
 	public static boolean onScreen(Vector2 position) {
 		return onScreen(position, 0);
 	}
@@ -46,9 +54,12 @@ public class Targeting {
 			Ship ship = ships.get(i);
 			float currentHealth = ship.hitPoints+(((FactoryProduction)ship).harvestRate*500);
 
-			if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentHealth > highestHealth)) {
-				closestShip = ship;
-				highestHealth = currentHealth;
+			// Exclude friendly ship
+			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
+				if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentHealth > highestHealth)) {
+					closestShip = ship;
+					highestHealth = currentHealth;
+				}
 			}
 		}
 
@@ -62,27 +73,31 @@ public class Targeting {
 
 		for (int i = 0; i < ships.size; i++) {
 			Ship ship = ships.get(i);
-			float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
 
-			if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < closestDistanze)) {
-				//skip if ship is not targeting source ship
-				if(ship instanceof Fighter) {
-					if(((Fighter) ship).ai.target!=null && ((Fighter) ship).ai.target.id != source.id) {
-						continue;
+			// Exclude friendly ship
+			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
+				float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
+
+				if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < closestDistanze)) {
+					//skip if ship is not targeting source ship
+					if (ship instanceof Fighter) {
+						if (((Fighter) ship).ai.target != null && ((Fighter) ship).ai.target.id != source.id) {
+							continue;
+						}
 					}
-				}
-				if(ship instanceof Bomber) {
-					if(((Bomber) ship).ai.target!=null && ((Bomber) ship).ai.target.id != source.id) {
-						continue;
+					if (ship instanceof Bomber) {
+						if (((Bomber) ship).ai.target != null && ((Bomber) ship).ai.target.id != source.id) {
+							continue;
+						}
 					}
-				}
-				if(ship instanceof Frigate) {
-					if(((Frigate) ship).ai.target!=null && ((Frigate) ship).ai.target.id != source.id) {
-						continue;
+					if (ship instanceof Frigate) {
+						if (((Frigate) ship).ai.target != null && ((Frigate) ship).ai.target.id != source.id) {
+							continue;
+						}
 					}
+					closestShip = ship;
+					closestDistanze = currentDistance;
 				}
-				closestShip = ship;
-				closestDistanze = currentDistance;
 			}
 		}
 
@@ -117,8 +132,11 @@ public class Targeting {
 			Ship ship = ships.get(i);
 			float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
 
-			if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < range_squared)) {
-				shipsInRange.add(ship);
+			// Exclude friendly ship
+			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
+				if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < range_squared)) {
+					shipsInRange.add(ship);
+				}
 			}
 		}
 

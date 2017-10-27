@@ -34,7 +34,9 @@ public class Collision {
 	}
 
 	private static void collisionCheck(Bullet bullet, Ship ship) {
-		if (bullet.id!=ship.id && ship.alive) {
+
+		// assume no friendly fire
+		if (bullet.id != ship.id && ship.alive) {
 			
 			for(int i = 0; i<ship.collisionPoints.size;++i) {
 				if(Intersector.isPointInPolygon(bullet.collisionPoints, ship.collisionPoints.get(i))) {

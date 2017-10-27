@@ -10,8 +10,8 @@ public class Missile extends Bullet {
 
 	private MissileAI ai = new MissileAI(this);
 	
-	public Missile(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public Missile(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 		turnSpeed = 300f;
 		accel = 300.0f;	
 		bulletSpeed = 50;

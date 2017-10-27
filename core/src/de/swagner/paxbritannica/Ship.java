@@ -8,9 +8,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
+import de.swagner.paxbritannica.bomber.Bomber;
 import de.swagner.paxbritannica.factory.FactoryProduction;
+import de.swagner.paxbritannica.fighter.Fighter;
+import de.swagner.paxbritannica.frigate.Frigate;
 
 public class Ship extends Sprite {
 
@@ -35,17 +39,27 @@ public class Ship extends Sprite {
 
 	public boolean alive = true;
 
-	private float deathCounter = 50f;
+	public float deathCounter = 50f;
 	private float nextExplosion = 10f;
 	private float opacity = 5.0f;
 
-	public int id = 0;
+	private String sCache = "";
 
-	public Ship(int id, Vector2 position, Vector2 facing) {
+	public int id = 0;
+	public int team = 0;
+
+	private Array<Integer> playerList;
+
+
+	public Ship(int id, int team, Vector2 position, Vector2 facing) {
 		super();
 
-		this.id = id;
+		playerList = GameInstance.getInstance().getPlayerList();
 
+		//Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
+		this.id = id;
+		this.team = team;
 		this.position.set(position);
 		this.facing.set(facing);
 		
@@ -134,8 +148,40 @@ public class Ship extends Sprite {
 		return Math.max(hitPoints / maxHitPoints, 0);
 	}
 
-	public void damage(float amount) {
+	public void damage(float amount)
+	{
 		hitPoints = Math.max(hitPoints - amount, 0);
+
+		if (this instanceof FactoryProduction) {
+			int size = playerList.size;
+			String s = "";
+			for (int i = 0; i < size; i++) {
+				//if (playerList.get(i) == id) {
+					String name = obtainShipColor(id);
+					double h = healthPercentage();
+					//s = name + " (Team " + team + ") : " + Math.round(h * 100.0) + " %";
+					s = name + "  :  " + Math.round(h * 100.0) + " %";
+					if (!sCache.equals(s)) {
+						Gdx.app.log("[SP] ", s);
+						sCache = s;
+					}
+				//}
+			}
+		}
+
+	}
+
+	// Gets ship color in order to print log
+	private String obtainShipColor(int id) {
+		if (id == 1)
+			return "Blue";
+		else if (id == 2)
+			return "Red";
+		else if (id == 3)
+			return "Green";
+		else if (id == 4)
+			return "Yellow";
+		return "";
 	}
 
 	public void destruct() {
@@ -145,9 +191,17 @@ public class Ship extends Sprite {
 			GameInstance.getInstance().explode(this);
 			alive = false;
 			for (Ship factory : GameInstance.getInstance().factorys) {
-				if(factory instanceof FactoryProduction && factory.id == this.id) ((FactoryProduction) factory).ownShips--;
+				if(factory instanceof FactoryProduction && factory.id == this.id) {
+					((FactoryProduction) factory).ownShips--;
+					//GameInstance.getInstance().removeFactory(id);
+				}
 			}
 		}
+
+		// if there are only two factory ships left, the final epic battle begins and
+		// friendly fires are allowed !
+		if (GameInstance.getInstance().isFinalEpicBattle())
+			Targeting.setFriendlyFire(true);
 	}
 
 	public void factoryDestruct() {
@@ -167,6 +221,7 @@ public class Ship extends Sprite {
 				GameInstance.getInstance().explode(this, randomPointOnShip());
 			}
 			alive = false;
+//
 		}
 	}
 
@@ -179,4 +234,48 @@ public class Ship extends Sprite {
 		goTowardsOrAway(targetPos, forceThrust, true);
 	}
 
+	public int getTeamID() {
+		return team;
+	}
+
+	public int getID() {
+		return id;
+	}
+
+	public boolean playerOwned() {
+		int size = playerList.size;
+		for (int i = 0; i < size; i++) {
+			if (playerList.get(i) == id) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public float getHitPoints() {
+		return hitPoints;
+	}
+
+	public void addHitPoints() {
+		float oldHealth = healthPercentage();
+		float oldHit = hitPoints;
+		hitPoints = hitPoints + (int) (maxHitPoints * .1);
+		Gdx.app.log("[SH] Hit Points (", oldHit + "   ->   " + hitPoints + ")      Health : (" + Math.round(oldHealth*1000.0)/10.0
+				+ " %   ->   " + Math.round(healthPercentage()*1000.0)/10.0 + " %)");
+
+
+	}
+
+	public int getShipType() {
+		if (this instanceof Fighter)
+			return 1;
+		else if (this instanceof Bomber)
+			return 2;
+		else if (this instanceof Frigate)
+			return 3;
+		else if (this instanceof FactoryProduction)
+			return 4;
+		else
+			return 0;
+	}
 }

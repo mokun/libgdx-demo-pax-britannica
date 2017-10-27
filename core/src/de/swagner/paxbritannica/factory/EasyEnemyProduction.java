@@ -29,8 +29,8 @@ public class EasyEnemyProduction extends FactoryProduction {
 	int ownBombers = 0;
 	int ownFrigates = 0;
 	
-	public EasyEnemyProduction(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public EasyEnemyProduction(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 	}
 
 	@Override
@@ -92,8 +92,10 @@ public class EasyEnemyProduction extends FactoryProduction {
 		}
 		
 		// what to do
-		if(ownFighters > 4 && ownBombers > 3 && ownFrigates > 2) action = 0;
-		else action = MathUtils.random(-1, 2);
+		if(ownFighters > 4 && ownBombers > 3 && ownFrigates > 2)
+			action = 0;
+		else
+			action = MathUtils.random(-1, 2);
 	}
 
 }

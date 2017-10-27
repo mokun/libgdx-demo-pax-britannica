@@ -20,8 +20,8 @@ public class Frigate extends Ship {
 	
 	public FrigateAI ai = new FrigateAI(this);
 
-	public Frigate(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public Frigate(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 
 		turnSpeed = 20f;
 		accel = 14.0f;
@@ -76,7 +76,7 @@ public class Frigate extends Ship {
 		if (cooldown == 0 && shots >= 1) {
 			shots -= 1;
 			cooldown = shotCooldownTime;
-			GameInstance.getInstance().bullets.add(new Missile(id, collisionCenter, facing));
+			GameInstance.getInstance().bullets.add(new Missile(id, 0, collisionCenter, facing));
 		}
 	}
 

@@ -56,7 +56,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 	int cnt = 0;
 	int oldCnt = 0;
 	int changeToScreen = -1;
-	
+
 	Ray collisionRay;
 	
 	private int width = 800;
@@ -257,6 +257,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			blackFade.setColor(blackFade.getColor().r, blackFade.getColor().g, blackFade.getColor().b, fade);
 			blackFade.draw(fadeBatch);
 			fadeBatch.end();
+
 			if (fade >= 1 && cnt>=2) {
 				Array<Integer> playerList = new Array<Integer>();
 				if(p1.playerSelect == true) {
@@ -285,6 +286,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 					cpuList.add(4);
 				}
 				game.setScreen(new GameScreen(game, playerList, cpuList));
+
 			} else if(fade >= 1 && cnt<1)   {
 				if(changeToScreen==1) {
 					game.setScreen(new Settings(game));

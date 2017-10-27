@@ -28,8 +28,8 @@ public class MediumEnemyProduction extends FactoryProduction {
 	int ownBombers = 0;
 	int ownFrigates = 0;
 	
-	public MediumEnemyProduction(int id, Vector2 position, Vector2 facing) {
-		super(id, position, facing);
+	public MediumEnemyProduction(int id, int team, Vector2 position, Vector2 facing) {
+		super(id, team, position, facing);
 	}
 
 	@Override
