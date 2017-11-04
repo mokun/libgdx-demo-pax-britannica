@@ -217,6 +217,8 @@ public class Ship extends Sprite {
 				GameInstance.getInstance().explode(this, randomPointOnShip());
 			}
 			alive = false;
+
+			// Note : will remove it in GameScreen's render()
 			//GameInstance.getInstance().playerList.removeIndex(this.getID());
 			//GameInstance.getInstance().cpuList.removeIndex(this.getID());
 //
@@ -255,8 +257,8 @@ public class Ship extends Sprite {
 	}
 
 	public void addHitPoints() {
-		float oldHealth = health();
-		float oldHit = hitPoints;
+		//float oldHealth = health();
+		//float oldHit = hitPoints;
 		hitPoints = hitPoints + (int) (maxHitPoints * .1);
 /*
 		Gdx.app.log("[SH] Hit Points (", oldHit + "   ->   " + hitPoints + ")      Health : (" + Math.round(oldHealth*1000.0)/10.0
@@ -264,6 +266,11 @@ public class Ship extends Sprite {
 */
 
 	}
+
+    // reward the player with 3% of health bonus
+    public void rewardHitPoints() {
+        hitPoints = hitPoints + (int) (maxHitPoints * .03);
+    }
 
 	public int getShipType() {
 		if (this instanceof Fighter)

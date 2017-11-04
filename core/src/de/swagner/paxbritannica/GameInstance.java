@@ -127,19 +127,19 @@ public class GameInstance {
 		if (ship.hitPoints <= 0) {
 			//if (bullet.playerOwned()) {
 			// Find the player id
-			int playerID = bullet.getID();
+			int id = bullet.getID();
 			// Find the ship id
 			int shipType = ship.getShipType();
 			if ((shipType == 4 && ship.deathCounter == 50f)
 					|| shipType != 4) {
 
 				Map<Integer, Integer> kills = null;
-				if (killMap.containsKey(playerID)) {
-					kills = killMap.get(playerID);
+				if (killMap.containsKey(id)) {
+					kills = killMap.get(id);
 					int count = kills.get(shipType);
 					// Record the kill
 					kills.put(shipType, count+1);
-					killMap.put(playerID, kills);
+					killMap.put(id, kills);
 
 				}
 				else {
@@ -149,25 +149,30 @@ public class GameInstance {
 					}
 						// Record the kill
 					kills.put(shipType, 1);
-					killMap.put(playerID, kills);
+					killMap.put(id, kills);
 				}
 
 				//int[] counts = new int[4];
 				int sum = 0;
 
 				for (int i=1; i < 4; i++) {
-					counts[playerID-1][i-1] = kills.get(i);
+					counts[id-1][i-1] = kills.get(i);
 					if (i-1 == 0)
-						sum += counts[playerID-1][i-1];
+						sum += counts[id-1][i-1];
 					else if (i-1 == 1)
-						sum += counts[playerID-1][i-1] * 5;
+						sum += counts[id-1][i-1] * 5;
 					else if (i-1 == 2)
-						sum += counts[playerID-1][i-1] * 15;
+						sum += counts[id-1][i-1] * 15;
 					//else if (i-1 == 3)
 					//	sum += counts[i-1] * 50;
 				}
 
-				counts[playerID-1][3] = sum;
+				if (sum % 100 == 0) {
+					// reward the player with 3% of health bonus
+					factoryMap.get(id).rewardHitPoints();
+				}
+
+				counts[id-1][3] = sum;
 /*
 				Gdx.app.log("[GI] ", obtainShipColor(playerID)
 						+ "    ["

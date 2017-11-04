@@ -151,6 +151,7 @@ public class Production {
 			factory.resourceAmount -= upgradeCost;
 			factory.upgradesUsed += 1;
 			factory.harvestRate += (factory.harvestRateUpgrade/factory.upgradesUsed);
+			// Add 10% of hit point as the benefit of the upgrading the factory ship.
 			factory.addHitPoints();
 		}
 	}

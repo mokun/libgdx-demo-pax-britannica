@@ -107,12 +107,33 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	private Map<Integer, Integer> teamMap;
     private Map<Integer, Integer> targetingMap;
 
+    private boolean m1 = false;
+	private boolean m2 = false;
+	private boolean m3 = false;
+	private boolean m4 = false;
 
 
 	public GameScreen(Game game, Array<Integer> playerList, Array<Integer> cpuList) {
 		super(game);
 		this.playerList = playerList;
 		this.cpuList = cpuList;
+
+		if (playerList.contains(1, true)) {
+			Gdx.app.log("GameScreen", "m1 is true");
+			m1 = true;
+		}
+		else if (playerList.contains(2, true)) {
+			Gdx.app.log("GameScreen", "m2 is true");
+			m2 = true;
+		}
+		else if (playerList.contains(3, true)) {
+			Gdx.app.log("GameScreen", "m3 is true");
+			m3 = true;
+		}
+		else if (playerList.contains(4, true)) {
+			Gdx.app.log("GameScreen", "m4 is true");
+			m4 = true;
+		}
 
 		for (Controller c : Controllers.getControllers()) {
             if(c.getName().contains("Xbox") || c.getName().contains("360")) {
@@ -619,7 +640,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		font.draw(gameBatch, "Health" , -FPS_WIDTH, FPS_HEIGHT * 2);
 		font.draw(gameBatch, "Kills" ,5, FPS_HEIGHT * 2);
 		font.draw(gameBatch, "Score" ,FPS_WIDTH, FPS_HEIGHT * 2);
-		font.draw(gameBatch, "Targeting" ,FPS_WIDTH*2, FPS_HEIGHT * 2);
+		font.draw(gameBatch, "Target" ,FPS_WIDTH*2, FPS_HEIGHT * 2);
 
         int[][] counts = GameInstance.getInstance().getCounts();
 
@@ -663,7 +684,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 				if (j == 0) {
 					font.setColor(Color.WHITE);
-					target = "All";
+					target = "Any";
 				}
 				else if (j == 1) {
 					font.setColor(Color.CYAN);
@@ -933,26 +954,66 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		collisionRay = cam.getPickRay(x, y);
 
 		if (collisionRay != null && factorys.size > 0) {
-			if (touchAreaP1 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)) {
-				((FactoryProduction) factoryMap.get(1)).button_held = true;
-				pointerP1 = pointer;
-				touchedP1 = true;
+			// Player 1
+			if (factoryMap.get(1) != null) {
+				if (touchAreaP1 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)
+					|| (m1 && button == Input.Buttons.LEFT)) {
+					((FactoryProduction) factoryMap.get(1)).button_held = true;
+					pointerP1 = pointer;
+					touchedP1 = true;
+				}
+
+				if (m1 && button == Input.Buttons.RIGHT) {
+					//Gdx.app.log("GameScreen", "rotateTarget(1)");
+					rotateTarget(1);
+				}
 			}
-			if (touchAreaP2 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2) && factoryMap.get(2) != null) {
-				((FactoryProduction) factoryMap.get(2)).button_held = true;
-				pointerP2 = pointer;
-				touchedP2 = true;
+
+			// Player 2
+			if (factoryMap.get(2) != null) {
+				if (touchAreaP2 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2)
+					|| (m2 && button == Input.Buttons.LEFT)) {
+					((FactoryProduction) factoryMap.get(2)).button_held = true;
+					pointerP2 = pointer;
+					touchedP2 = true;
+				}
+
+				if (m2 && button == Input.Buttons.RIGHT) {
+					//Gdx.app.log("GameScreen", "rotateTarget(2)");
+					rotateTarget(2);
+				}
 			}
-			if (touchAreaP3 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3) && factoryMap.get(3) != null) {
-				((FactoryProduction) factoryMap.get(3)).button_held = true;
-				pointerP3 = pointer;
-				touchedP3 = true;
+
+			// Player 3
+			if (factoryMap.get(3) != null) {
+				if (touchAreaP3 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3)
+					|| (m3 && button == Input.Buttons.LEFT)) {
+					((FactoryProduction) factoryMap.get(3)).button_held = true;
+					pointerP3 = pointer;
+					touchedP3 = true;
+				}
+
+				if (m3 && button == Input.Buttons.RIGHT) {
+					//Gdx.app.log("GameScreen", "rotateTarget(3)");
+					rotateTarget(3);
+				}
 			}
-			if (touchAreaP4 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4) && factoryMap.get(4) != null) {
-				((FactoryProduction) factoryMap.get(4)).button_held = true;
-				pointerP4 = pointer;
-				touchedP4 = true;
+
+			// Player 4
+			if (factoryMap.get(4) != null) {
+				if (touchAreaP4 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4)
+					|| (m4 && button == Input.Buttons.LEFT)) {
+					((FactoryProduction) factoryMap.get(4)).button_held = true;
+					pointerP4 = pointer;
+					touchedP4 = true;
+				}
+
+				if (m4 && button == Input.Buttons.RIGHT) {
+					//Gdx.app.log("GameScreen", "rotateTarget(4)");
+					rotateTarget(4);
+				}
 			}
+
 		}
 		return false;
 	}
