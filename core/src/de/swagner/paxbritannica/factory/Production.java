@@ -164,6 +164,7 @@ public class Production {
 				potential_cost += BUILDING_SPEED * Gdx.graphics.getDeltaTime();
 			}
 		} else {
+			// if the button is not held or if the button is released
 			if (potential_cost > upgradeCost) {
 				spawn(4);
 			} else if (potential_cost > frigateCost) {
@@ -366,7 +367,7 @@ public class Production {
 		} else {
 			currentBuildingUnit = -1;
 			
-			float health = factory.healthPercentage();
+			float health = factory.health();
 			if (health < Constants.lowHealthThreshold) {
 				float factor = health / Constants.lowHealthThreshold;
 				health_none.setOrigin(0, 0);

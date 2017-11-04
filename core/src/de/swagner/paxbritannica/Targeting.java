@@ -1,5 +1,6 @@
 package de.swagner.paxbritannica;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -50,13 +51,22 @@ public class Targeting {
 		Ship closestShip = null;
 		float highestHealth = Float.MIN_VALUE;
 
-		for (int i = 0; i < ships.size; i++) {
+		// Find the designated target_id
+		int player_id = source.getID();
+		int target_id = GameInstance.getInstance().targetingMap.get(player_id);
+		boolean target_all_colors = false;
+		if (target_id == 0)
+			target_all_colors = true;
+
+		int size = ships.size;
+		for (int i = 0; i < size; i++) {
 			Ship ship = ships.get(i);
 			float currentHealth = ship.hitPoints+(((FactoryProduction)ship).harvestRate*500);
 
 			// Exclude friendly ship
 			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
-				if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentHealth > highestHealth)) {
+				// Target only ships with a particular target_id
+				if (ship.alive && (target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter) && (currentHealth > highestHealth)) {
 					closestShip = ship;
 					highestHealth = currentHealth;
 				}
@@ -71,14 +81,23 @@ public class Targeting {
 		Ship closestShip = null;
 		float closestDistanze = Float.MAX_VALUE;
 
-		for (int i = 0; i < ships.size; i++) {
+		// Find the designated target_id
+		int player_id = source.getID();
+		int target_id = GameInstance.getInstance().targetingMap.get(player_id);
+		boolean target_all_colors = false;
+		if (target_id == 0)
+			target_all_colors = true;
+
+		int size = ships.size;
+		for (int i = 0; i < size; i++) {
 			Ship ship = ships.get(i);
 
 			// Exclude friendly ship
 			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
 				float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
 
-				if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < closestDistanze)) {
+				// Target only ships with a particular target_id
+				if (ship.alive && (target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < closestDistanze)) {
 					//skip if ship is not targeting source ship
 					if (ship instanceof Fighter) {
 						if (((Fighter) ship).ai.target != null && ((Fighter) ship).ai.target.id != source.id) {
@@ -128,13 +147,21 @@ public class Targeting {
 		Array<Ship> shipsInRange = new Array<Ship>();
 		float range_squared = range * range;
 
+		// Find the designated target_id
+		int player_id = source.getID();
+		int target_id = GameInstance.getInstance().targetingMap.get(player_id);
+		boolean target_all_colors = false;
+		if (target_id == 0)
+			target_all_colors = true;
+
 		for (int i = 0; i < ships.size; i++) {
 			Ship ship = ships.get(i);
 			float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
 
 			// Exclude friendly ship
 			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
-				if (ship.alive && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < range_squared)) {
+				// Target only ships with a particular target_id
+				if (ship.alive && (target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < range_squared)) {
 					shipsInRange.add(ship);
 				}
 			}

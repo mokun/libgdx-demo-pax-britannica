@@ -7,7 +7,7 @@ public class Bullet extends Ship {
 
 	private float buffer = 500;
 	public float damage=0;
-	public float bulletSpeed = 0f;
+	protected float bulletSpeed = 0f;
 
 	public Bullet(int id, int team, Vector2 position, Vector2 facing) {
 		super(id, team, position, facing);
@@ -15,7 +15,7 @@ public class Bullet extends Ship {
 
 	@Override
 	public void draw(Batch batch) {
-		if(alive == false) return;
+		if(!alive) return;
 		if( !Targeting.onScreen(collisionCenter,buffer)) {
 			alive = false;
 		} else if(velocity.len()<=5) {

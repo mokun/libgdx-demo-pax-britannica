@@ -1,14 +1,10 @@
 package de.swagner.paxbritannica;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
 import de.swagner.paxbritannica.bomber.Bomber;
@@ -144,7 +140,7 @@ public class Ship extends Sprite {
 		}
 	}
 
-	public float healthPercentage() {
+	public float health() {
 		return Math.max(hitPoints / maxHitPoints, 0);
 	}
 
@@ -158,7 +154,7 @@ public class Ship extends Sprite {
 			for (int i = 0; i < size; i++) {
 				//if (playerList.get(i) == id) {
 					String name = obtainShipColor(id);
-					double h = healthPercentage();
+					double h = health();
 					//s = name + " (Team " + team + ") : " + Math.round(h * 100.0) + " %";
 					s = name + "  :  " + Math.round(h * 100.0) + " %";
 					if (!sCache.equals(s)) {
@@ -221,6 +217,8 @@ public class Ship extends Sprite {
 				GameInstance.getInstance().explode(this, randomPointOnShip());
 			}
 			alive = false;
+			//GameInstance.getInstance().playerList.removeIndex(this.getID());
+			//GameInstance.getInstance().cpuList.removeIndex(this.getID());
 //
 		}
 	}
@@ -257,12 +255,12 @@ public class Ship extends Sprite {
 	}
 
 	public void addHitPoints() {
-		float oldHealth = healthPercentage();
+		float oldHealth = health();
 		float oldHit = hitPoints;
 		hitPoints = hitPoints + (int) (maxHitPoints * .1);
 /*
 		Gdx.app.log("[SH] Hit Points (", oldHit + "   ->   " + hitPoints + ")      Health : (" + Math.round(oldHealth*1000.0)/10.0
-				+ " %   ->   " + Math.round(healthPercentage()*1000.0)/10.0 + " %)");
+				+ " %   ->   " + Math.round(health()*1000.0)/10.0 + " %)");
 */
 
 	}

@@ -57,8 +57,8 @@ public class Settings extends DefaultScreen implements InputProcessor {
 	float time = 0;
 	float fade = 1.0f;
 
-	public int width = 800;
-	public int height = 480;
+	public int width = 1920;//800;
+	public int height = 1080;//480;
 	
 	public Settings(Game game) {
 		super(game);
@@ -254,6 +254,10 @@ public class Settings extends DefaultScreen implements InputProcessor {
 			cam = new OrthographicCamera(1366, 800);
 			this.width = 1280;
 			this.height = 800;
+		} else if (width == 1920 && height == 1080) {
+			cam = new OrthographicCamera(1920, 1080);
+			this.width = 1920;
+			this.height = 1080;
 		} else if (width > 1280) {
 			cam = new OrthographicCamera(1280, 768);
 			this.width = 1280;
@@ -307,7 +311,9 @@ public class Settings extends DefaultScreen implements InputProcessor {
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		
 		collisionRay = cam.getPickRay(x, y);
-		
+
+		resize(this.width,this.height);
+
 		if (Intersector.intersectRayBoundsFast(collisionRay, collisionBack)) {
 			finished = true;
 		}
@@ -342,8 +348,7 @@ public class Settings extends DefaultScreen implements InputProcessor {
 			Preferences prefs = Gdx.app.getPreferences("paxbritannica");
 			prefs.putInteger("factoryHealth",2);
 			GameInstance.getInstance().factoryHealthConfig  = prefs.getInteger("factoryHealth",0);
-		}	
-		
+		}
 		if (Intersector.intersectRayBoundsFast(collisionRay, collisionAntiAliasOff)) {
 			Preferences prefs = Gdx.app.getPreferences("paxbritannica");
 			prefs.putInteger("antiAliasConfig",0);

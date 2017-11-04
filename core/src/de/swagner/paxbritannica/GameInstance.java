@@ -30,6 +30,11 @@ public class GameInstance {
 	public Array<Ship> bombers = new Array<Ship>();
 	public Array<Ship> frigates = new Array<Ship>();
 
+	// Team map
+	public Map<Integer, Integer> teamMap = new HashMap<>();
+
+	// user defined targeting
+	public Map<Integer, Integer> targetingMap = new HashMap<>();
 
 	public Map<Integer, Ship> factoryMap = new HashMap<Integer, Ship>();
 
@@ -219,9 +224,9 @@ public class GameInstance {
 		playerList = list;
 	}
 
-	//public void setCpuList(Array<Integer> list) {
-	//	cpuList = list;
-	//}
+	public void setCpuList(Array<Integer> list) {
+		cpuList = list;
+	}
 
 	public Array<Integer> getPlayerList() {
 		return playerList;

@@ -6,6 +6,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +24,9 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
 
+//import com.badlogic.gdx.controllers.Controller;
+//import com.badlogic.gdx.Controllers;
+
 import de.swagner.paxbritannica.background.BackgroundFXRenderer;
 import de.swagner.paxbritannica.factory.EasyEnemyProduction;
 import de.swagner.paxbritannica.factory.FactoryProduction;
@@ -32,30 +37,33 @@ import de.swagner.paxbritannica.mainmenu.MainMenu;
 
 public class GameScreen extends DefaultScreen implements InputProcessor {
 
-	double startTime = 0;
-	BackgroundFXRenderer backgroundFX = new BackgroundFXRenderer();
+    private final static int FPS_HEIGHT = 15; //90
+    private final static int FPS_WIDTH = 85; //45
+
+    private double startTime = 0;
+	private BackgroundFXRenderer backgroundFX = new BackgroundFXRenderer();
 
 	private BitmapFont font;
 
 	private float fade = 1.0f;
-	Sprite blackFade;
-	Sprite stouchAreaP1;
-	Sprite stouchAreaP2;
-	Sprite stouchAreaP3;
-	Sprite stouchAreaP4;
-	Sprite p1;
-	Sprite p2;
-	Sprite p3;
-	Sprite p4;
-	
-	SpriteBatch fadeBatch;
-	SpriteBatch gameBatch;
+	private Sprite blackFade;
+	private Sprite stouchAreaP1;
+	private Sprite stouchAreaP2;
+	private Sprite stouchAreaP3;
+	private Sprite stouchAreaP4;
+	private Sprite p1;
+	private Sprite p2;
+	private Sprite p3;
+	private Sprite p4;
 
-	FactoryProduction playerProduction;
-	FactoryProduction enemyProduction;
+	private SpriteBatch fadeBatch;
+	private SpriteBatch gameBatch;
+
+	private FactoryProduction playerProduction;
+	private FactoryProduction enemyProduction;
 
 //	ShapeRenderer shapeRenderer = new ShapeRenderer();
-	OrthographicCamera cam;
+	private OrthographicCamera cam;
 	
 	private boolean gameOver = false;
 	private float gameOverTimer =5;
@@ -64,27 +72,29 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	private BoundingBox touchAreaP2;
 	private BoundingBox touchAreaP3;
 	private BoundingBox touchAreaP4;
-	int pointerP1;
-	int pointerP2;
-	int pointerP3;
-	int pointerP4;
-	float touchFadeP1 = 1.0f;
-	float touchFadeP2 = 1.0f;
-	float touchFadeP3 = 1.0f;
-	float touchFadeP4 = 1.0f;
-	boolean touchedP1 = false;
-	boolean touchedP2 = false;
-	boolean touchedP3 = false;
-	boolean touchedP4 = false;
-	
-	int numPlayers = 0;
-	
-	Ray collisionRay;
+	private int pointerP1;
+	private int pointerP2;
+	private int pointerP3;
+	private int pointerP4;
+	private float touchFadeP1 = 1.0f;
+	private float touchFadeP2 = 1.0f;
+	private float touchFadeP3 = 1.0f;
+	private float touchFadeP4 = 1.0f;
+	private boolean touchedP1 = false;
+	private boolean touchedP2 = false;
+	private boolean touchedP3 = false;
+	private boolean touchedP4 = false;
+
+	private int numPlayers = 0;
+
+	private Ray collisionRay;
 
 	private Array<Vector2> POSITIONS = new Array<Vector2>();
 
 	private Vector2 CENTER = new Vector2(300, 180);
-	
+
+	private Controller pad;
+
 	private int width = 800;
 	private int height = 480;
 
@@ -94,13 +104,47 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	private Array<Ship> factorys;
     private Map<Integer, Ship> factoryMap;
 
+	private Map<Integer, Integer> teamMap;
+    private Map<Integer, Integer> targetingMap;
+
+
+
 	public GameScreen(Game game, Array<Integer> playerList, Array<Integer> cpuList) {
 		super(game);
 		this.playerList = playerList;
 		this.cpuList = cpuList;
 
+		for (Controller c : Controllers.getControllers()) {
+            if(c.getName().contains("Xbox") || c.getName().contains("360")) {
+                pad = c;
+				Gdx.app.log("GameScreen", c.getName());
+				System.out.println(c.getName());
+            }
+        }
+
+        //if(xbox==null){
+            //no xbox controller found
+            //we could fallback to the first controller, like so:
+            //pad = controllers.get(0)
+        //}
+
+
 		GameInstance.getInstance().setPlayerList(playerList);
-		//GameInstance.getInstance().setCpuList(cpuList);
+		GameInstance.getInstance().setCpuList(cpuList);
+		for (int i : playerList)
+			Gdx.app.log("[GameScreen]", "Player " + i + " initialized.");
+		for (int i : cpuList)
+			Gdx.app.log("[GameScreen]", "CPU " + i + " initialized.");
+
+		teamMap = GameInstance.getInstance().teamMap;
+
+		// Set up targetingMap
+		targetingMap = GameInstance.getInstance().targetingMap;
+		targetingMap.put(1, 0);
+		targetingMap.put(2, 0);
+		targetingMap.put(3, 0);
+		targetingMap.put(4, 0);
+
 
 		//font = new BitmapFont();
 
@@ -251,6 +295,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			else if (playerList.get(i) == 3 || playerList.get(i) == 4)
 				teamID = 2;
 
+			teamMap.put(i, teamID);
+
 			playerProduction = new PlayerProduction(playerList.get(i), teamID, POSITIONS.get(currentPos), facing);
 
             factorys.add(playerProduction);
@@ -268,6 +314,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 				teamID = 1;
 			else if (cpuList.get(i) == 3 || cpuList.get(i) == 4)
 				teamID = 2;
+
+			teamMap.put(i, teamID);
 
 			if(GameInstance.getInstance().difficultyConfig == 0) {
 				enemyProduction = new EasyEnemyProduction(cpuList.get(i), teamID, POSITIONS.get(currentPos), facing);
@@ -345,6 +393,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	public void resize(int width, int height) {
 		this.width = width;
 		this.height = height;
+	/*
 		if (width == 480 && height == 320) {
 			cam = new OrthographicCamera(700, 466);
 			this.width = 700;
@@ -377,6 +426,10 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			cam = new OrthographicCamera(1366, 1024);
 			this.width = 1366;
 			this.height = 1024;
+        } else if (width == 1920 && height == 1080) {
+            cam = new OrthographicCamera(1920, 1080);
+            this.width = 1920;
+            this.height = 1080;
 		} else if (width == 1920 && height == 1152) {
 			cam = new OrthographicCamera(1366, 854);
 			this.width = 1366;
@@ -394,8 +447,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			this.width = 800;
 			this.height = 480;
 		} else {
+*/
 			cam = new OrthographicCamera(width, height);
-		}
+		//}
 		cam.position.x = 400;
 		cam.position.y = 240;
 		cam.update();	
@@ -506,6 +560,16 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			} else {
 				factorys.removeValue(ship, true);
                 factoryMap.remove(ship);
+
+                if (playerList.contains(ship.getID(), true)) {
+					playerList.removeValue(ship.getID(), true);
+					GameInstance.getInstance().playerList.removeValue(ship.getID(), true);
+				}
+				else if (cpuList.contains(ship.getID(), true)) {
+					cpuList.removeValue(ship.getID(), true);
+					GameInstance.getInstance().cpuList.removeValue(ship.getID(), true);
+				}
+
                 //GameInstance.getInstance().removeFactory(ship.getID());
 				if(factorys.size < 2) gameOver = true;
 			}
@@ -549,12 +613,13 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		GameInstance.getInstance().explosionParticles.draw(gameBatch);
 
         font.setColor(Color.WHITE);
-		font.draw(gameBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), -90, height - 45);
+		//font.draw(gameBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), -90, height - FPS_HEIGHT);
         //font.drawMultiLine(gameBatch, "your text", x, y, widthOfTheLine, HAlignment.LEFT);
 
-		font.draw(gameBatch, "Health" ,-85, height - 80);
-		font.draw(gameBatch, "Kills" ,0, height - 80);
-		font.draw(gameBatch, "Score" ,80, height - 80);
+		font.draw(gameBatch, "Health" , -FPS_WIDTH, FPS_HEIGHT * 2);
+		font.draw(gameBatch, "Kills" ,5, FPS_HEIGHT * 2);
+		font.draw(gameBatch, "Score" ,FPS_WIDTH, FPS_HEIGHT * 2);
+		font.draw(gameBatch, "Targeting" ,FPS_WIDTH*2, FPS_HEIGHT * 2);
 
         int[][] counts = GameInstance.getInstance().getCounts();
 
@@ -574,24 +639,55 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
                 //Gdx.app.log("[GS] ", "factoryMap.size() : " + factoryMap.size());
                 //Gdx.app.log("[GS] ", "factorys.size : " + factorys.size);
 
-                double health = factoryMap.get(i).healthPercentage()* 100.0;
+                double health = factoryMap.get(i).health()* 100.0;
 
                 font.draw(gameBatch,
 		        				Math.round(health * 10.0) / 10.0 + " %",
-                              -80, height - 85 - i * 20);
+                              -FPS_WIDTH+5, FPS_HEIGHT * 2 - i * 20);
 
                 font.draw(gameBatch,
                                 counts[i - 1][0]
-                                + " " + counts[i - 1][1]
-                                + " " + counts[i - 1][2]
+                                + "   " + counts[i - 1][1]
+                                + "   " + counts[i - 1][2]
                                 //+ " " + counts[3]
                                 + "]",
-                              0, height - 85 - i * 20);
+                              0, FPS_HEIGHT * 2 - 5 - i * 20);
 
                 font.draw(gameBatch,
 	        					" " + counts[i - 1][3],
-                              90, height - 85 - i * 20);
-            }
+                        FPS_WIDTH+5, FPS_HEIGHT * 2 - i * 20);
+
+				int j = targetingMap.get(i);
+
+				String target = null;
+
+				if (j == 0) {
+					font.setColor(Color.WHITE);
+					target = "All";
+				}
+				else if (j == 1) {
+					font.setColor(Color.CYAN);
+					target = "Cyan";
+				}
+				else if (j == 2) {
+					font.setColor(Color.RED);
+					target = "Red";
+				}
+				else if (j == 3) {
+					font.setColor(Color.GREEN);
+					target = "Green";
+				}
+				else if (j == 4) {
+					font.setColor(Color.YELLOW);
+					target = "Yellow";
+				}
+
+				font.draw(gameBatch,
+						" " + target,
+						FPS_WIDTH *2+5, FPS_HEIGHT * 2 - i * 20);
+
+
+			}
         }
 
 		gameBatch.end();
@@ -679,6 +775,81 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		
 	}
 
+	public boolean targetExisted(int target_id) {
+		if (playerList.contains(target_id, true))
+			return true;
+		else if (cpuList.contains(target_id, true))
+			return true;
+		else
+			return false;
+	}
+
+	// Change the target color to the next
+	public void rotateTarget(int player_id) {
+		// target_id is 0, 1, 2, 3, or 4 (Note that 0 means all ships)
+		int target_id = targetingMap.get(player_id);
+		target_id++;
+		if (target_id > 4)
+			// reset it back to zero
+			target_id = 0;
+		if (target_id != 0)
+			// go to the next color
+			target_id = nextTarget(player_id, target_id);
+
+		// update the target_id
+		targetingMap.put(player_id, target_id);
+	}
+
+	public int nextTarget(int player_id, int target_id) {
+		// repeat this process again
+		if (targetExisted(target_id)) {
+			// if this is player's own color
+			if (target_id != player_id) {
+				// if this color is on the same team
+				if (GameInstance.getInstance().isFinalEpicBattle()
+						|| teamMap.get(player_id) != teamMap.get(target_id)){
+					return target_id;
+				}
+				else {
+					target_id++;
+					if (target_id > 4)
+						// reset it back to zero
+						target_id = 0;
+					if (target_id != 0)
+						// call recursively to go to the next color
+						target_id = nextTarget(player_id, target_id);
+					else
+						return target_id;
+				}
+			}
+			else {
+				target_id++;
+				if (target_id > 4)
+					// reset it back to zero
+					target_id = 0;
+				if (target_id != 0)
+					// call recursively to go to the next color
+					target_id = nextTarget(player_id, target_id);
+				else
+					return target_id;
+			}
+
+		}
+		else {
+			target_id++;
+			if (target_id > 4)
+				// reset it back to zero
+				target_id = 0;
+			if (target_id != 0)
+				// call recursively to go to the next color
+				target_id = nextTarget(player_id, target_id);
+			else
+				return target_id;
+		}
+
+		return target_id;
+	}
+
 	@Override
 	public boolean keyDown(int keycode) {
 		if(keycode == Input.Keys.BACK) {
@@ -693,21 +864,40 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 
 		if (factorys.size > 0) {
-			if (keycode == Input.Keys.Q && factoryMap.get(1) != null) {
+			// Player 1
+			if (keycode == Input.Keys.S && factoryMap.get(1) != null) {
 				((FactoryProduction) factoryMap.get(1)).button_held = true;
 				touchedP1 = true;
 			}
-			if (keycode == Input.Keys.Z && factoryMap.get(2) != null) {
+			if (keycode == Input.Keys.D && factoryMap.get(1) != null) {
+				rotateTarget(1);
+			}
+
+			// Player 2
+			if (keycode == Input.Keys.K && factoryMap.get(2) != null) {
 				((FactoryProduction) factoryMap.get(2)).button_held = true;
 				touchedP2 = true;
 			}
-			if (keycode == Input.Keys.P && factoryMap.get(3) != null) {
+			if (keycode == Input.Keys.L && factoryMap.get(2) != null) {
+				rotateTarget(2);
+			}
+
+			// Player 3
+			if (keycode == Input.Keys.DOWN && factoryMap.get(3) != null) {
 				((FactoryProduction) factoryMap.get(3)).button_held = true;
 				touchedP3 = true;
 			}
-			if (keycode == Input.Keys.M && factoryMap.get(4) != null) {
+			if (keycode == Input.Keys.RIGHT && factoryMap.get(3) != null) {
+				rotateTarget(3);
+			}
+
+			// Player 4
+			if (keycode == Input.Keys.NUMPAD_2 && factoryMap.get(4) != null) {
 				((FactoryProduction) factoryMap.get(4)).button_held = true;
 				touchedP4 = true;
+			}
+			if (keycode == Input.Keys.NUMPAD_6 && factoryMap.get(4) != null) {
+				rotateTarget(4);
 			}
 		}
 		return false;
@@ -716,16 +906,16 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	@Override
 	public boolean keyUp(int keycode) {
 		if (factorys.size > 0) {
-			if (keycode == Input.Keys.Q && factoryMap.get(1) != null) {
+			if (keycode == Input.Keys.S && factoryMap.get(1) != null) {
 				((FactoryProduction) factoryMap.get(1)).button_held = false;
 			}
-			if (keycode == Input.Keys.Z && factoryMap.get(2) != null) {
+			if (keycode == Input.Keys.K && factoryMap.get(2) != null) {
 				((FactoryProduction) factoryMap.get(2)).button_held = false;
 			}
-			if (keycode == Input.Keys.P && factoryMap.get(3) != null) {
+			if (keycode == Input.Keys.DOWN && factoryMap.get(3) != null) {
 				((FactoryProduction) factoryMap.get(3)).button_held = false;
 			}
-			if (keycode == Input.Keys.M && factoryMap.get(4) != null) {
+			if (keycode == Input.Keys.NUMPAD_2 && factoryMap.get(4) != null) {
 				((FactoryProduction) factoryMap.get(4)).button_held = false;
 			}
 		}

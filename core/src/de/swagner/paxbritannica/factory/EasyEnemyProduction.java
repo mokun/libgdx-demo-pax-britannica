@@ -92,7 +92,8 @@ public class EasyEnemyProduction extends FactoryProduction {
 		}
 		
 		// what to do
-		if(ownFighters > 4 && ownBombers > 3 && ownFrigates > 2)
+		if (health() < .1) action = 3;
+		else if (ownFighters > 4 && ownBombers > 3 && ownFrigates > 2)
 			action = 0;
 		else
 			action = MathUtils.random(-1, 2);

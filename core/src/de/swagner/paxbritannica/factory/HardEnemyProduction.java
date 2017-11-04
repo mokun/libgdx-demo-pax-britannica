@@ -91,7 +91,8 @@ public class HardEnemyProduction extends FactoryProduction {
 		}
 		
 		// what to do
-		if(resourceAmount < 80) action = -1;
+		if (health() < .2) action = 3;
+		else if(resourceAmount < 80) action = -1;
 		else if((ownFighters < 4 || enemyBombers > 2) && enemyFighters < 11 && enemyFrigates < 4 && ownFighters < 20) action = 0;
 		else if((enemyFrigates > 1 && ownBombers < 1) && enemyFighters < 11) action = 1;
 		else if(enemyFighters < 5 && ownBombers < 5) action = 1;

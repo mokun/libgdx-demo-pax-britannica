@@ -91,10 +91,11 @@ public class MediumEnemyProduction extends FactoryProduction {
 		}
 		
 		// what to do
-		if(resourceAmount < 80) action = -1;
-		else if(ownFighters < 5) action = 0;
-		else if(ownBombers < 4) action = 1;
-		else if(ownFrigates < 3) action = 2;
+		if (health() < .15) action = 3;
+		else if (resourceAmount < 80) action = -1;
+		else if (ownFighters < 5) action = 0;
+		else if (ownBombers < 4) action = 1;
+		else if (ownFrigates < 3) action = 2;
 		else action = 3;
 	}
 

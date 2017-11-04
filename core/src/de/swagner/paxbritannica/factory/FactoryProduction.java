@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 
 import de.swagner.paxbritannica.Constants;
 import de.swagner.paxbritannica.GameInstance;
@@ -77,6 +76,7 @@ public class FactoryProduction extends Ship {
 			break;
 		}
 
+		// Prints team id
 		Gdx.app.log("[FP] ", obtainShipColor(id) + " (Player " + id + ", Team " + team + ")");
 
 		light_damage1.set(Resources.getInstance().factoryLightDamage1);
@@ -115,7 +115,7 @@ public class FactoryProduction extends Ship {
 		// Damage
 		// ugh. . . sprite needs to be more flexible
 		drawDamage = false;
-		float health = healthPercentage();
+		float health = health();
 /*
 		double h = health;
 
