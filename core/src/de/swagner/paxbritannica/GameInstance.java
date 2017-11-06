@@ -22,7 +22,14 @@ import de.swagner.paxbritannica.particlesystem.BubbleParticleEmitter;
 import de.swagner.paxbritannica.particlesystem.SparkParticleEmitter;
 
 public class GameInstance {
-	
+
+	private final static int PLAYER1_TEAM = 1;
+	private final static int PLAYER2_TEAM = 1;
+	private final static int PLAYER3_TEAM = 2;
+	private final static int PLAYER4_TEAM = 2;
+
+	private final static int TARGET_ANY = 0;
+
 	public boolean debugMode = false;
 
 	public Array<Ship> fighters = new Array<Ship>();
@@ -66,7 +73,23 @@ public class GameInstance {
 		}
 		return instance;
 	}
-	
+
+	public GameInstance() {
+		// Initialize teamMap
+		teamMap.put(1, PLAYER1_TEAM);
+		teamMap.put(2, PLAYER2_TEAM);
+		teamMap.put(3, PLAYER3_TEAM);
+		teamMap.put(4, PLAYER4_TEAM);
+
+		// Initialize targetingMap
+		targetingMap.put(1, TARGET_ANY);
+		targetingMap.put(2, TARGET_ANY);
+		targetingMap.put(3, TARGET_ANY);
+		targetingMap.put(4, TARGET_ANY);
+
+	}
+
+
 	public void resetGame() {
 
 		fighters.clear();

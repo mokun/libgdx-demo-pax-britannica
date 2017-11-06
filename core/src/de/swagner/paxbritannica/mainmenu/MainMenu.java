@@ -6,15 +6,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
+
+import java.util.Map;
 
 import de.swagner.paxbritannica.DefaultScreen;
 import de.swagner.paxbritannica.GameInstance;
@@ -25,46 +30,80 @@ import de.swagner.paxbritannica.help.Help;
 import de.swagner.paxbritannica.settings.Settings;
 
 public class MainMenu extends DefaultScreen implements InputProcessor {
-	Sprite title;
-	Sprite credits;
-	Sprite settings;
-	FactorySelector p1;
-	FactorySelector p2;
-	FactorySelector p3;
-	FactorySelector p4;
-	Countdown countdown;
-	
-	OrthographicCamera cam;
-	
-	Sprite help;
-	Sprite musicOnOff;
-	BoundingBox collisionHelp = new BoundingBox();
-	BoundingBox collisionMusic = new BoundingBox();
-	BoundingBox collisionSettings = new BoundingBox();
 
-	BackgroundFXRenderer backgroundFX = new BackgroundFXRenderer();
-	Sprite blackFade;
+	private final static int INITIAL_WIDTH = 125;
+	private final static int TEAM_HEIGHT = 255;
+	private final static int TEAM_WIDTH = 127;
+	private final static int OFFSET = 20;
+	private final static String NONE = "None";
 
-	SpriteBatch titleBatch;
-	SpriteBatch fadeBatch;
+	private Sprite title;
+	private Sprite credits;
+	private Sprite settings;
 
-	float time = 0;
-	float fade = 1.0f;
+	private FactorySelector p1;
+	private FactorySelector p2;
+	private FactorySelector p3;
+	private FactorySelector p4;
 
-	int idP1 = -1;
-	int idP2 = -1;
-	int cnt = 0;
-	int oldCnt = 0;
-	int changeToScreen = -1;
+	private Countdown countdown;
 
-	Ray collisionRay;
-	
+	private OrthographicCamera cam;
+
+	private Sprite help;
+	private Sprite musicOnOff;
+
+	private BoundingBox collisionHelp = new BoundingBox();
+	private BoundingBox collisionMusic = new BoundingBox();
+	private BoundingBox collisionSettings = new BoundingBox();
+
+	private BackgroundFXRenderer backgroundFX = new BackgroundFXRenderer();
+	private Sprite blackFade;
+
+	private SpriteBatch titleBatch;
+	private SpriteBatch fadeBatch;
+	private SpriteBatch gameBatch;
+
+	private Ray collisionRay;
+
+	private BitmapFont font;
+
+	private Map<Integer, Integer> teamMap;
+
+	private float time = 0;
+	private float fade = 1.0f;
+
+	private int idP1 = -1;
+	private int idP2 = -1;
+	private int cnt = 0;
+	private int oldCnt = 0;
+	private int changeToScreen = -1;
+
 	private int width = 800;
 	private int height = 480;
+
+	private int offset;
+
+	private String team;
+
 
 	public MainMenu(Game game) {
 		super(game);
 		Gdx.input.setInputProcessor(this);
+
+		gameBatch = new SpriteBatch();
+
+		// Set up generator for ttf creation
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/font/BLKCHCRY.TTF"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 22;
+		parameter.characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
+
+		font = generator.generateFont(parameter);
+		generator.dispose();
+		// read teamMap
+		teamMap = GameInstance.getInstance().teamMap;
+
 	}
 	
 	@Override
@@ -102,7 +141,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		p3 = new FactorySelector(new Vector2(305f, 150f), 3);
 		p4 = new FactorySelector(new Vector2(430f, 150f), 4);
 
-		countdown = new Countdown(new Vector2(380f, 7f));
+		countdown = new Countdown(new Vector2(380f, -10f));
 
 		titleBatch = new SpriteBatch();
 		titleBatch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 480);
@@ -296,6 +335,58 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			}
 		}
 
+		gameBatch.begin();
+
+		font.setColor(Color.GOLDENROD);
+
+		font.draw(gameBatch, "Team : " , INITIAL_WIDTH, TEAM_HEIGHT);
+
+		int id = teamMap.get(1);
+		if (id != 0) {
+			team = id + "";
+			offset = 0;
+		}
+		else {
+			team = NONE;
+			offset = OFFSET;
+		}
+
+		font.draw(gameBatch, team , INITIAL_WIDTH+ TEAM_WIDTH - offset, TEAM_HEIGHT);
+
+		id = teamMap.get(2);
+		if (id != 0) {
+			team = id + "";
+			offset = 0;
+		}
+		else {
+			team = NONE;
+			offset = OFFSET;
+		}
+		font.draw(gameBatch, team, INITIAL_WIDTH+ TEAM_WIDTH * 2 - offset, TEAM_HEIGHT);
+
+		id = teamMap.get(3);
+		if (id != 0) {
+			team = id + "";
+			offset = 0;
+		}
+		else {
+			team = NONE;
+			offset = OFFSET;
+		}
+		font.draw(gameBatch, team, INITIAL_WIDTH+ TEAM_WIDTH * 3 - offset, TEAM_HEIGHT);
+
+		id = teamMap.get(4);
+		if (id != 0) {
+			team = id + "";
+			offset = 0;
+		}
+		else {
+			team = NONE;
+			offset = OFFSET;
+		}
+		font.draw(gameBatch, team, INITIAL_WIDTH+ TEAM_WIDTH * 4 - offset, TEAM_HEIGHT);
+
+		gameBatch.end();
 	}
 
 	@Override
@@ -395,8 +486,34 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			countdown.finished = true;
 			changeToScreen = 1;
 		}
-				
 
+		if (keycode == Input.Keys.NUM_1 || keycode == Input.Keys.NUMPAD_1) {
+			int i = GameInstance.getInstance().teamMap.get(1);
+			i++;
+			if (i > 2) i = 0;
+			GameInstance.getInstance().teamMap.put(1, i);
+		}
+
+		if (keycode == Input.Keys.NUM_2 || keycode == Input.Keys.NUMPAD_2) {
+			int i = GameInstance.getInstance().teamMap.get(2);
+			i++;
+			if (i > 2) i = 0;
+			GameInstance.getInstance().teamMap.put(2, i);
+		}
+
+		if (keycode == Input.Keys.NUM_3 || keycode == Input.Keys.NUMPAD_3) {
+			int i = GameInstance.getInstance().teamMap.get(3);
+			i++;
+			if (i > 2) i = 0;
+			GameInstance.getInstance().teamMap.put(3, i);
+		}
+
+		if (keycode == Input.Keys.NUM_4 || keycode == Input.Keys.NUMPAD_4) {
+			int i = GameInstance.getInstance().teamMap.get(4);
+			i++;
+			if (i > 2) i = 0;
+			GameInstance.getInstance().teamMap.put(4, i);
+		}
 		return false;
 	}
 

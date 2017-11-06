@@ -40,6 +40,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     private final static int FPS_HEIGHT = 15; //90
     private final static int FPS_WIDTH = 85; //45
 
+	private final static int OFFSET = 20;
+	private final static String NONE = "None";
+
     private double startTime = 0;
 	private BackgroundFXRenderer backgroundFX = new BackgroundFXRenderer();
 
@@ -87,6 +90,10 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 	private int numPlayers = 0;
 
+	private int offset;
+
+	private String teamString;
+
 	private Ray collisionRay;
 
 	private Array<Vector2> POSITIONS = new Array<Vector2>();
@@ -105,6 +112,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
     private Map<Integer, Ship> factoryMap;
 
 	private Map<Integer, Integer> teamMap;
+
     private Map<Integer, Integer> targetingMap;
 
     private boolean m1 = false;
@@ -157,14 +165,12 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		for (int i : cpuList)
 			Gdx.app.log("[GameScreen]", "CPU " + i + " initialized.");
 
+
+		// read teamMap
 		teamMap = GameInstance.getInstance().teamMap;
 
-		// Set up targetingMap
+		// read targetingMap
 		targetingMap = GameInstance.getInstance().targetingMap;
-		targetingMap.put(1, 0);
-		targetingMap.put(2, 0);
-		targetingMap.put(3, 0);
-		targetingMap.put(4, 0);
 
 
 		//font = new BitmapFont();
@@ -172,7 +178,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         // Set up generator for ttf creation
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/font/BLKCHCRY.TTF"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 16;
+        parameter.size = 18;
         parameter.characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
 
         font = generator.generateFont(parameter);
@@ -305,11 +311,12 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         //if (factoryMap == null)
             factoryMap = GameInstance.getInstance().factoryMap;
 
-		for(int i=0;i<playerList.size;++i) {
+		for(int i=0;i < playerList.size; ++i) {
 			Vector2 temp1 = new Vector2(POSITIONS.get(currentPos).x, POSITIONS.get(currentPos).y);
 			Vector2 temp2 = new Vector2(POSITIONS.get(currentPos).x, POSITIONS.get(currentPos).y);
 			Vector2 facing = new Vector2(-temp1.sub(CENTER).y, temp2.sub(CENTER).x).nor();
 
+/*
 			// Set up teamID, Team 1 consists of player 1 & 2; team 2 consists of player 3 & 4.
 			if (playerList.get(i) == 1 || playerList.get(i) == 2)
 				teamID = 1;
@@ -317,6 +324,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 				teamID = 2;
 
 			teamMap.put(i, teamID);
+*/
+			// Read the teamID of this player
+			teamID = teamMap.get(playerList.get(i));
 
 			playerProduction = new PlayerProduction(playerList.get(i), teamID, POSITIONS.get(currentPos), facing);
 
@@ -325,11 +335,11 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			++currentPos;
 		}
 		
-		for(int i=0;i<cpuList.size;++i) {
+		for(int i=0; i < cpuList.size; ++i) {
 			Vector2 temp1 = new Vector2(POSITIONS.get(currentPos).x, POSITIONS.get(currentPos).y);
 			Vector2 temp2 = new Vector2(POSITIONS.get(currentPos).x, POSITIONS.get(currentPos).y);
 			Vector2 facing = new Vector2(-temp1.sub(CENTER).y, temp2.sub(CENTER).x).nor();
-
+/*
 			// Set up teamID, Team 1 consists of player 1 & 2; team 2 consists of player 3 & 4.
 			if (cpuList.get(i) == 1 || cpuList.get(i) == 2)
 				teamID = 1;
@@ -337,6 +347,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 				teamID = 2;
 
 			teamMap.put(i, teamID);
+*/
+			// Read the teamID of this player
+			teamID = teamMap.get(cpuList.get(i));
 
 			if(GameInstance.getInstance().difficultyConfig == 0) {
 				enemyProduction = new EasyEnemyProduction(cpuList.get(i), teamID, POSITIONS.get(currentPos), facing);
@@ -641,6 +654,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		font.draw(gameBatch, "Kills" ,5, FPS_HEIGHT * 2);
 		font.draw(gameBatch, "Score" ,FPS_WIDTH, FPS_HEIGHT * 2);
 		font.draw(gameBatch, "Target" ,FPS_WIDTH*2, FPS_HEIGHT * 2);
+		font.draw(gameBatch, "Team" ,FPS_WIDTH*3, FPS_HEIGHT * 2);
 
         int[][] counts = GameInstance.getInstance().getCounts();
 
@@ -707,6 +721,21 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 						" " + target,
 						FPS_WIDTH *2+5, FPS_HEIGHT * 2 - i * 20);
 
+
+				int id = teamMap.get(i);
+				if (id != 0) {
+					teamString = id + "";
+					offset = 0;
+				}
+				else {
+					teamString = NONE;
+					offset = OFFSET;
+				}
+
+				font.setColor(Color.GOLDENROD);
+				font.draw(gameBatch,
+						teamString,
+						FPS_WIDTH *3+15 - offset, FPS_HEIGHT * 2 - i * 20);
 
 			}
         }
@@ -801,8 +830,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			return true;
 		else if (cpuList.contains(target_id, true))
 			return true;
-		else
-			return false;
+
+		return false;
 	}
 
 	// Change the target color to the next
@@ -815,60 +844,50 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			target_id = 0;
 		if (target_id != 0)
 			// go to the next color
-			target_id = nextTarget(player_id, target_id);
-
-		// update the target_id
+			target_id = determineTarget(player_id, target_id);
+		//Gdx.app.log("[GameScreen]", "rotateTarget() target_id : " + target_id);
+				// update the target_id
 		targetingMap.put(player_id, target_id);
 	}
 
-	public int nextTarget(int player_id, int target_id) {
+	public int determineTarget(int player_id, int target_id) {
 		// repeat this process again
-		if (targetExisted(target_id)) {
-			// if this is player's own color
-			if (target_id != player_id) {
-				// if this color is on the same team
-				if (GameInstance.getInstance().isFinalEpicBattle()
-						|| teamMap.get(player_id) != teamMap.get(target_id)){
+		if (targetExisted(target_id)) { // if the target playger is not dead
+			//Gdx.app.log("[GameScreen]", "targetExisted() is true; target_id : " + target_id);
+			if (target_id != player_id) { // if this is player's own color
+				//Gdx.app.log("[GameScreen]", "target_id is not the same as player_id; target_id : " + target_id);
+				if (teamMap.get(player_id) == 0
+						|| GameInstance.getInstance().isFinalEpicBattle()
+						|| teamMap.get(player_id) != teamMap.get(target_id)){ // if this color is on the same team
+					//Gdx.app.log("[GameScreen]", "they are not the same team; target_id : " + target_id);
 					return target_id;
 				}
 				else {
-					target_id++;
-					if (target_id > 4)
-						// reset it back to zero
-						target_id = 0;
-					if (target_id != 0)
-						// call recursively to go to the next color
-						target_id = nextTarget(player_id, target_id);
-					else
-						return target_id;
+					target_id = getNextTarget(player_id, target_id);
 				}
 			}
 			else {
-				target_id++;
-				if (target_id > 4)
-					// reset it back to zero
-					target_id = 0;
-				if (target_id != 0)
-					// call recursively to go to the next color
-					target_id = nextTarget(player_id, target_id);
-				else
-					return target_id;
+				target_id = getNextTarget(player_id, target_id);
 			}
 
 		}
 		else {
-			target_id++;
-			if (target_id > 4)
-				// reset it back to zero
-				target_id = 0;
-			if (target_id != 0)
-				// call recursively to go to the next color
-				target_id = nextTarget(player_id, target_id);
-			else
-				return target_id;
+			target_id = getNextTarget(player_id, target_id);
 		}
 
 		return target_id;
+	}
+
+	public int getNextTarget(int player_id, int target_id) {
+		target_id++;
+		if (target_id > 4)
+			// reset it back to zero
+			target_id = 0;
+		if (target_id != 0)
+			// call recursively to go to the next color
+			return determineTarget(player_id, target_id);
+		else
+			return target_id;
 	}
 
 	@Override
