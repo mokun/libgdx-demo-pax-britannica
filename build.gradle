@@ -22,18 +22,19 @@ buildscript {
 
     //Defines the repositories that are required by this script, e.g. android plugin
     repositories {
-        mavenLocal()
-        jcenter()
         //maven central repository, needed for the android plugin
         mavenCentral()
+        mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
         //repository for libgdx artifacts
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-
+        google()
     }
 
     dependencies {
-        classpath "de.richsource.gradle.plugins:gwt-gradle-plugin:$gwtGradleVersion"
+        classpath "org.wisepersist:gwt-gradle-plugin:$gwtGradleVersion"
         classpath "com.android.tools.build:gradle:$androidGradleToolsVersion"
         classpath "com.mobidevelop.robovm:robovm-gradle-plugin:$roboVMGradleVersion"
         classpath "com.excelsiorjet:excelsior-jet-gradle-plugin:0.7.0"
@@ -135,7 +136,7 @@ project(":android") {
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
-    webAppDirName = 'webapp'
+    // webAppDirName = 'webapp'
 
     dependencies {
         compile project(":core")
