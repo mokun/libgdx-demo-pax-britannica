@@ -2,6 +2,7 @@ package de.swagner.paxbritannica.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
 import de.swagner.paxbritannica.PaxBritannica;
 
 public class DesktopLauncher {
