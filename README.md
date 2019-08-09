@@ -3,13 +3,13 @@ Libgdx demo - Pax Britannica
 
 Pax Britannica is a `two-button` [RTS game by nofundsgames](http://paxbritannica.henk.ca/), which was ported to libgdx by [Stefan Wagner](http://bompoblog.tumblr.com/).
 
-We have since added the following three features to Pax.
+We have since added the following three features to Pax :
 
-## Team Play ## 
+### A. Team Play ###
 
 `Added 2017-11-05`
 
-This commit introduces the the team play feature. 
+This commit introduces the the team play feature.
 
 If you are in the same team with someone else (player or cpu), your aircraft will not attack your teammate(s).
 
@@ -25,6 +25,8 @@ Key "3" for Player 3
 Key "4" for Player 4
 ```
 
+![teamplay](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/desktop/src/main/jetResources/pax1.png)
+
 By default, player 1 and 2 will be in team one while player 3 and 4 will be in team 2.
 
 The Score board is in the form of a 4 x 5 table. 
@@ -39,11 +41,14 @@ The 5 columns of stats are as follows :
 - `Tarage`     - the target ship color chosen at the moment (can be change)
 - `Team ID`    - Your Team ID
 
+![scoreboard](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/desktop/src/main/jetResources/pax2.png)
 
-## New Key Mapping ## 
+### B. Two-Button Control ###
 `Added 2017-11-03`
 
 Up to a total of 4 players may engage in a hot-seat game. Each player now is given **two** control buttons-- one for producing aircraft, one for choosing target.
+
+The NEW Key Mappings are as follows :
 
 ```
 Player 1
@@ -65,7 +70,7 @@ Player 4
 
 Alternatively, one may plug in more than one USB keyboards for more spacious seating. 
 
-## Score Board ## 
+### C. Score Board ###
 `Added 2017-10-27`
 
 We put together a score board for the desktop version of the pax that will show the followings :  
@@ -76,7 +81,4 @@ We put together a score board for the desktop version of the pax that will show 
 
 
 See the original [README.md](https://github.com/libgdx/libgdx-demo-pax-britannica/blob/master/README.md) at the project site.
-
-![pax-britannica](http://i.imgur.com/evYlHaf.png)
-
 
