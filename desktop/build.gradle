@@ -1,10 +1,11 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.7
+sourceCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = [ 'src' ]
 
-project.ext.mainClassName = "de.swagner.paxbritannica.desktop.DesktopLauncher"
+project.ext.mainClassName = 'de.swagner.paxbritannica.desktop.DesktopLauncher'
 project.ext.assetsDir = new File("../android/assets")
 
 task run(dependsOn: classes, type: JavaExec) {
@@ -16,15 +17,39 @@ task run(dependsOn: classes, type: JavaExec) {
 }
 
 task dist(type: Jar) {
-//    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output)
+    from files(project.ext.mainClassName)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from {configurations.runtime.collect {zipTree(it)}}
     from files(project.assetsDir)
- 
+
+    from {
+        (configurations.runtime).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                'Implementation-Version': version,
+                'Main-Class': 'de.swagner.paxbritannica.desktop.DesktopLauncher'
     }
 }
+
+sourceSets {
+    main {
+        //if you truly want to override the defaults:
+        output.resourcesDir = file('out/bin')
+        // Compiled Java classes should use this directory
+        java.outputDir = file('out/jar')
+    }
+}
+
+
+if (!hasProperty('mainClass')) {
+    ext.mainClass = 'de.swagner.paxbritannica.desktop.DesktopLauncher'
+}
+
 
 dist.dependsOn classes
 
@@ -45,4 +70,11 @@ task afterEclipseImport(description: "Post processing after project generation",
     printer.setPreserveWhitespace(true)
     printer.print(classpath)
   }
+}
+
+task(desktop,
+        group: 'de.swagner.paxbritannica',
+        description: 'Pax Britannica is a two-button hot-seat space shooter game for up to 4 players',
+        dependsOn: 'classes', type: JavaExec) {
+    mainClassName = 'de.swagner.paxbritannica.desktop.DesktopLauncher'
 }

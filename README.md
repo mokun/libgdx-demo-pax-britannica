@@ -11,25 +11,29 @@ We have since added the following three features to Pax :
 
 This commit introduces the the team play feature.
 
-If you are in the same team with someone else (player or cpu), your aircraft will not attack your teammate(s).
+You may program up to having 2 teams.
 
-The best would be to play 2 against 2. If you want more challenge, try playing against 3 cpu teaming together against you. 
+Rule of Thumb : your aircraft will not attack your teammate(s) until after everyone in the opposite
+team has died.
+
+By default, player 1 and 2 will be in team one while player 3 and 4 will be in team 2.
+
+However, if you want more challenge, try playing against 3 cpu teaming together against you.
 
 Before starting the game, use the number (or numeric keypad) key 1 to 4 to rotate the
 team ID for each of the player (or cpu) as follows : 
 
 ```
-Key "1" for Player 1
-Key "2" for Player 2
-Key "3" for Player 3
-Key "4" for Player 4
+Press key "1" to rotate team ID for Player 1
+Press Key "2" to rotate team ID for Player 2
+Press Key "3" to rotate team ID for Player 3
+Press Key "4" to rotate team ID for Player 4
 ```
 
 ![teamplay](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/desktop/src/main/jetResources/pax1.png)
 
-By default, player 1 and 2 will be in team one while player 3 and 4 will be in team 2.
 
-The Score board is in the form of a 4 x 5 table. 
+Also, we added 2 extra columns to the Score board, making it a 4 x 5 table.
 
 The rows are the color of the ship (blue, red, green, and yellow) from top to bottom.
 
