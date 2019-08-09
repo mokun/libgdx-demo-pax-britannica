@@ -30,7 +30,7 @@ Press Key "3" to rotate team ID for Player 3
 Press Key "4" to rotate team ID for Player 4
 ```
 
-![teamplay](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/desktop/src/main/jetResources/pax1.png)
+![teamplay](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/pax1.jpg)
 
 
 Also, we added 2 extra columns to the Score board, making it a 4 x 5 table.
@@ -45,7 +45,7 @@ The 5 columns of stats are as follows :
 - `Tarage`     - the target ship color chosen at the moment (can be change)
 - `Team ID`    - Your Team ID
 
-![scoreboard](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/desktop/src/main/jetResources/pax2.png)
+![scoreboard](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/pax2.jpg)
 
 ### B. Two-Button Control ###
 `Added 2017-11-03`
