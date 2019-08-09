@@ -52,6 +52,7 @@ allprojects {
 
     //Defines the repositories that are required by this script, e.g. android plugin
     repositories {
+        google()
         mavenLocal()
         jcenter()
         //maven central repository, needed for the android plugin
@@ -67,9 +68,9 @@ project(":core") {
     apply plugin: "java"
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     }
 }
 
@@ -78,14 +79,14 @@ project(":desktop") {
     apply plugin: 'excelsiorJet'
 
     dependencies {
-        compile project(":core")
+        implementation project(":core")
 
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
-        compile "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
     }
 
     excelsiorJet {
@@ -115,21 +116,21 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
 
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
 
-        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
     }
 }
 
@@ -139,18 +140,18 @@ project(":html") {
     // webAppDirName = 'webapp'
 
     dependencies {
-        compile project(":core")
+        implementation project(":core")
 
-        compile "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT"
-        compile "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT:sources"
+        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT"
+        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT:sources"
 
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+        implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+        implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
 
-        compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
+        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
+        implementation "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
 
     }
 }
@@ -162,13 +163,13 @@ project(":ios") {
     configurations { natives }
 
     dependencies {
-        compile "com.mobidevelop.robovm:robovm-rt:${roboVMVersion}"
-        compile "com.mobidevelop.robovm:robovm-cocoatouch:${roboVMVersion}"
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+        implementation "com.mobidevelop.robovm:robovm-rt:${roboVMVersion}"
+        implementation "com.mobidevelop.robovm:robovm-cocoatouch:${roboVMVersion}"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
 
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     }
 }
 
