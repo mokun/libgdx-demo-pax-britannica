@@ -3,7 +3,7 @@ apply plugin: "java"
 sourceCompatibility = '1.8'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ 'src' ]
+sourceSets.main.java.srcDirs = [ 'src/' ]
 
 project.ext.mainClassName = 'de.swagner.paxbritannica.desktop.DesktopLauncher'
 project.ext.assetsDir = new File("../android/assets")
