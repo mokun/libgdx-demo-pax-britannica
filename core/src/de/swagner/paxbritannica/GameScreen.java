@@ -1,7 +1,5 @@
 package de.swagner.paxbritannica;
 
-import java.util.Map;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -24,8 +22,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.Array;
 
-//import com.badlogic.gdx.controllers.Controller;
-//import com.badlogic.gdx.Controllers;
+import java.util.Map;
 
 import de.swagner.paxbritannica.background.BackgroundFXRenderer;
 import de.swagner.paxbritannica.factory.EasyEnemyProduction;
@@ -34,6 +31,9 @@ import de.swagner.paxbritannica.factory.HardEnemyProduction;
 import de.swagner.paxbritannica.factory.MediumEnemyProduction;
 import de.swagner.paxbritannica.factory.PlayerProduction;
 import de.swagner.paxbritannica.mainmenu.MainMenu;
+
+//import com.badlogic.gdx.controllers.Controller;
+//import com.badlogic.gdx.Controllers;
 
 public class GameScreen extends DefaultScreen implements InputProcessor {
 
@@ -828,10 +828,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	public boolean targetExisted(int target_id) {
 		if (playerList.contains(target_id, true))
 			return true;
-		else if (cpuList.contains(target_id, true))
-			return true;
+        else return cpuList.contains(target_id, true);
 
-		return false;
 	}
 
 	// Change the target color to the next

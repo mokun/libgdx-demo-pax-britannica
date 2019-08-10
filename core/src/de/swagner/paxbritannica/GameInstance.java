@@ -5,7 +5,6 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
-//import android.util.SparseArray;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,9 +16,11 @@ import de.swagner.paxbritannica.fighter.Laser;
 import de.swagner.paxbritannica.frigate.Frigate;
 import de.swagner.paxbritannica.frigate.Missile;
 import de.swagner.paxbritannica.particlesystem.BigBubbleParticleEmitter;
-import de.swagner.paxbritannica.particlesystem.ExplosionParticleEmitter;
 import de.swagner.paxbritannica.particlesystem.BubbleParticleEmitter;
+import de.swagner.paxbritannica.particlesystem.ExplosionParticleEmitter;
 import de.swagner.paxbritannica.particlesystem.SparkParticleEmitter;
+
+//import android.util.SparseArray;
 
 public class GameInstance {
 
@@ -153,8 +154,7 @@ public class GameInstance {
 			int id = bullet.getID();
 			// Find the ship id
 			int shipType = ship.getShipType();
-			if ((shipType == 4 && ship.deathCounter == 50f)
-					|| shipType != 4) {
+            if (shipType != 4 || ship.deathCounter == 50f) {
 
 				Map<Integer, Integer> kills = null;
 				if (killMap.containsKey(id)) {
@@ -267,10 +267,7 @@ public class GameInstance {
 	// Check if only 2 factory ships are left for the final battle
 	public boolean isFinalEpicBattle() {
 		//if (playerList.size + cpuList.size == 2)
-		if (factorys.size == 2)
-			return true;
-		else
-			return false;
+        return factorys.size == 2;
 
 	}
 

@@ -15,7 +15,7 @@ buildscript {
         roboVMGradleVersion = json.robovmPluginVersion
         androidToolsVersion = json.androidBuildtoolsVersion
         androidSDKVersion = json.androidSDKVersion
-        androidGradleToolsVersion = '3.4.2'
+        androidGradleToolsVersion = '3.4.1'
         gwtVersion = json.gwtVersion
         gwtGradleVersion = json.gwtPluginVersion
     }
@@ -45,9 +45,9 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = "1.0"
+    version = "1.1"
     ext {
-        appName = "Pax-Britannica"
+        appName = "Pax-Britannica Enchanced"
     }
 
     //Defines the repositories that are required by this script, e.g. android plugin
@@ -65,35 +65,35 @@ allprojects {
 }
 
 project(":core") {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
     dependencies {
-        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
     }
 }
 
 project(":desktop") {
-    apply plugin: "java"
+    apply plugin: "java-library"
     apply plugin: 'excelsiorJet'
 
     dependencies {
         implementation project(":core")
 
-        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 
-        implementation "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
     }
 
     excelsiorJet {
-        product = 'Pax Britannica'
+        product = 'Pax Britannica Enchanced'
         vendor  = 'LibGDX'
-        outputName = 'Pax Britannica'
-        artifactName = 'Pax Britannica'
+        outputName = 'Pax Britannica Enchanced'
+        artifactName = 'Pax Britannica Enchanced'
 
         mainClass 'de.swagner.paxbritannica.desktop.DesktopLauncher'
         packageFilesDir(new File(project.rootProject.projectDir, "/android/assets"))
@@ -117,24 +117,25 @@ project(":android") {
 
     dependencies {
         implementation project(":core")
-        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
 
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
 
-        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
     }
 }
 
 project(":html") {
+    apply plugin: "java-library"
     apply plugin: "gwt"
     apply plugin: "war"
     // webAppDirName = 'webapp'
@@ -142,31 +143,32 @@ project(":html") {
     dependencies {
         implementation project(":core")
 
-        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT"
-        implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT:sources"
+        api "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT"
+        api "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:0.0.2-SNAPSHOT:sources"
 
-        implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
 
-        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
-        implementation "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
 
     }
 }
 
 project(":ios") {
-    apply plugin: 'java'
+    apply plugin: 'java-library'
     apply plugin: 'robovm'
 
     configurations { natives }
 
     dependencies {
-        implementation "com.mobidevelop.robovm:robovm-rt:${roboVMVersion}"
-        implementation "com.mobidevelop.robovm:robovm-cocoatouch:${roboVMVersion}"
         implementation project(":core")
-        implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+
+        api "com.mobidevelop.robovm:robovm-rt:${roboVMVersion}"
+        api "com.mobidevelop.robovm:robovm-cocoatouch:${roboVMVersion}"
+        api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
 
         implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
