@@ -57,8 +57,8 @@ public class Settings extends DefaultScreen implements InputProcessor {
 	float time = 0;
 	float fade = 1.0f;
 
-	public int width = 1920;//800;
-	public int height = 1080;//480;
+	public int width = 800;
+	public int height = 480;
 	
 	public Settings(Game game) {
 		super(game);
@@ -75,7 +75,7 @@ public class Settings extends DefaultScreen implements InputProcessor {
 		blackFade = Resources.getInstance().blackFade;
 		
 		back = Resources.getInstance().back;
-		back.setPosition(20, 010);
+		back.setPosition(20, 10);
 		back.setColor(1,1,1,0.5f);
 		collisionBack.set(new Vector3(back.getVertices()[0], back.getVertices()[1], -10),new Vector3(back.getVertices()[10], back.getVertices()[11], 10));
 		
@@ -234,7 +234,11 @@ public class Settings extends DefaultScreen implements InputProcessor {
 			cam = new OrthographicCamera(800, 533);
 			this.width = 800;
 			this.height = 533;
-		}  else if (width == 1366 && height == 768) {
+		} else if (width == 1024 && height == 768) {
+			cam = new OrthographicCamera(800, 600);
+			this.width = 800;
+			this.height = 600;
+		} else if (width == 1366 && height == 768) {
 			cam = new OrthographicCamera(1280, 720);
 			this.width = 1280;
 			this.height = 720;
@@ -256,8 +260,8 @@ public class Settings extends DefaultScreen implements InputProcessor {
 			this.height = 800;
 		} else if (width == 1920 && height == 1080) {
 			cam = new OrthographicCamera(1920, 1080);
-			this.width = 1920;
-			this.height = 1080;
+			this.width = 940;
+			this.height = 540;
 		} else if (width > 1280) {
 			cam = new OrthographicCamera(1280, 768);
 			this.width = 1280;

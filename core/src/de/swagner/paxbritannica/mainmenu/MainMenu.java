@@ -31,10 +31,11 @@ import de.swagner.paxbritannica.settings.Settings;
 
 public class MainMenu extends DefaultScreen implements InputProcessor {
 
-	private final static int INITIAL_WIDTH = 115;
-	private final static int TEAM_HEIGHT = 235;
+	private final static int INITIAL_WIDTH = 80;
+	private final static int TEAM_HEIGHT = 150;
 	private final static int TEAM_WIDTH = 127;
 	private final static int OFFSET = 20;
+	private final static int OFFSET1 = 14;
 	private final static String NONE = "None";
 
 	private Sprite title;
@@ -82,7 +83,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 	private int width = 800;
 	private int height = 480;
 
-	private int offset;
+	private int offset2;
 
 	private String team;
 
@@ -189,6 +190,10 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			cam = new OrthographicCamera(800, 533);
 			this.width = 800;
 			this.height = 533;
+		} else if (width == 1024 && height == 768) {
+			cam = new OrthographicCamera(800, 600);
+			this.width = 800;
+			this.height = 600;
 		}  else if (width == 1366 && height == 768) {
 			cam = new OrthographicCamera(1280, 720);
 			this.width = 1280;
@@ -197,28 +202,14 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			cam = new OrthographicCamera(1280, 675);
 			this.width = 1280;
 			this.height = 675;
-		} else if (width == 1536 && height == 1152) {
-			cam = new OrthographicCamera(1366, 1024);
-			this.width = 1366;
-			this.height = 1024;
-		} else if (width == 1920 && height == 1152) {
-			cam = new OrthographicCamera(1366, 854);
-			this.width = 1366;
-			this.height = 854;
-		} else if (width == 1920 && height == 1200) {
-			cam = new OrthographicCamera(1366, 800);
+		} else if (width > 1366) {
+			cam = new OrthographicCamera(1280, 800);
 			this.width = 1280;
 			this.height = 800;
-		} else if (width > 1280) {
-			cam = new OrthographicCamera(1280, 768);
-			this.width = 1280;
-			this.height = 768;
-		} else if (width < 800) {
-			cam = new OrthographicCamera(800, 480);
-			this.width = 800;
-			this.height = 480;
 		} else {
 			cam = new OrthographicCamera(width, height);
+			this.width = 1280;
+			this.height = 800;
 		}
 		cam.position.x = 400;
 		cam.position.y = 240;
@@ -339,71 +330,71 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		gameBatch.begin();
 
 		font.setColor(Color.GOLDENROD);
-		font.draw(gameBatch, "Ship Color :    ", INITIAL_WIDTH + 10, TEAM_HEIGHT + 20);
+		font.draw(gameBatch, "Ship Color :", INITIAL_WIDTH - 10, TEAM_HEIGHT + 40);
 
 		font.setColor(Color.TEAL);
-		font.draw(gameBatch, "Blue", INITIAL_WIDTH + 5 + TEAM_WIDTH - offset - 2, TEAM_HEIGHT + 20);
+		font.draw(gameBatch, "Blue", INITIAL_WIDTH + OFFSET1 * 2 + TEAM_WIDTH - offset2 - 2, TEAM_HEIGHT + 40);
 		font.setColor(Color.RED);
-		font.draw(gameBatch, "Red", INITIAL_WIDTH + 5 + TEAM_WIDTH * 2 - offset - 4, TEAM_HEIGHT + 20);
+		font.draw(gameBatch, "Red", INITIAL_WIDTH + OFFSET1 * 2 + TEAM_WIDTH * 2 - offset2 - 4, TEAM_HEIGHT + 40);
 		font.setColor(Color.GREEN);
-		font.draw(gameBatch, "Green", INITIAL_WIDTH + 5 + TEAM_WIDTH * 3 - offset - 7, TEAM_HEIGHT + 20);
+		font.draw(gameBatch, "Green", INITIAL_WIDTH + OFFSET1 * 2 + TEAM_WIDTH * 3 - offset2 - 7, TEAM_HEIGHT + 40);
 		font.setColor(Color.YELLOW);
-		font.draw(gameBatch, "Yellow", INITIAL_WIDTH + 5 + TEAM_WIDTH * 4 - offset - 11, TEAM_HEIGHT + 20);
+		font.draw(gameBatch, "Yellow", INITIAL_WIDTH + OFFSET1 * 2 + TEAM_WIDTH * 4 - offset2 - 11, TEAM_HEIGHT + 40);
 
 		font.setColor(Color.GOLDENROD);
-		font.draw(gameBatch, "Select Team :", INITIAL_WIDTH, TEAM_HEIGHT);
+		font.draw(gameBatch, "Select Team :", INITIAL_WIDTH - OFFSET1 - 10, TEAM_HEIGHT);
 
 		// Team 1
 		int id = teamMap.get(1);
 		if (id != 0) {
 			team = id + "";
-			offset = 0;
+			offset2 = 0;
 		}
 		else {
 			team = NONE;
-			offset = OFFSET;
+			offset2 = OFFSET;
 		}
 		font.setColor(Color.TEAL);
-		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH - offset, TEAM_HEIGHT);
+		font.draw(gameBatch, team, INITIAL_WIDTH + OFFSET1 * 3 + TEAM_WIDTH - offset2, TEAM_HEIGHT);
 
 		// Team 2
 		id = teamMap.get(2);
 		if (id != 0) {
 			team = id + "";
-			offset = 0;
+			offset2 = 0;
 		}
 		else {
 			team = NONE;
-			offset = OFFSET;
+			offset2 = OFFSET;
 		}
 		font.setColor(Color.RED);
-		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH * 2 - offset, TEAM_HEIGHT);
+		font.draw(gameBatch, team, INITIAL_WIDTH + OFFSET1 * 3 + TEAM_WIDTH * 2 - offset2, TEAM_HEIGHT);
 
 		// Team 3
 		id = teamMap.get(3);
 		if (id != 0) {
 			team = id + "";
-			offset = 0;
+			offset2 = 0;
 		}
 		else {
 			team = NONE;
-			offset = OFFSET;
+			offset2 = OFFSET;
 		}
 		font.setColor(Color.GREEN);
-		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH * 3 - offset, TEAM_HEIGHT);
+		font.draw(gameBatch, team, INITIAL_WIDTH + OFFSET1 * 3 + TEAM_WIDTH * 3 - offset2, TEAM_HEIGHT);
 
 		// Team 4
 		id = teamMap.get(4);
 		if (id != 0) {
 			team = id + "";
-			offset = 0;
+			offset2 = 0;
 		}
 		else {
 			team = NONE;
-			offset = OFFSET;
+			offset2 = OFFSET;
 		}
 		font.setColor(Color.YELLOW);
-		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH * 4 - offset, TEAM_HEIGHT);
+		font.draw(gameBatch, team, INITIAL_WIDTH + OFFSET1 * 3 + TEAM_WIDTH * 4 - offset2, TEAM_HEIGHT);
 
 		gameBatch.end();
 	}

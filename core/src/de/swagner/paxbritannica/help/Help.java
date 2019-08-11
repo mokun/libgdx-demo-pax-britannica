@@ -6,10 +6,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -66,7 +66,7 @@ public class Help extends DefaultScreen implements InputProcessor {
 		blackFade = Resources.getInstance().blackFade;
 		
 		back = Resources.getInstance().back;
-		back.setPosition(20, 010);
+		back.setPosition(10, 10);
 		back.setColor(1,1,1,0.5f);
 		collisionBack.set(new Vector3(back.getVertices()[0], back.getVertices()[1], -10),new Vector3(back.getVertices()[10], back.getVertices()[11], 10));
 		
@@ -80,12 +80,22 @@ public class Help extends DefaultScreen implements InputProcessor {
 		upgrade.setRotation(0);
 		
 		titleBatch = new SpriteBatch();
-		titleBatch.getProjectionMatrix().setToOrtho2D(0, 0, 800, 480);
+		titleBatch.getProjectionMatrix().setToOrtho2D(-120, 0, 800, 480);
 		fadeBatch = new SpriteBatch();
 		fadeBatch.getProjectionMatrix().setToOrtho2D(0, 0, 2, 2);
-		
-		font = new BitmapFont();
-		font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+//		font = new BitmapFont();
+//		font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+
+		// Set up generator for ttf creation
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("data/font/BLKCHCRY.TTF"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size = 20;
+		parameter.characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!'()>?:";
+
+		font = generator.generateFont(parameter);
+//		font.setColor(Color.GOLDENROD);
+		generator.dispose();
 	}
 
 	@Override
@@ -104,30 +114,33 @@ public class Help extends DefaultScreen implements InputProcessor {
 		
 		back.draw(titleBatch);
 
-        font.draw(titleBatch, "Pax Britannica is a two-button real-time strategy game by No Fun Games.", 90, 480);
-        font.draw(titleBatch, "The battle takes place underwater around a vortex.", 90, 460);
-        font.draw(titleBatch, " - Up to 4 players.", 90, 440);
-        font.draw(titleBatch, " - Against other player(s) hot-seat or against CPU(s).", 90, 420);
-        font.draw(titleBatch, " - Produce aircraft or Upgrade factory ship - Hold and release button 1", 90, 400);
-        font.draw(titleBatch, " - Rotate target factory ship - hit button 2 .", 90, 380);
-        font.draw(titleBatch, "Button       Function       Player 1    Player 2    Player 3    Player 4", 90, 340);
-        font.draw(titleBatch, "  1      Produce Aircraft      S             K            Down           2", 90, 320);
-        font.draw(titleBatch, "  2       Target Factory       D             L            Right           6", 90, 300);
-        font.draw(titleBatch, "", 90, 280);
-        font.draw(titleBatch, "Quad 1 : Fighter - Small, fast and cheap. Great at chasing down bombers.", 130, 260);
-		fighter.setPosition(70, 215);
+		int x = 0;
+
+		font.draw(titleBatch, "Pax Britannica is a real-time strategy game. " +
+				"The battle takes place around an underwater vortex.", x, 480);
+		font.draw(titleBatch, "Features : ", 100, 440);
+		font.draw(titleBatch, " > Up to 4 players", 110, 420);
+		font.draw(titleBatch, " > Against other player(s) hot-seat or against CPU(s)", 110, 400);
+		font.draw(titleBatch, " > Produce aircraft or Upgrade factory ship (Button 1)", 110, 380);
+		font.draw(titleBatch, " > Rotate target factory ship (Button 2)", 110, 360);
+		font.draw(titleBatch, "Button          Function          Player 1    Player 2    Player 3    Player 4", x + 30, 320);
+		font.draw(titleBatch, "1         produce ships           s             k             down            2", x + 70, 300);
+		font.draw(titleBatch, "2        target factory           d             l              right           6", x + 70, 280);
+
+		font.draw(titleBatch, "Quad 1 : Fighter - Small and agile. Shoot laser. Chase down Bombers", x + 40, 230);
+		fighter.setPosition(x - 20, 180);
 		fighter.draw(titleBatch);
-        font.draw(titleBatch, "Quad 2 : Bomber - Shoots slow projectiles that do massive damage to frigates or enemy factory ships!", 130, 220);
-		bomber.setPosition(70, 175);
+		font.draw(titleBatch, "Quad 2 : Bomber - Shoots slow projectiles. Do massive damage to Frigates or Factory ships", x + 40, 200);
+		bomber.setPosition(x - 20, 150);
 		bomber.draw(titleBatch);
-        font.draw(titleBatch, "Quad 3 : Frigate - A great hulk of a ship that fires volleys of heat-seeking torpedoes. Effective against fighters.", 130, 180);
-		frigate.setPosition(70, 135);
+		font.draw(titleBatch, "Quad 3 : Frigate - Powerful but slow. Fires volleys of heat-seeking torpedoes. Effective against Fighters", x + 40, 170);
+		frigate.setPosition(x - 20, 120);
 		frigate.draw(titleBatch);
-        font.draw(titleBatch, "Quad 4 : Upgrade - Re-generate health points (based on your score). Upgrade factory ship to accumulate resources more quickly.", 130, 140);
-		upgrade.setPosition(70, 95);
+		font.draw(titleBatch, "Quad 4 : Upgrade - Regenerate Factory ship's health points. Accumulate resources more quickly", x + 40, 140);
+		upgrade.setPosition(x - 20, 90);
 		upgrade.draw(titleBatch);
-        font.draw(titleBatch, "The aircraft that you spawn fight automatically on the targetted factory ship using the latest in artificial aquatelligence technology.", 90, 60);
-        font.draw(titleBatch, "The player who keeps one's factory ship alive wins!", 90, 40);
+		font.draw(titleBatch, "Spawn ships to fight automatically on the opposite team using the latest in artificial aquatelligence technology.", x, 90);
+		font.draw(titleBatch, "The last player who keeps one's factory ship alive wins!", x + 150, 70);
 	
 		
 		titleBatch.end();
@@ -189,24 +202,14 @@ public class Help extends DefaultScreen implements InputProcessor {
 			cam = new OrthographicCamera(1366, 1024);
 			this.width = 1366;
 			this.height = 1024;
-		} else if (width == 1920 && height == 1152) {
-			cam = new OrthographicCamera(1366, 854);
-			this.width = 1366;
-			this.height = 854;
-		} else if (width == 1920 && height == 1200) {
-			cam = new OrthographicCamera(1366, 800);
+		} else if (width > 1366) {
+			cam = new OrthographicCamera(1280, 800);
 			this.width = 1280;
 			this.height = 800;
-		} else if (width > 1280) {
-			cam = new OrthographicCamera(1280, 768);
-			this.width = 1280;
-			this.height = 768;
-		} else if (width < 800) {
-			cam = new OrthographicCamera(800, 480);
-			this.width = 800;
-			this.height = 480;
 		} else {
 			cam = new OrthographicCamera(width, height);
+			this.width = 1280;
+			this.height = 800;
 		}
 		cam.position.x = 400;
 		cam.position.y = 240;
