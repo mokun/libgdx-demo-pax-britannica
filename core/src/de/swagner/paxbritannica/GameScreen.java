@@ -316,15 +316,15 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			Vector2 temp2 = new Vector2(POSITIONS.get(currentPos).x, POSITIONS.get(currentPos).y);
 			Vector2 facing = new Vector2(-temp1.sub(CENTER).y, temp2.sub(CENTER).x).nor();
 
-/*
-			// Set up teamID, Team 1 consists of player 1 & 2; team 2 consists of player 3 & 4.
-			if (playerList.get(i) == 1 || playerList.get(i) == 2)
-				teamID = 1;
-			else if (playerList.get(i) == 3 || playerList.get(i) == 4)
-				teamID = 2;
 
-			teamMap.put(i, teamID);
-*/
+//			// Set up teamID, Team 1 consists of player 1 & 2; team 2 consists of player 3 & 4.
+//			if (playerList.get(i) == 1 || playerList.get(i) == 2)
+//				teamID = 1;
+//			else if (playerList.get(i) == 3 || playerList.get(i) == 4)
+//				teamID = 2;
+//
+//			teamMap.put(i, teamID);
+
 			// Read the teamID of this player
 			teamID = teamMap.get(playerList.get(i));
 
@@ -339,15 +339,15 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			Vector2 temp1 = new Vector2(POSITIONS.get(currentPos).x, POSITIONS.get(currentPos).y);
 			Vector2 temp2 = new Vector2(POSITIONS.get(currentPos).x, POSITIONS.get(currentPos).y);
 			Vector2 facing = new Vector2(-temp1.sub(CENTER).y, temp2.sub(CENTER).x).nor();
-/*
-			// Set up teamID, Team 1 consists of player 1 & 2; team 2 consists of player 3 & 4.
-			if (cpuList.get(i) == 1 || cpuList.get(i) == 2)
-				teamID = 1;
-			else if (cpuList.get(i) == 3 || cpuList.get(i) == 4)
-				teamID = 2;
 
-			teamMap.put(i, teamID);
-*/
+			// Set up teamID, Team 1 consists of player 1 & 2; team 2 consists of player 3 & 4.
+//			if (cpuList.get(i) == 1 || cpuList.get(i) == 2)
+//				teamID = 1;
+//			else if (cpuList.get(i) == 3 || cpuList.get(i) == 4)
+//				teamID = 2;
+//
+//			teamMap.put(i, teamID);
+
 			// Read the teamID of this player
 			teamID = teamMap.get(cpuList.get(i));
 
@@ -427,61 +427,61 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	public void resize(int width, int height) {
 		this.width = width;
 		this.height = height;
-	/*
-		if (width == 480 && height == 320) {
-			cam = new OrthographicCamera(700, 466);
-			this.width = 700;
-			this.height = 466;
-		} else if (width == 320 && height == 240) {
-			cam = new OrthographicCamera(700, 525);
-			this.width = 700;
-			this.height = 525;
-		} else if (width == 400 && height == 240) {
-			cam = new OrthographicCamera(800, 480);
-			this.width = 800;
-			this.height = 480;
-		} else if (width == 432 && height == 240) {
-			cam = new OrthographicCamera(700, 389);
-			this.width = 700;
-			this.height = 389;
-		} else if (width == 960 && height == 640) {
-			cam = new OrthographicCamera(800, 533);
-			this.width = 800;
-			this.height = 533;
-		}  else if (width == 1366 && height == 768) {
-			cam = new OrthographicCamera(1280, 720);
-			this.width = 1280;
-			this.height = 720;
-		} else if (width == 1366 && height == 720) {
-			cam = new OrthographicCamera(1280, 675);
-			this.width = 1280;
-			this.height = 675;
-		} else if (width == 1536 && height == 1152) {
-			cam = new OrthographicCamera(1366, 1024);
-			this.width = 1366;
-			this.height = 1024;
-        } else if (width == 1920 && height == 1080) {
-            cam = new OrthographicCamera(1920, 1080);
-            this.width = 1920;
-            this.height = 1080;
-		} else if (width == 1920 && height == 1152) {
-			cam = new OrthographicCamera(1366, 854);
-			this.width = 1366;
-			this.height = 854;
-		} else if (width == 1920 && height == 1200) {
-			cam = new OrthographicCamera(1366, 800);
-			this.width = 1280;
-			this.height = 800;
-		} else if (width > 1280) {
-			cam = new OrthographicCamera(1280, 768);
-			this.width = 1280;
-			this.height = 768;
-		} else if (width < 800) {
-			cam = new OrthographicCamera(800, 480);
-			this.width = 800;
-			this.height = 480;
-		} else {
-*/
+
+//		if (width == 480 && height == 320) {
+//			cam = new OrthographicCamera(700, 466);
+//			this.width = 700;
+//			this.height = 466;
+//		} else if (width == 320 && height == 240) {
+//			cam = new OrthographicCamera(700, 525);
+//			this.width = 700;
+//			this.height = 525;
+//		} else if (width == 400 && height == 240) {
+//			cam = new OrthographicCamera(800, 480);
+//			this.width = 800;
+//			this.height = 480;
+//		} else if (width == 432 && height == 240) {
+//			cam = new OrthographicCamera(700, 389);
+//			this.width = 700;
+//			this.height = 389;
+//		} else if (width == 960 && height == 640) {
+//			cam = new OrthographicCamera(800, 533);
+//			this.width = 800;
+//			this.height = 533;
+//		}  else if (width == 1366 && height == 768) {
+//			cam = new OrthographicCamera(1280, 720);
+//			this.width = 1280;
+//			this.height = 720;
+//		} else if (width == 1366 && height == 720) {
+//			cam = new OrthographicCamera(1280, 675);
+//			this.width = 1280;
+//			this.height = 675;
+//		} else if (width == 1536 && height == 1152) {
+//			cam = new OrthographicCamera(1366, 1024);
+//			this.width = 1366;
+//			this.height = 1024;
+//        } else if (width == 1920 && height == 1080) {
+//            cam = new OrthographicCamera(1920, 1080);
+//            this.width = 1920;
+//            this.height = 1080;
+//		} else if (width == 1920 && height == 1152) {
+//			cam = new OrthographicCamera(1366, 854);
+//			this.width = 1366;
+//			this.height = 854;
+//		} else if (width == 1920 && height == 1200) {
+//			cam = new OrthographicCamera(1366, 800);
+//			this.width = 1280;
+//			this.height = 800;
+//		} else if (width > 1280) {
+//			cam = new OrthographicCamera(1280, 768);
+//			this.width = 1280;
+//			this.height = 768;
+//		} else if (width < 800) {
+//			cam = new OrthographicCamera(800, 480);
+//			this.width = 800;
+//			this.height = 480;
+//		} else {
+
 			cam = new OrthographicCamera(width, height);
 		//}
 		cam.position.x = 400;
@@ -666,7 +666,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
                 font.setColor(Color.RED);
             else if (i == 3)
                 font.setColor(Color.GREEN);
-            else if (i == 4)
+			else//if (i == 4)
                 font.setColor(Color.YELLOW);
 
             if (factoryMap.containsKey(i)) {
@@ -741,8 +741,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
         }
 
 		gameBatch.end();
-				
-		//show touch area notification
+
+		// Show touch area notification
+		// Player 1
 		if(numPlayers > 0 && touchedP1) {
 			touchFadeP1 = Math.max(touchFadeP1 - delta / 2.f, 0);
 		}
@@ -754,6 +755,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			p1.draw(gameBatch);
 			gameBatch.end();
 		}
+
+		// Player 2
 		if(numPlayers > 1 && touchedP2) {
 			touchFadeP2 = Math.max(touchFadeP2 - delta / 2.f, 0);
 		}
@@ -765,6 +768,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			p2.draw(gameBatch);
 			gameBatch.end();
 		}
+
+		// Player 3
 		if(numPlayers > 2 && touchedP3) {
 			touchFadeP3 = Math.max(touchFadeP3 - delta / 2.f, 0);
 		}
@@ -776,6 +781,8 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			p3.draw(gameBatch);
 			gameBatch.end();
 		}
+
+		// Player 4
 		if(numPlayers > 3 && touchedP4) {
 			touchFadeP4 = Math.max(touchFadeP4 - delta / 2.f, 0);
 		}
@@ -890,16 +897,15 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if(keycode == Input.Keys.BACK) {
-			gameOver = true;
-			gameOverTimer=0;
-		}
+//		if(keycode == Input.Keys.BACK) {
+//			gameOver = true;
+//			gameOverTimer=0;
+//		}
 		
 		if(keycode == Input.Keys.ESCAPE) {
 			gameOver = true;
 			gameOverTimer=0;
 		}
-
 
 		if (factorys.size > 0) {
 			// Player 1
@@ -972,65 +978,66 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 		if (collisionRay != null && factorys.size > 0) {
 			// Player 1
-			if (factoryMap.get(1) != null) {
-				if (touchAreaP1 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)
-					|| (m1 && button == Input.Buttons.LEFT)) {
+			if (m1 && !m2 && !m3 && !m4 && factoryMap.get(1) != null) {
+
+				if (button == Input.Buttons.RIGHT) {
+//					Gdx.app.log("GameScreen", "rotateTarget(1)");
+					rotateTarget(1);
+				} else if (touchAreaP1 != null
+						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)
+				) {
 					((FactoryProduction) factoryMap.get(1)).button_held = true;
 					pointerP1 = pointer;
 					touchedP1 = true;
 				}
-
-				if (m1 && button == Input.Buttons.RIGHT) {
-					//Gdx.app.log("GameScreen", "rotateTarget(1)");
-					rotateTarget(1);
-				}
 			}
 
 			// Player 2
-			if (factoryMap.get(2) != null) {
-				if (touchAreaP2 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2)
-					|| (m2 && button == Input.Buttons.LEFT)) {
+			if (m2 && !m1 && !m3 && !m4 && factoryMap.get(2) != null) {
+				if (button == Input.Buttons.RIGHT) {
+					//Gdx.app.log("GameScreen", "rotateTarget(2)");
+					rotateTarget(2);
+				} else if (touchAreaP2 != null
+						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2)
+//						|| button == Input.Buttons.LEFT
+				) {
 					((FactoryProduction) factoryMap.get(2)).button_held = true;
 					pointerP2 = pointer;
 					touchedP2 = true;
 				}
 
-				if (m2 && button == Input.Buttons.RIGHT) {
-					//Gdx.app.log("GameScreen", "rotateTarget(2)");
-					rotateTarget(2);
-				}
 			}
 
 			// Player 3
-			if (factoryMap.get(3) != null) {
-				if (touchAreaP3 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3)
-					|| (m3 && button == Input.Buttons.LEFT)) {
+			if (m3 && !m1 && !m2 && !m4 && factoryMap.get(3) != null) {
+				if (button == Input.Buttons.RIGHT) {
+					//Gdx.app.log("GameScreen", "rotateTarget(3)");
+					rotateTarget(3);
+				} else if (touchAreaP3 != null
+						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3)
+//						|| button == Input.Buttons.LEFT
+				) {
 					((FactoryProduction) factoryMap.get(3)).button_held = true;
 					pointerP3 = pointer;
 					touchedP3 = true;
 				}
-
-				if (m3 && button == Input.Buttons.RIGHT) {
-					//Gdx.app.log("GameScreen", "rotateTarget(3)");
-					rotateTarget(3);
-				}
 			}
 
 			// Player 4
-			if (factoryMap.get(4) != null) {
-				if (touchAreaP4 != null && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4)
-					|| (m4 && button == Input.Buttons.LEFT)) {
+			if (m4 && !m1 && !m2 && !m3 && factoryMap.get(4) != null) {
+				if (button == Input.Buttons.RIGHT) {
+					//Gdx.app.log("GameScreen", "rotateTarget(4)");
+					rotateTarget(4);
+				} else if (touchAreaP4 != null
+						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4)
+//						|| button == Input.Buttons.LEFT
+				) {
 					((FactoryProduction) factoryMap.get(4)).button_held = true;
 					pointerP4 = pointer;
 					touchedP4 = true;
 				}
-
-				if (m4 && button == Input.Buttons.RIGHT) {
-					//Gdx.app.log("GameScreen", "rotateTarget(4)");
-					rotateTarget(4);
-				}
 			}
-
+			return false;
 		}
 		return false;
 	}
@@ -1040,21 +1047,68 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		collisionRay = cam.getPickRay(x, y);
 
 		if (factorys.size > 0) {
-			if (pointer == pointerP1 && factoryMap.get(1) != null) {
-				((FactoryProduction) factoryMap.get(1)).button_held = false;
-				pointerP1 = -1;
+
+			if (m1 && !m2 && !m3 && !m4 && factoryMap.get(1) != null) {
+//				if ((pointer == pointerP1 && touchedP1 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1))){
+////						|| button == Input.Buttons.LEFT) {
+//					((FactoryProduction) factoryMap.get(1)).button_held = false;
+//					pointerP1 = -1;
+//					Gdx.app.log("GameScreen", "-");
+//				}
+
+				if (button != Input.Buttons.LEFT) return false;
+
+				if (pointer == pointerP1) {
+//						|| button == Input.Buttons.LEFT) {
+					((FactoryProduction) factoryMap.get(1)).button_held = false;
+					pointerP1 = -1;
+					Gdx.app.log("GameScreen", "	1-");
+				}
+
+				if (touchedP1) {
+//						|| button == Input.Buttons.LEFT) {
+					((FactoryProduction) factoryMap.get(1)).button_held = false;
+					pointerP1 = -1;
+					Gdx.app.log("GameScreen", "	2-");
+				}
+
+				if (Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)) {
+//						|| button == Input.Buttons.LEFT) {
+					((FactoryProduction) factoryMap.get(1)).button_held = false;
+					pointerP1 = -1;
+					Gdx.app.log("GameScreen", "	3-");
+				}
+
 			}
-			if (pointer == pointerP2 && factoryMap.get(2) != null) {
-				((FactoryProduction) factoryMap.get(2)).button_held = false;
-				pointerP2 = -1;
+
+			if (m2 && !m1 && !m3 && !m4 && factoryMap.get(2) != null) {
+
+				if (button != Input.Buttons.LEFT) return false;
+
+				else if (pointer == pointerP2 && touchedP2 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2)) {
+					((FactoryProduction) factoryMap.get(2)).button_held = false;
+					pointerP2 = -1;
+				}
 			}
-			if (pointer == pointerP3 && factoryMap.get(3) != null) {
-				((FactoryProduction) factoryMap.get(3)).button_held = false;
-				pointerP3 = -1;
+
+			if (m3 && !m1 && !m2 && !m4 && factoryMap.get(3) != null) {
+
+				if (button != Input.Buttons.LEFT) return false;
+
+				else if (pointer == pointerP3 && touchedP3 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3)) {
+					((FactoryProduction) factoryMap.get(3)).button_held = false;
+					pointerP3 = -1;
+				}
 			}
-			if (pointer == pointerP4 && factoryMap.get(4) != null) {
-				((FactoryProduction) factoryMap.get(4)).button_held = false;
-				pointerP4 = -1;
+
+			if (m4 && !m1 && !m2 && !m3 && factoryMap.get(4) != null) {
+
+				if (button != Input.Buttons.LEFT) return false;
+
+				else if (pointer == pointerP4 && touchedP4 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4)) {
+					((FactoryProduction) factoryMap.get(4)).button_held = false;
+					pointerP4 = -1;
+				}
 			}
 		}
 		return false;

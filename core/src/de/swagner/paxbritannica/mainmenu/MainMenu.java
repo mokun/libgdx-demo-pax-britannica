@@ -31,8 +31,8 @@ import de.swagner.paxbritannica.settings.Settings;
 
 public class MainMenu extends DefaultScreen implements InputProcessor {
 
-	private final static int INITIAL_WIDTH = 125;
-	private final static int TEAM_HEIGHT = 255;
+	private final static int INITIAL_WIDTH = 115;
+	private final static int TEAM_HEIGHT = 235;
 	private final static int TEAM_WIDTH = 127;
 	private final static int OFFSET = 20;
 	private final static String NONE = "None";
@@ -104,6 +104,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		// read teamMap
 		teamMap = GameInstance.getInstance().teamMap;
 
+
 	}
 	
 	@Override
@@ -115,7 +116,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		changeToScreen = -1;
 		
 		backgroundFX = new BackgroundFXRenderer();
-		
+
 		title = Resources.getInstance().title;
 		credits = Resources.getInstance().credits;
 		settings = Resources.getInstance().settings;
@@ -149,7 +150,7 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		fadeBatch.getProjectionMatrix().setToOrtho2D(0, 0, 2, 2);
 		
 		Preferences prefs = Gdx.app.getPreferences("paxbritannica");
-		if(prefs.getBoolean("music") == true) { 
+		if (prefs.getBoolean("music")) {
 			if(Resources.getInstance().music == null) Resources.getInstance().reInit();
 			if(!Resources.getInstance().music.isPlaying()) { 
 				Resources.getInstance().music.play();
@@ -299,29 +300,29 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 
 			if (fade >= 1 && cnt>=2) {
 				Array<Integer> playerList = new Array<Integer>();
-				if(p1.playerSelect == true) {
+				if (p1.playerSelect) {
 					playerList.add(1);
 				}
-				if(p2.playerSelect == true) {
+				if (p2.playerSelect) {
 					playerList.add(2);
 				}
-				if(p3.playerSelect == true) {
+				if (p3.playerSelect) {
 					playerList.add(3);
 				}
-				if(p4.playerSelect == true) {
+				if (p4.playerSelect) {
 					playerList.add(4);
 				}
 				Array<Integer> cpuList = new Array<Integer>();
-				if(p1.cpuSelect == true) {
+				if (p1.cpuSelect) {
 					cpuList.add(1);
 				}
-				if(p2.cpuSelect == true) {
+				if (p2.cpuSelect) {
 					cpuList.add(2);
 				}
-				if(p3.cpuSelect == true) {
+				if (p3.cpuSelect) {
 					cpuList.add(3);
 				}
-				if(p4.cpuSelect == true) {
+				if (p4.cpuSelect) {
 					cpuList.add(4);
 				}
 				game.setScreen(new GameScreen(game, playerList, cpuList));
@@ -338,9 +339,21 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		gameBatch.begin();
 
 		font.setColor(Color.GOLDENROD);
+		font.draw(gameBatch, "Ship Color :    ", INITIAL_WIDTH + 10, TEAM_HEIGHT + 20);
 
-		font.draw(gameBatch, "Team : " , INITIAL_WIDTH, TEAM_HEIGHT);
+		font.setColor(Color.TEAL);
+		font.draw(gameBatch, "Blue", INITIAL_WIDTH + 5 + TEAM_WIDTH - offset - 2, TEAM_HEIGHT + 20);
+		font.setColor(Color.RED);
+		font.draw(gameBatch, "Red", INITIAL_WIDTH + 5 + TEAM_WIDTH * 2 - offset - 4, TEAM_HEIGHT + 20);
+		font.setColor(Color.GREEN);
+		font.draw(gameBatch, "Green", INITIAL_WIDTH + 5 + TEAM_WIDTH * 3 - offset - 7, TEAM_HEIGHT + 20);
+		font.setColor(Color.YELLOW);
+		font.draw(gameBatch, "Yellow", INITIAL_WIDTH + 5 + TEAM_WIDTH * 4 - offset - 11, TEAM_HEIGHT + 20);
 
+		font.setColor(Color.GOLDENROD);
+		font.draw(gameBatch, "Select Team :", INITIAL_WIDTH, TEAM_HEIGHT);
+
+		// Team 1
 		int id = teamMap.get(1);
 		if (id != 0) {
 			team = id + "";
@@ -350,9 +363,10 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			team = NONE;
 			offset = OFFSET;
 		}
+		font.setColor(Color.TEAL);
+		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH - offset, TEAM_HEIGHT);
 
-		font.draw(gameBatch, team , INITIAL_WIDTH+ TEAM_WIDTH - offset, TEAM_HEIGHT);
-
+		// Team 2
 		id = teamMap.get(2);
 		if (id != 0) {
 			team = id + "";
@@ -362,8 +376,10 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			team = NONE;
 			offset = OFFSET;
 		}
-		font.draw(gameBatch, team, INITIAL_WIDTH+ TEAM_WIDTH * 2 - offset, TEAM_HEIGHT);
+		font.setColor(Color.RED);
+		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH * 2 - offset, TEAM_HEIGHT);
 
+		// Team 3
 		id = teamMap.get(3);
 		if (id != 0) {
 			team = id + "";
@@ -373,8 +389,10 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			team = NONE;
 			offset = OFFSET;
 		}
-		font.draw(gameBatch, team, INITIAL_WIDTH+ TEAM_WIDTH * 3 - offset, TEAM_HEIGHT);
+		font.setColor(Color.GREEN);
+		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH * 3 - offset, TEAM_HEIGHT);
 
+		// Team 4
 		id = teamMap.get(4);
 		if (id != 0) {
 			team = id + "";
@@ -384,7 +402,8 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			team = NONE;
 			offset = OFFSET;
 		}
-		font.draw(gameBatch, team, INITIAL_WIDTH+ TEAM_WIDTH * 4 - offset, TEAM_HEIGHT);
+		font.setColor(Color.YELLOW);
+		font.draw(gameBatch, team, INITIAL_WIDTH + 20 + TEAM_WIDTH * 4 - offset, TEAM_HEIGHT);
 
 		gameBatch.end();
 	}

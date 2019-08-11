@@ -103,28 +103,31 @@ public class Help extends DefaultScreen implements InputProcessor {
 		titleBatch.begin();
 		
 		back.draw(titleBatch);
-		
-		font.draw(titleBatch, "Pax Britannica is a one-touch real-time strategy game by No Fun Games.", 90, 460);
-		font.draw(titleBatch, "Two players battle it out underwater, struggling to be the last one standing!", 90, 440);
-		font.draw(titleBatch, "Select your ship to start a battle against the computer. Select two ships to start a local multiplayer", 90, 400);
-		font.draw(titleBatch, "battle. Touching your play area spins the needle on the radial menu in the middle of the player's", 90, 380);
-		font.draw(titleBatch, "factory ship.The needle will only travel as far as the player's current resources allow. Resources ", 90, 360);
-		font.draw(titleBatch, "(gold? seaweed? who knows!) accumulate over time.", 90, 340);
-		font.draw(titleBatch, "Releasing creates a ship that corresponds to the quadrant that the needle is pointing at.", 90, 300);
-		font.draw(titleBatch, "Fighter: Small, fast and cheap. Great at chasing down bombers.", 130, 260);
+
+        font.draw(titleBatch, "Pax Britannica is a two-button real-time strategy game by No Fun Games.", 90, 480);
+        font.draw(titleBatch, "The battle takes place underwater around a vortex.", 90, 460);
+        font.draw(titleBatch, " - Up to 4 players.", 90, 440);
+        font.draw(titleBatch, " - Against other player(s) hot-seat or against CPU(s).", 90, 420);
+        font.draw(titleBatch, " - Produce aircraft or Upgrade factory ship - Hold and release button 1", 90, 400);
+        font.draw(titleBatch, " - Rotate target factory ship - hit button 2 .", 90, 380);
+        font.draw(titleBatch, "Button       Function       Player 1    Player 2    Player 3    Player 4", 90, 340);
+        font.draw(titleBatch, "  1      Produce Aircraft      S             K            Down           2", 90, 320);
+        font.draw(titleBatch, "  2       Target Factory       D             L            Right           6", 90, 300);
+        font.draw(titleBatch, "", 90, 280);
+        font.draw(titleBatch, "Quad 1 : Fighter - Small, fast and cheap. Great at chasing down bombers.", 130, 260);
 		fighter.setPosition(70, 215);
 		fighter.draw(titleBatch);
-		font.draw(titleBatch, "Bomber: Shoots slow projectiles that do massive damage to frigates or enemy factory ships!", 130, 220);
+        font.draw(titleBatch, "Quad 2 : Bomber - Shoots slow projectiles that do massive damage to frigates or enemy factory ships!", 130, 220);
 		bomber.setPosition(70, 175);
 		bomber.draw(titleBatch);
-		font.draw(titleBatch, "Frigate: A great hulk of a ship that fires volleys of heat-seeking torpedoes. Effective against fighters.", 130, 180);
+        font.draw(titleBatch, "Quad 3 : Frigate - A great hulk of a ship that fires volleys of heat-seeking torpedoes. Effective against fighters.", 130, 180);
 		frigate.setPosition(70, 135);
 		frigate.draw(titleBatch);
-		font.draw(titleBatch, "Upgrade: Improve your factory ship to accumulate resources more quickly.", 130, 140);
+        font.draw(titleBatch, "Quad 4 : Upgrade - Re-generate health points (based on your score). Upgrade factory ship to accumulate resources more quickly.", 130, 140);
 		upgrade.setPosition(70, 95);
 		upgrade.draw(titleBatch);
-		font.draw(titleBatch, "Ships you spawn fight automatically using the latest in artificial aquatelligence technology.", 90, 100);
-		font.draw(titleBatch, "The player who keeps their factory ship alive wins!", 90, 80);	 
+        font.draw(titleBatch, "The aircraft that you spawn fight automatically on the targetted factory ship using the latest in artificial aquatelligence technology.", 90, 60);
+        font.draw(titleBatch, "The player who keeps one's factory ship alive wins!", 90, 40);
 	
 		
 		titleBatch.end();
