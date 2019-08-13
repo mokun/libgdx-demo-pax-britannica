@@ -7,6 +7,10 @@ import de.swagner.paxbritannica.Ship;
 import de.swagner.paxbritannica.Targeting;
 
 public class MissileAI {
+
+	// The default missile range
+	private final float MISSILE_RANGE = 500;
+
 	private float MAX_LIFETIME = 5; // 5 seconds to auto-destruct
 
 	private Ship target;
@@ -22,23 +26,28 @@ public class MissileAI {
 	}
 
 	public void retarget() {
-		target = Targeting.getTypeInRange(missile, 0, 500);
+		target = Targeting.getNearestOfType(missile, Ship.ShipType.FIGHTER, MISSILE_RANGE);
+//		if (target == null) {
+//			target = Targeting.getTypeInRange(missile, Ship.ShipType.FIGHTER, 500);
+
 		if (target == null) {
-			target = Targeting.getTypeInRange(missile, 1, 500);
-		} else
-			return;
+			target = Targeting.getNearestOfType(missile, Ship.ShipType.BOMBER, MISSILE_RANGE);
+//		} else if (target == null) {
+//			target = Targeting.getTypeInRange(missile, Ship.ShipType.BOMBER, 500);
+		}
+
 		if (target == null) {
-			target = Targeting.getTypeInRange(missile, 2, 500);
-		} else
-			return;
+			target = Targeting.getNearestOfType(missile, Ship.ShipType.FRIGATE, MISSILE_RANGE);
+//		} else if (target == null) {
+//			target = Targeting.getTypeInRange(missile, Ship.ShipType.FRIGATE, 500);
+		}
+
 		if (target == null) {
-			target = Targeting.getNearestOfType(missile, 1);
-		} else
-			return;
-		if (target == null) {
-			target = Targeting.getNearestOfType(missile, 3);
-		} else
-			target = null;
+			target = Targeting.getNearestOfType(missile, Ship.ShipType.FACTORY, MISSILE_RANGE);
+//		} else if (target == null) {
+//			target = Targeting.getTypeInRange(missile, Ship.ShipType.FACTORY, 500);
+		}
+
 	}
 
 	public void selfDestruct() {

@@ -26,7 +26,7 @@ public class Frigate extends Ship {
 		turnSpeed = 20f;
 		accel = 14.0f;
 		hitPoints = 2000;
-		
+
 		switch (id) {
 		case 1:
 			this.set(Resources.getInstance().frigateP1);
@@ -35,9 +35,13 @@ public class Frigate extends Ship {
 			this.set(Resources.getInstance().frigateP2);
 			break;
 		case 3:
+			// Player 3 has bonus on frigates
+			turnSpeed *= 1.2f;
+			accel *= 1.2f;
+			hitPoints *= 1.2f;
 			this.set(Resources.getInstance().frigateP3);
 			break;
-		default:
+			case 4:
 			this.set(Resources.getInstance().frigateP4);
 			break;
 		}

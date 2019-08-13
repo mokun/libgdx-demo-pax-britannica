@@ -9,6 +9,10 @@ import de.swagner.paxbritannica.Targeting;
 import de.swagner.paxbritannica.frigate.Frigate;
 
 public class BomberAI {
+
+	// The default laser range
+	private final float BOMB_RANGE = 100;
+
 	private float APPROACH_DISTANCE = 210;
 	private float COOLDOWN_DURATION = 0.6f;
 	private float MAX_SHOTS = 4;
@@ -36,18 +40,10 @@ public class BomberAI {
 	}
 
 	public void retarget() {
-		target = Targeting.getNearestOfType(bomber, 2);
+		target = Targeting.getTypeInRange(bomber, Ship.ShipType.FRIGATE, BOMB_RANGE);
 		if (target == null) {
-			target = Targeting.getNearestOfType(bomber, 3);
+			target = Targeting.getTypeInRange(bomber, Ship.ShipType.FACTORY, BOMB_RANGE);
 		}
-		// if (target == null) {
-		// target = Targeting.get_nearest_of_type(bomber, "bomber");
-		// } else
-		// return;
-		// if (target == null) {
-		// target = Targeting.get_nearest_of_type(bomber, "fighter");
-		// } else
-		// return;
 	}
 
 	public void reviseApproach() {

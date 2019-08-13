@@ -1,6 +1,5 @@
 package de.swagner.paxbritannica;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -33,20 +32,20 @@ public class Targeting {
 	 * returns the closest target of the given type 0 = Fighter 1 = Bomber 2 =
 	 * Frigate 3 = Factory
 	 */
-	public static Ship getNearestOfType(Ship source, int shipType) {
-		if (shipType == 0)
-			return getNearestOfType(source, GameInstance.getInstance().fighters);
-		else if (shipType == 3)
-			return getFactoryWithHighestHealth(source, GameInstance.getInstance().factorys);
-		else if (shipType == 1)
-			return getNearestOfType(source, GameInstance.getInstance().bombers);
-		else if (shipType == 2)
-			return getNearestOfType(source, GameInstance.getInstance().frigates);
+	public static Ship getNearestOfType(Ship source, Ship.ShipType shipType, float range) {
+		if (shipType == Ship.ShipType.FIGHTER)
+			return getNearestOfType(source, GameInstance.getInstance().fighters, range);
+		else if (shipType == Ship.ShipType.BOMBER)
+			return getNearestOfType(source, GameInstance.getInstance().bombers, range);
+		else if (shipType == Ship.ShipType.FRIGATE)
+			return getNearestOfType(source, GameInstance.getInstance().frigates, range);
+		else if (shipType == Ship.ShipType.FACTORY)
+			return getFactoryWithHighestHealth(source, GameInstance.getInstance().factorys, range);
 		else
 			return null;
 	}
 
-	private static Ship getFactoryWithHighestHealth(Ship source, Array<Ship> ships) {
+	private static Ship getFactoryWithHighestHealth(Ship source, Array<Ship> ships, float range) {
 		// find the closest one!
 		Ship closestShip = null;
 		float highestHealth = Float.MIN_VALUE;
@@ -62,11 +61,15 @@ public class Targeting {
 		for (int i = 0; i < size; i++) {
 			Ship ship = ships.get(i);
 			float currentHealth = ship.hitPoints+(((FactoryProduction)ship).harvestRate*500);
+			float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
 
 			// Exclude friendly ship
 			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
 				// Target only ships with a particular target_id
-				if (ship.alive && (target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter) && (currentHealth > highestHealth)) {
+				if (ship.alive &&
+						(target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter)
+						&& (currentHealth > highestHealth)
+						&& (currentDistance < range)) {
 					closestShip = ship;
 					highestHealth = currentHealth;
 				}
@@ -75,8 +78,8 @@ public class Targeting {
 
 		return closestShip;
 	}
-	
-	private static Ship getNearestOfType(Ship source, Array<Ship> ships) {
+
+	private static Ship getNearestOfType(Ship source, Array<Ship> ships, float range) {
 		// find the closest one!
 		Ship closestShip = null;
 		float closestDistanze = Float.MAX_VALUE;
@@ -96,26 +99,27 @@ public class Targeting {
 			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
 				float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
 
-				// Target only ships with a particular target_id
-				if (ship.alive && (target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < closestDistanze)) {
-					//skip if ship is not targeting source ship
-					if (ship instanceof Fighter) {
-						if (((Fighter) ship).ai.target != null && ((Fighter) ship).ai.target.id != source.id) {
-							continue;
+				if (currentDistance <= range) {
+					// Target only ships with a particular target_id
+					if (ship.alive && (target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < closestDistanze)) {
+						//skip if ship is not targeting source ship
+						if (ship instanceof Fighter) {
+							if (((Fighter) ship).ai.target != null && ((Fighter) ship).ai.target.id != source.id) {
+								continue;
+							}
+						} else if (ship instanceof Bomber) {
+							if (((Bomber) ship).ai.target != null && ((Bomber) ship).ai.target.id != source.id) {
+								continue;
+							}
+						} else if (ship instanceof Frigate) {
+							if (((Frigate) ship).ai.target != null && ((Frigate) ship).ai.target.id != source.id) {
+								continue;
+							}
 						}
+
+						closestShip = ship;
+						closestDistanze = currentDistance;
 					}
-					if (ship instanceof Bomber) {
-						if (((Bomber) ship).ai.target != null && ((Bomber) ship).ai.target.id != source.id) {
-							continue;
-						}
-					}
-					if (ship instanceof Frigate) {
-						if (((Frigate) ship).ai.target != null && ((Frigate) ship).ai.target.id != source.id) {
-							continue;
-						}
-					}
-					closestShip = ship;
-					closestDistanze = currentDistance;
 				}
 			}
 		}
@@ -127,15 +131,15 @@ public class Targeting {
 	 * return a random ship of the desired type that's in range
 	 * 0 = Fighter 1 = Bomber 2 = Frigate 3 = Factory
 	 */
-	public static Ship getTypeInRange(Ship source, int shipType, float range) {
-		if (shipType == 0)
+	public static Ship getTypeInRange(Ship source, Ship.ShipType shipType, float range) {
+		if (shipType == Ship.ShipType.FIGHTER)
 			return getTypeInRange(source, GameInstance.getInstance().fighters, range);
-		else if (shipType == 3)
-			return getTypeInRange(source, GameInstance.getInstance().factorys, range);
-		else if (shipType == 1)
+		else if (shipType == Ship.ShipType.BOMBER)
 			return getTypeInRange(source, GameInstance.getInstance().bombers, range);
-		else if (shipType == 2)
+		else if (shipType == Ship.ShipType.FRIGATE)
 			return getTypeInRange(source, GameInstance.getInstance().frigates, range);
+		else if (shipType == Ship.ShipType.FACTORY)
+			return getTypeInRange(source, GameInstance.getInstance().factorys, range);
 		else
 			return null;
 	}
@@ -158,11 +162,14 @@ public class Targeting {
 			Ship ship = ships.get(i);
 			float currentDistance = source.collisionCenter.dst(ship.collisionCenter);
 
-			// Exclude friendly ship
-			if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
-				// Target only ships with a particular target_id
-				if (ship.alive && (target_all_colors || ship.getID() == target_id) && source.id != ship.id && onScreen(ship.collisionCenter) && (currentDistance < range_squared)) {
-					shipsInRange.add(ship);
+			if (currentDistance <= range_squared) {
+				// Exclude friendly ship
+				if (friendlyFire || ship.getTeamID() != source.getTeamID() || source.getTeamID() == 0 || ship.getTeamID() == 0) {
+					// Target only ships with a particular target_id
+					if (ship.alive && (target_all_colors || ship.getID() == target_id)
+							&& source.id != ship.id && onScreen(ship.collisionCenter)) {
+						shipsInRange.add(ship);
+					}
 				}
 			}
 		}

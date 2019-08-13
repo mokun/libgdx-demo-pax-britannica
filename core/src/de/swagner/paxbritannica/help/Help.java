@@ -133,7 +133,7 @@ public class Help extends DefaultScreen implements InputProcessor {
 		font.draw(titleBatch, "Quad 2 : Bomber - Shoots slow projectiles. Do massive damage to Frigates or Factory ships", x + 40, 200);
 		bomber.setPosition(x - 20, 150);
 		bomber.draw(titleBatch);
-		font.draw(titleBatch, "Quad 3 : Frigate - Powerful but slow. Fires volleys of heat-seeking torpedoes. Effective against Fighters", x + 40, 170);
+        font.draw(titleBatch, "Quad 3 : Frigate - Powerful but slow. Fires volleys of heat-seeking missiles. Effective against Fighters", x + 40, 170);
 		frigate.setPosition(x - 20, 120);
 		frigate.draw(titleBatch);
 		font.draw(titleBatch, "Quad 4 : Upgrade - Regenerate Factory ship's health points. Accumulate resources more quickly", x + 40, 140);

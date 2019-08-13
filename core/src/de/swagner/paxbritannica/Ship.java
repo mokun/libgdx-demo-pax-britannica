@@ -14,6 +14,27 @@ import de.swagner.paxbritannica.frigate.Frigate;
 
 public class Ship extends Sprite {
 
+    public void damage(float amount) {
+        hitPoints = Math.max(hitPoints - amount, 0);
+
+//		if (this instanceof FactoryProduction) {
+//			int size = playerList.size;
+//			String s = "";
+//			for (int i = 0; i < size; i++) {
+//				//if (playerList.get(i) == id) {
+//					String name = obtainShipColor(id);
+//					double h = health();
+//					//s = name + " (Team " + team + ") : " + Math.round(h * 100.0) + " %";
+//					s = name + "  :  " + Math.round(h * 100.0) + " %";
+//					if (!sCache.equals(s)) {
+//						Gdx.app.log("[SP] ", s);
+//						sCache = s;
+//					}
+//				//}
+//			}
+//		}
+    }
+
 	protected float amount = 1.0f;
 
 	protected float turnSpeed = 1.0f;
@@ -144,42 +165,23 @@ public class Ship extends Sprite {
 		return Math.max(hitPoints / maxHitPoints, 0);
 	}
 
-	public void damage(float amount)
-	{
-		hitPoints = Math.max(hitPoints - amount, 0);
-/*
-		if (this instanceof FactoryProduction) {
-			int size = playerList.size;
-			String s = "";
-			for (int i = 0; i < size; i++) {
-				//if (playerList.get(i) == id) {
-					String name = obtainShipColor(id);
-					double h = health();
-					//s = name + " (Team " + team + ") : " + Math.round(h * 100.0) + " %";
-					s = name + "  :  " + Math.round(h * 100.0) + " %";
-					if (!sCache.equals(s)) {
-						Gdx.app.log("[SP] ", s);
-						sCache = s;
-					}
-				//}
-			}
-		}
-*/
-	}
-/*
-	// Gets ship color in order to print log
-	private String obtainShipColor(int id) {
-		if (id == 1)
-			return "Blue";
-		else if (id == 2)
-			return "Red";
-		else if (id == 3)
-			return "Green";
-		else if (id == 4)
-			return "Yellow";
-		return "";
-	}
-*/
+    public enum ShipType {
+        FIGHTER, BOMBER, FRIGATE, FACTORY
+    }
+
+//	 Gets ship color in order to print log
+//	private String obtainShipColor(int id) {
+//		if (id == 1)
+//			return "Blue";
+//		else if (id == 2)
+//			return "Red";
+//		else if (id == 3)
+//			return "Green";
+//		else if (id == 4)
+//			return "Yellow";
+//		return "";
+//	}
+
 	public void destruct() {
 		if (this instanceof FactoryProduction) {
 			factoryDestruct();

@@ -1,11 +1,24 @@
-Libgdx demo - Pax Britannica
+Pax Britannica Enhanced
 ====================
 
-Pax Britannica is a `two-button` [RTS game by nofundsgames](http://paxbritannica.henk.ca/), which was ported to libgdx by [Stefan Wagner](http://bompoblog.tumblr.com/).
+Pax Britannica is a simple battleship game ported to LibGDX by [Stefan Wagner](http://bompoblog.tumblr.com/).
 
-We have since added the following three features to Pax :
+We have since added the following 4 new features to the original game :
 
-### A. Team Play ###
+
+### A. Ship Specialization ###
+
+Each player has a special ability as follows :
+
+Player 1  (Blue)  :  produce better fighters
+Player 2   (Red)  :  produce better bombers
+Player 3  (Green) :  produce better frigates
+Player 4 (Yellow) :  have better factory
+
+In general, the speed, the acceleration and the hit point of the ship of interest are 20% better.
+
+
+### B. Team Play ###
 
 This feature allows ships to team play against one another.
 
@@ -33,33 +46,38 @@ Press Key "4" to rotate team ID for Player 4
 ![teamplay](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/pax1.jpg)
 
 
-### B. Two-Button Control ###
+### C. Two-Button Control ###
 
-Up to a total of 4 players may engage in a hot-seat game. Each player now is given **two** control buttons-- one for producing aircraft, one for choosing target.
+Up to a total of 4 players may engage in a hot-seat game.
+
+Each player now is given **two** control buttons-- one for producing aircraft, one for choosing target.
 
 The NEW Key Mappings are as follows :
 
 ```
 Player 1
-S : press/hold/release to produce aircraft
+S : press to start the dial. hold to land on the selected quadrant. release to produce a ship
 D : press to rotate target
 
 Player 2
-K : produce aircraft
+K : produce ship
 L : rotate target
 
 Player 3
-Down : produce aircraft
+Down : produce ship
 Right : rotate target
 
 Player 4
-2 : produce aircraft
+2 : produce ship
 6 : rotate target
 ```
 
-Alternatively, one may plug in more than one USB keyboards for more spacious seating. 
+Alternatively, Player 1 (Blue) may use the left and right mouse button for control.
 
-### C. Score Board ###
+one may plug in more than one USB keyboards for more spacious seating.
+
+
+### D. Score Board ###
 
 We put together a score board as a 4 x 5 table.
 

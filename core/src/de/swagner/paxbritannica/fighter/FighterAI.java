@@ -7,8 +7,12 @@ import de.swagner.paxbritannica.Ship;
 import de.swagner.paxbritannica.Targeting;
 
 public class FighterAI {
+
+	// The default laser range
+	private final float LASER_RANGE = 250;
+
 	// shot range
-	private float shot_range = 200;
+	private float shot_range = LASER_RANGE * .75f;
 
 	// try to stay this far away when you're out of ammo
 	private float run_distance = 200;
@@ -18,6 +22,7 @@ public class FighterAI {
 	private boolean running = false;
 
 	public Ship target;
+
 	private boolean on_screen = true;
 	
 	//recycle vars
@@ -31,16 +36,17 @@ public class FighterAI {
 	}
 
 	public void retarget() {
-		target = Targeting.getNearestOfType(fighter, 1);
-		if (target == null) {
-			target = Targeting.getNearestOfType(fighter, 0);
-		}
-		if (target == null) {
-			target = Targeting.getNearestOfType(fighter, 2);
-		}
-		if (target == null) {
-			target = Targeting.getNearestOfType(fighter, 3);
-		}
+		target = Targeting.getNearestOfType(fighter, Ship.ShipType.BOMBER, LASER_RANGE);
+
+		if (target == null)
+			target = Targeting.getTypeInRange(fighter, Ship.ShipType.BOMBER, LASER_RANGE);
+		if (target == null)
+			target = Targeting.getTypeInRange(fighter, Ship.ShipType.FIGHTER, LASER_RANGE);
+		if (target == null)
+			target = Targeting.getTypeInRange(fighter, Ship.ShipType.FRIGATE, LASER_RANGE);
+		if (target == null)
+			target = Targeting.getTypeInRange(fighter, Ship.ShipType.FACTORY, LASER_RANGE);
+
 	}
 
 	public void update() {

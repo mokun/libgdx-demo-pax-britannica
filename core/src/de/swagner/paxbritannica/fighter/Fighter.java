@@ -29,6 +29,10 @@ public class Fighter extends Ship {
 		
 		switch (id) {
 		case 1:
+			// Player 1 has bonus on Fighters
+			turnSpeed *= 1.2f;
+			accel *= 1.2f;
+			hitPoints *= 1.2f;
 			this.set(Resources.getInstance().fighterP1);
 			break;
 		case 2:
@@ -37,7 +41,7 @@ public class Fighter extends Ship {
 		case 3:
 			this.set(Resources.getInstance().fighterP3);
 			break;
-		default:
+			case 4:
 			this.set(Resources.getInstance().fighterP4);
 			break;
 		}

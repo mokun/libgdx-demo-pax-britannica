@@ -71,7 +71,8 @@ public class FactoryProduction extends Ship {
 		case 3:
 			this.set(Resources.getInstance().factoryP3);
 			break;
-		default:
+            case 4: // Player 4 has bonus on factory ship
+                hitPoints *= 1.2f;
 			this.set(Resources.getInstance().factoryP4);
 			break;
 		}
@@ -116,22 +117,22 @@ public class FactoryProduction extends Ship {
 		// ugh. . . sprite needs to be more flexible
 		drawDamage = false;
 		float health = health();
-/*
-		double h = health;
 
-		int size = playerList.size;
-		String s = "";
-		for (int i = 0 ; i < size; i++) {
-			if (playerList.get(i) == id) {
-				String name = obtainShipColor(id);
-				s = name + " Ship (Team " + team + ") : " + Math.round(h*1000.0)/10.0 + " %";
-				if (!sCache.equals(s)) {
-					Gdx.app.log("", s);
-					sCache = s;
-				}
-			}
-		}
-*/
+//		double h = health;
+//
+//		int size = playerList.size;
+//		String s = "";
+//		for (int i = 0 ; i < size; i++) {
+//			if (playerList.get(i) == id) {
+//				String name = obtainShipColor(id);
+//				s = name + " Ship (Team " + team + ") : " + Math.round(h*1000.0)/10.0 + " %";
+//				if (!sCache.equals(s)) {
+//					Gdx.app.log("", s);
+//					sCache = s;
+//				}
+//			}
+//		}
+
 		int animation = (int) (Math.floor(aliveTime * 20) % 3 + 1);
 
 		if (health < Constants.lowHealthThreshold) {

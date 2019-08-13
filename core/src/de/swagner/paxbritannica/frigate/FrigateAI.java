@@ -19,15 +19,18 @@ public class FrigateAI {
 	}
 
 	public void retarget() {
-		target = Targeting.getNearestOfType(frigate, 0);
+		target = Targeting.getNearestOfType(frigate, Ship.ShipType.FIGHTER, 500);
+
 		if (target == null) {
-			target = Targeting.getNearestOfType(frigate, 1);
+			target = Targeting.getNearestOfType(frigate, Ship.ShipType.BOMBER, 500);
 		}
+
 		if (target == null) {
-			target = Targeting.getNearestOfType(frigate, 2);
+			target = Targeting.getNearestOfType(frigate, Ship.ShipType.FRIGATE, 500);
 		}
+
 		if (target == null) {
-			target = Targeting.getNearestOfType(frigate, 3);
+			target = Targeting.getNearestOfType(frigate, Ship.ShipType.FACTORY, 500);
 		}	
 		
 		if (target != null) {
@@ -65,7 +68,6 @@ public class FrigateAI {
 		    if(!frigate.isEmpty() && speed_square < 0.1) {
 		        frigate.shoot();
 		    }
-			
 		}
 	}
 }

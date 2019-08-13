@@ -23,12 +23,16 @@ public class Bomber extends Ship {
 			this.set(Resources.getInstance().bomberP1);
 			break;
 		case 2:
+			// Player 2 has bonus on bombers
+			turnSpeed *= 1.2f;
+			accel *= 1.2f;
+			hitPoints *= 1.2f;
 			this.set(Resources.getInstance().bomberP2);
 			break;
 		case 3:
 			this.set(Resources.getInstance().bomberP3);
 			break;
-		default:
+			case 4:
 			this.set(Resources.getInstance().bomberP4);
 			break;
 		}
