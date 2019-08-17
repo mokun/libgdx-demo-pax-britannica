@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.swagner.paxbritannica.GameInstance;
 import de.swagner.paxbritannica.Resources;
 import de.swagner.paxbritannica.Ship;
@@ -16,17 +19,26 @@ public class Fighter extends Ship {
 
 	private float shots = shotCapacity;
 	private float cooldown = 0;
-	float delta;
+    /**
+     * counter keeps track of how many have been produced for each player.
+     */
+    private static Map<Integer, Integer> shipCounters = new HashMap<>();
+    private final float DESIGN_BONUS = .005f;
+
+    private final float DEFAULT_TURN_SPEED = 120f;
+    private final float DEFAULT_ACCEL = 120f;
+    private final float DEFAULT_HIT_POINTS = 40f;
+    private float delta;
 
 	public FighterAI ai = new FighterAI(this);
 
 	public Fighter(int id, int team, Vector2 position, Vector2 facing) {
 		super(id, team, position, facing);
 
-		turnSpeed = 120f;
-		accel = 120.0f;
-		hitPoints = 40;
-		
+        float turnSpeed = DEFAULT_TURN_SPEED;
+        float accel = DEFAULT_ACCEL;
+        float hitPoints = DEFAULT_HIT_POINTS;
+
 		switch (id) {
 		case 1:
 			// Player 1 has bonus on Fighters
@@ -45,8 +57,22 @@ public class Fighter extends Ship {
 			this.set(Resources.getInstance().fighterP4);
 			break;
 		}
-		this.setOrigin(this.getWidth()/2, this.getHeight()/2);
+		this.setOrigin(this.getWidth()/2, this.getHeight() / 2);
+
+        if (shipCounters.containsKey(id)) {
+            int num = shipCounters.get(id);
+            shipCounters.put(id, num + 1);
+            turnSpeed = turnSpeed * (1 + DESIGN_BONUS * num);
+            accel = accel * (1 + DESIGN_BONUS * num);
+            hitPoints = hitPoints * (1 + DESIGN_BONUS * num);
+        } else
+            shipCounters.put(id, 1);
+
+        super.turnSpeed = turnSpeed;
+        super.accel = accel;
+        super.hitPoints = hitPoints;
 	}
+
 
 	@Override
 	public void draw(Batch batch) {

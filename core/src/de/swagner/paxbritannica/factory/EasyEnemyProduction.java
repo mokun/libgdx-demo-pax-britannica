@@ -28,9 +28,12 @@ public class EasyEnemyProduction extends FactoryProduction {
 	int ownFighters = 0;
 	int ownBombers = 0;
 	int ownFrigates = 0;
-	
+
+	int playerID;
+
 	public EasyEnemyProduction(int id, int team, Vector2 position, Vector2 facing) {
 		super(id, team, position, facing);
+		playerID = id;
 	}
 
 	@Override
@@ -41,6 +44,7 @@ public class EasyEnemyProduction extends FactoryProduction {
 
 		accumulated_frames += 30 * delta;
 
+		// See if the dial has reached the desired ship quadrant
 		if (production.currentBuildingUnit != action && action >-1) {
 			button_held = true;
 		} else {
@@ -92,11 +96,44 @@ public class EasyEnemyProduction extends FactoryProduction {
 		}
 		
 		// what to do
-		if (health() < .1) action = 3;
-		else if (ownFighters > 4 && ownBombers > 3 && ownFrigates > 2)
-			action = 0;
-		else
-			action = MathUtils.random(-1, 2);
+
+
+		int rand = MathUtils.random(0, 4);
+
+		if (rand == 0)
+			action = MathUtils.random(-1, 3);
+
+		else if (rand == 1) {
+			if (ownFighters < 3) {
+				action = 0;
+			} else if (ownBombers < 2) {
+				action = 1;
+			} else if (ownFrigates < 1) {
+				action = 2;
+			}
+		} else if (rand == 2) {
+			if (health() < .2) action = 3;
+			else
+				action = -1;
+		} else {
+			rand = MathUtils.random(0, 2);
+
+			if (rand == 0)
+				action = MathUtils.random(-1, 3);
+			else {
+				// THe baseline is playing safe
+				// It will do what it does best without considering alternative strategies
+				if (playerID == 1)
+					action = 0;
+				else if (playerID == 2)
+					action = 1;
+				else if (playerID == 3)
+					action = 2;
+				else if (playerID == 4)
+					action = 3;
+			}
+		}
+
 	}
 
 }

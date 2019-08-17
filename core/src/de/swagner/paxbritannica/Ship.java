@@ -14,26 +14,7 @@ import de.swagner.paxbritannica.frigate.Frigate;
 
 public class Ship extends Sprite {
 
-    public void damage(float amount) {
-        hitPoints = Math.max(hitPoints - amount, 0);
-
-//		if (this instanceof FactoryProduction) {
-//			int size = playerList.size;
-//			String s = "";
-//			for (int i = 0; i < size; i++) {
-//				//if (playerList.get(i) == id) {
-//					String name = obtainShipColor(id);
-//					double h = health();
-//					//s = name + " (Team " + team + ") : " + Math.round(h * 100.0) + " %";
-//					s = name + "  :  " + Math.round(h * 100.0) + " %";
-//					if (!sCache.equals(s)) {
-//						Gdx.app.log("[SP] ", s);
-//						sCache = s;
-//					}
-//				//}
-//			}
-//		}
-    }
+	protected final float REPAIR_PERCENT = .1f;
 
 	protected float amount = 1.0f;
 
@@ -73,8 +54,8 @@ public class Ship extends Sprite {
 
 		playerList = GameInstance.getInstance().getPlayerList();
 
-		//Gdx.app.setLogLevel(Application.LOG_DEBUG);
-
+//		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+//
 		this.id = id;
 		this.team = team;
 		this.position.set(position);
@@ -221,8 +202,8 @@ public class Ship extends Sprite {
 			alive = false;
 
 			// Note : will remove it in GameScreen's render()
-			//GameInstance.getInstance().playerList.removeIndex(this.getID());
-			//GameInstance.getInstance().cpuList.removeIndex(this.getID());
+//			GameInstance.getInstance().playerList.removeIndex(this.getID());
+//			GameInstance.getInstance().cpuList.removeIndex(this.getID());
 //
 		}
 	}
@@ -261,11 +242,10 @@ public class Ship extends Sprite {
 	public void addHitPoints() {
 		//float oldHealth = health();
 		//float oldHit = hitPoints;
-		hitPoints = hitPoints + (int) (maxHitPoints * .1);
-/*
-		Gdx.app.log("[SH] Hit Points (", oldHit + "   ->   " + hitPoints + ")      Health : (" + Math.round(oldHealth*1000.0)/10.0
-				+ " %   ->   " + Math.round(health()*1000.0)/10.0 + " %)");
-*/
+		hitPoints = hitPoints + (int) (maxHitPoints * REPAIR_PERCENT);
+
+//		Gdx.app.log("[SH] Hit Points (", oldHit + "   ->   " + hitPoints + ")      Health : (" + Math.round(oldHealth*1000.0)/10.0
+//				+ " %   ->   " + Math.round(health()*1000.0)/10.0 + " %)");
 
 	}
 
@@ -285,5 +265,26 @@ public class Ship extends Sprite {
 			return 4;
 		else
 			return 0;
+	}
+
+	public void damage(float amount) {
+		hitPoints = Math.max(hitPoints - amount, 0);
+
+//		if (this instanceof FactoryProduction) {
+//			int size = playerList.size;
+//			String s = "";
+//			for (int i = 0; i < size; i++) {
+//				//if (playerList.get(i) == id) {
+//					String name = obtainShipColor(id);
+//					double h = health();
+//					//s = name + " (Team " + team + ") : " + Math.round(h * 100.0) + " %";
+//					s = name + "  :  " + Math.round(h * 100.0) + " %";
+//					if (!sCache.equals(s)) {
+//						Gdx.app.log("[SP] ", s);
+//						sCache = s;
+//					}
+//				//}
+//			}
+//		}
 	}
 }

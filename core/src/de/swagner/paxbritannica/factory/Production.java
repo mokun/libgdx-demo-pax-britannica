@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.swagner.paxbritannica.Constants;
 import de.swagner.paxbritannica.GameInstance;
 import de.swagner.paxbritannica.Resources;
+import de.swagner.paxbritannica.Ship;
 import de.swagner.paxbritannica.bomber.Bomber;
 import de.swagner.paxbritannica.fighter.Fighter;
 import de.swagner.paxbritannica.frigate.Frigate;
@@ -19,10 +20,17 @@ public class Production {
 	
 	public int MAXSHIPS = 100;
 
+	public int playerID;
+
 	private float SEGMENTS = 32;
 	private float RADIUS = 32;
 	private float DRAW_OFFSET = -4;
 	private float SPAWN_OFFSET = 47;
+
+//	private float fighterBias = .8f;
+//	private float bomberBias = .8f;
+//	private float frigateBias = .8f;
+//	private float factoryBias = .8f;
 
 	public float fighterCost = 50;
 	public float bomberCost = 170;
@@ -68,7 +76,18 @@ public class Production {
 
 	public Production(FactoryProduction factory) {
 		this.factory = factory;
-		
+
+//		playerID = factory.playerID;
+//
+//		if (playerID == 1)
+//			fighterBias = 1.2f;
+//		else if (playerID == 2)
+//			bomberBias = 1.2f;
+//		else if (playerID == 3)
+//			frigateBias = 1.2f;
+//		else if (playerID == 4)
+//			factoryBias = 1.2f;
+
 //		camera = new OrthographicCamera(800, 480);
 //		camera.translate(400, 240, 0);
 		
@@ -115,9 +134,9 @@ public class Production {
 	 * 2 = Bomber
 	 * 3 = Frigate
 	 * 4 = Upgrade
-	 * @param unitType
+	 * @param shipType The type of ship
 	 */
-	public void spawn(int unitType) {
+	public void spawn(Ship.ShipType shipType) {
 //		factory.ownShips = 0;
 //		for (Ship fighter : GameInstance.getInstance().fighters) {
 //			if(fighter.id == factory.id) factory.ownShips++;
@@ -136,18 +155,18 @@ public class Production {
 		Vector2 spawn_pos = new Vector2(factory.collisionCenter.x + (SPAWN_OFFSET * factory.facing.x), 
 				factory.collisionCenter.y + (SPAWN_OFFSET * factory.facing.y));
 
-		if (unitType == 1) {
+		if (shipType == Ship.ShipType.FIGHTER) {
 			factory.resourceAmount -= fighterCost;
 			GameInstance.getInstance().fighters.add(new Fighter(factory.id, factory.team, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
-		} else if (unitType == 2) {
+		} else if (shipType == Ship.ShipType.BOMBER) {
 			spawn_pos.sub(10, 10);
 			factory.resourceAmount -= bomberCost;
 			GameInstance.getInstance().bombers.add(new Bomber(factory.id, factory.team, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
-		} else if (unitType == 3) {
+		} else if (shipType == Ship.ShipType.FRIGATE) {
 			spawn_pos.sub(25, 25);
 			factory.resourceAmount -= frigateCost;
 			GameInstance.getInstance().frigates.add(new Frigate(factory.id, factory.team, spawn_pos, new Vector2(factory.facing.x, factory.facing.y)));
-		} else if (unitType == 4) {
+		} else {
 			factory.resourceAmount -= upgradeCost;
 			factory.upgradesUsed += 1;
 			factory.harvestRate += (factory.harvestRateUpgrade/factory.upgradesUsed);
@@ -167,13 +186,13 @@ public class Production {
 		} else {
 			// if the button is not held or if the button is released
 			if (potential_cost > upgradeCost) {
-				spawn(4);
+				spawn(Ship.ShipType.FACTORY);
 			} else if (potential_cost > frigateCost) {
-				spawn(3);
+				spawn(Ship.ShipType.FRIGATE);
 			} else if (potential_cost > bomberCost) {
-				spawn(2);
+				spawn(Ship.ShipType.BOMBER);
 			} else if (potential_cost > fighterCost) {
-				spawn(1);
+				spawn(Ship.ShipType.FIGHTER);
 			}
 			potential_cost = 0;
 		}
@@ -330,9 +349,9 @@ public class Production {
 		production3.setPosition(factory.collisionCenter.x - (35 * factory.facing.x) - (32 * facing90.x), 
 				factory.collisionCenter.y	- (35 * factory.facing.y) - (32 * facing90.y));
 		production3.draw(batch);
-		
-		
-		// Draw the preview outline
+
+
+		// Draw the preview outline based on the quadrant the dial is at
 		if (factory.button_held) {
 			if (potential_cost > upgradeCost) {
 				upgrade_outline.setOrigin(0, 0);
@@ -340,32 +359,33 @@ public class Production {
 				upgrade_outline.setPosition(factory.collisionCenter.x - (35 * factory.facing.x) - (32 * facing90.x), 
 						factory.collisionCenter.y - (35 * factory.facing.y) - (32 * facing90.y));
 				upgrade_outline.draw(batch);
-				currentBuildingUnit = 3;
+				currentBuildingUnit = Ship.ShipType.FACTORY.ordinal();
 			} else if (potential_cost > frigateCost) {
 				frigate_outline.setOrigin(0, 0);
 				frigate_outline.setRotation(factory.facing.angle());
 				frigate_outline.setPosition(factory.collisionCenter.x - (35 * factory.facing.x) - (32* facing90.x), 
 						factory.collisionCenter.y - (35 * factory.facing.y) - (32 * facing90.y));
 				frigate_outline.draw(batch);
-				currentBuildingUnit = 2;
+				currentBuildingUnit = Ship.ShipType.FRIGATE.ordinal();
 			} else if (potential_cost > bomberCost) {
 				bomber_outline.setOrigin(0, 0);
 				bomber_outline.setRotation(factory.facing.angle());
 				bomber_outline.setPosition(factory.collisionCenter.x - (35 * factory.facing.x) - (32 * facing90.x), 
 						factory.collisionCenter.y - (35 * factory.facing.y) - (32 * facing90.y));
 				bomber_outline.draw(batch);
-				currentBuildingUnit = 1;
+				currentBuildingUnit = Ship.ShipType.BOMBER.ordinal();
 			} else if (potential_cost > fighterCost) {
 				fighter_outline.setOrigin(0, 0);
 				fighter_outline.setRotation(factory.facing.angle());
 				fighter_outline.setPosition(factory.collisionCenter.x - (35 * factory.facing.x) - (32 * facing90.x), 
 						factory.collisionCenter.y - (35 * factory.facing.y) - (32 * facing90.y));
 				fighter_outline.draw(batch);
-				currentBuildingUnit = 0;
+				currentBuildingUnit = Ship.ShipType.FIGHTER.ordinal();
 			} else {
 				currentBuildingUnit = -1;
 			}
 		} else {
+			// since button is released, reduce and redraw the available resource in green arc
 			currentBuildingUnit = -1;
 			
 			float health = factory.health();

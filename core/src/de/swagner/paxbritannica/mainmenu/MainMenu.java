@@ -102,9 +102,9 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 
 		font = generator.generateFont(parameter);
 		generator.dispose();
-		// read teamMap
-		teamMap = GameInstance.getInstance().teamMap;
 
+        // read teamMap
+		teamMap = GameInstance.getInstance().teamMap;
 
 	}
 	

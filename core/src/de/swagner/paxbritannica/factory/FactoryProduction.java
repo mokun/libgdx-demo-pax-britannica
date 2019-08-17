@@ -13,12 +13,17 @@ import de.swagner.paxbritannica.Ship;
 
 public class FactoryProduction extends Ship {
 
+	private final float DEFAULT_TURN_SPEED = 2f;
+	private final float DEFAULT_ACCEL = 5f;
+
 	public float harvestRate = 40f;
 	public float harvestRateUpgrade = 15f;
 	public float upgradesUsed = 0f;
 	public float resourceAmount = 20;
 	
 	public int ownShips = 0;
+
+	public int playerID;
 
 	public boolean button_held = false;
 	
@@ -46,10 +51,12 @@ public class FactoryProduction extends Ship {
 	public FactoryProduction(int id, int team, Vector2 position, Vector2 facing) {
 		super(id, team, position, facing);
 
-		//playerList = GameInstance.getInstance().getPlayerList();
+		playerID = id;
 
-		turnSpeed = 2.0f;
-		accel = 5.0f;
+		float turnSpeed = DEFAULT_TURN_SPEED;
+		float accel = DEFAULT_ACCEL;
+		float hitPoints = 0;
+
 		if(GameInstance.getInstance().factoryHealthConfig == 0) {
 			hitPoints = 25000;
 		} else if(GameInstance.getInstance().factoryHealthConfig == 1) {
@@ -71,11 +78,16 @@ public class FactoryProduction extends Ship {
 		case 3:
 			this.set(Resources.getInstance().factoryP3);
 			break;
-            case 4: // Player 4 has bonus on factory ship
-                hitPoints *= 1.2f;
+			case 4:
+				// Player 4 has bonus on factory ship
+				hitPoints *= 1.2f;
 			this.set(Resources.getInstance().factoryP4);
 			break;
 		}
+
+		super.turnSpeed = turnSpeed;
+		super.accel = accel;
+		super.hitPoints = hitPoints;
 
 		// Prints team id
 		Gdx.app.log("[FP] ", obtainShipColor(id) + " (Player " + id + ", Team " + team + ")");

@@ -2,6 +2,7 @@ package de.swagner.paxbritannica.factory;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import de.swagner.paxbritannica.GameInstance;
@@ -27,9 +28,12 @@ public class HardEnemyProduction extends FactoryProduction {
 	int ownFighters = 0;
 	int ownBombers = 0;
 	int ownFrigates = 0;
+
+	int playerID;
 	
 	public HardEnemyProduction(int id, int team, Vector2 position, Vector2 facing) {
 		super(id, team, position, facing);
+		playerID = id;
 	}
 
 	@Override
@@ -91,8 +95,8 @@ public class HardEnemyProduction extends FactoryProduction {
 		}
 		
 		// what to do
-		if (health() < .2) action = 3;
-		else if(resourceAmount < 80) action = -1;
+		if (health() < .4) action = 3;
+		else if (super.resourceAmount < 80) action = -1;
 		else if((ownFighters < 4 || enemyBombers > 2) && enemyFighters < 11 && enemyFrigates < 4 && ownFighters < 20) action = 0;
 		else if((enemyFrigates > 1 && ownBombers < 1) && enemyFighters < 11) action = 1;
 		else if(enemyFighters < 5 && ownBombers < 5) action = 1;
@@ -100,6 +104,25 @@ public class HardEnemyProduction extends FactoryProduction {
 		else if(ownFrigates < 1) action = 2;
 		else if(ownFighters < 10) action = 0;
 		else if(ownBombers > 4 && ownFrigates >= 1 && ownFighters >= 10) action = 3;
+
+		else {
+			int rand = MathUtils.random(0, 2);
+
+			if (rand == 2)
+				action = MathUtils.random(-1, 3);
+			else {
+				// THe baseline is playing safe
+				// It will do what it does best without considering alternative strategies
+				if (playerID == 1)
+					action = 0;
+				else if (playerID == 2)
+					action = 1;
+				else if (playerID == 3)
+					action = 2;
+				else if (playerID == 4)
+					action = 3;
+			}
+		}
 	}
 
 }

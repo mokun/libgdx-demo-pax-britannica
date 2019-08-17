@@ -3,22 +3,36 @@ Pax Britannica Enhanced
 
 Pax Britannica is a simple battleship game ported to LibGDX by [Stefan Wagner](http://bompoblog.tumblr.com/).
 
-We have since added the following 4 new features to the original game :
+We have since added the following 5 new features to the original game :
+
+### A. Design Refinement ###
+
+Each time when a ship is being produced, a default DESIGN_BONUS factor of 1.5% will be added to
+the following 3 characteristics automatically.
+
+- Turn Speed
+- Acceleration
+- Hit Points
+
+Therefore, over time, if you produce a lot of fighters, your factory ship will have more expertise
+in producing fighters than your enemy who produce less number of fighters. As a result, your fighters
+perform better than his.
 
 
-### A. Ship Specialization ###
+### B. Ship Specialization ###
 
 Each player has a special ability as follows :
 
-Player 1  (Blue)  :  produce better fighters
-Player 2   (Red)  :  produce better bombers
-Player 3  (Green) :  produce better frigates
-Player 4 (Yellow) :  have better factory
-
+```
+Player 1  (Blue)  :  better fighters
+Player 2   (Red)  :  better bombers
+Player 3  (Green) :  better frigates
+Player 4 (Yellow) :  better factory
+```
 In general, the speed, the acceleration and the hit point of the ship of interest are 20% better.
 
 
-### B. Team Play ###
+### C. Team Play ###
 
 This feature allows ships to team play against one another.
 
@@ -46,7 +60,7 @@ Press Key "4" to rotate team ID for Player 4
 ![teamplay](https://github.com/mokun/libgdx-demo-pax-britannica/blob/master/pax1.jpg)
 
 
-### C. Two-Button Control ###
+### D. Two-Button Control ###
 
 Up to a total of 4 players may engage in a hot-seat game.
 
@@ -77,7 +91,7 @@ Alternatively, Player 1 (Blue) may use the left and right mouse button for contr
 one may plug in more than one USB keyboards for more spacious seating.
 
 
-### D. Score Board ###
+### E. Score Board ###
 
 We put together a score board as a 4 x 5 table.
 
