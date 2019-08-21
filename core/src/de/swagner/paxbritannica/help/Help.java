@@ -116,16 +116,16 @@ public class Help extends DefaultScreen implements InputProcessor {
 
 		int x = 0;
 
-		font.draw(titleBatch, "Pax Britannica is a real-time strategy game. " +
-				"The battle takes place around an underwater vortex.", x, 480);
+		font.draw(titleBatch, "Pax Britannica is a real-time action strategy game. " +
+				"The battle takes place around an inter-dimensional vortex.", x, 480);
 		font.draw(titleBatch, "Features : ", 100, 440);
 		font.draw(titleBatch, " > Up to 4 players", 110, 420);
-		font.draw(titleBatch, " > Against other player(s) hot-seat or against CPU(s)", 110, 400);
-		font.draw(titleBatch, " > Produce aircraft or Upgrade factory ship (Button 1)", 110, 380);
-		font.draw(titleBatch, " > Rotate target factory ship (Button 2)", 110, 360);
+		font.draw(titleBatch, " > Against other Player(s) and/or CPU(s) hotseat", 110, 400);
+		font.draw(titleBatch, " > Mouse or keyboard control", 110, 380);
 		font.draw(titleBatch, "Button          Function          Player 1    Player 2    Player 3    Player 4", x + 30, 320);
-		font.draw(titleBatch, "1         produce ships           s             k             down            2", x + 70, 300);
-		font.draw(titleBatch, "2        target factory           d             l              right           6", x + 70, 280);
+		font.draw(titleBatch, "1         shield up             a             j             left          4 (numpad) ", x + 70, 280);
+		font.draw(titleBatch, "2         produce ships           s             k             down            2 (numpad)", x + 70, 300);
+		font.draw(titleBatch, "3        target factory           d             l              right             6 (numpad)", x + 70, 280);
 
 		font.draw(titleBatch, "Quad 1 : Fighter - Small and agile. Shoot laser. Chase down Bombers", x + 40, 230);
 		fighter.setPosition(x - 20, 180);

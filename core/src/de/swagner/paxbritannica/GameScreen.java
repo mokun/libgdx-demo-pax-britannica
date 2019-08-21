@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -109,6 +108,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	private Array<Integer> cpuList;
 
 	private Array<Ship> factorys;
+
     private Map<Integer, Ship> factoryMap;
 
 	private Map<Integer, Integer> teamMap;
@@ -126,19 +126,16 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		this.playerList = playerList;
 		this.cpuList = cpuList;
 
-		if (playerList.contains(1, true)) {
+		if (playerList.contains(0, true)) {
 			Gdx.app.log("GameScreen", "m1 is true");
 			m1 = true;
-		}
-		else if (playerList.contains(2, true)) {
+		} else if (playerList.contains(1, true)) {
 			Gdx.app.log("GameScreen", "m2 is true");
 			m2 = true;
-		}
-		else if (playerList.contains(3, true)) {
+		} else if (playerList.contains(2, true)) {
 			Gdx.app.log("GameScreen", "m3 is true");
 			m3 = true;
-		}
-		else if (playerList.contains(4, true)) {
+		} else if (playerList.contains(3, true)) {
 			Gdx.app.log("GameScreen", "m4 is true");
 			m4 = true;
 		}
@@ -161,9 +158,9 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		GameInstance.getInstance().setPlayerList(playerList);
 		GameInstance.getInstance().setCpuList(cpuList);
 		for (int i : playerList)
-			Gdx.app.log("[GameScreen]", "Player " + i + " initialized.");
+			Gdx.app.log("GameScreen", "Player " + (i + 1) + " initialized.");
 		for (int i : cpuList)
-			Gdx.app.log("[GameScreen]", "CPU " + i + " initialized.");
+			Gdx.app.log("GameScreen", "CPU " + (i + 1) + " initialized.");
 
 
 		// read teamMap
@@ -171,7 +168,6 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 		// read targetingMap
 		targetingMap = GameInstance.getInstance().targetingMap;
-
 
 		//font = new BitmapFont();
 
@@ -238,44 +234,44 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		stouchAreaP2 = Resources.getInstance().touchArea2;
 		stouchAreaP3 = Resources.getInstance().touchArea3;
 		stouchAreaP4 = Resources.getInstance().touchArea4;
-		
-		if(playerList.size>0 && playerList.get(0)==1) {
+
+		if (playerList.size > 0 && playerList.get(0) == 0) {
 			p1 = Resources.getInstance().factoryP1Small;
-		} else if(playerList.size>0 && playerList.get(0)==2) {
+		} else if (playerList.size > 0 && playerList.get(0) == 1) {
 			p1 = Resources.getInstance().factoryP2Small;
-		} else if(playerList.size>0 && playerList.get(0)==3) {
+		} else if (playerList.size > 0 && playerList.get(0) == 2) {
 			p1 = Resources.getInstance().factoryP3Small;
-		} else if(playerList.size>0 && playerList.get(0)==4) {
+		} else if (playerList.size > 0 && playerList.get(0) == 3) {
 			p1 = Resources.getInstance().factoryP4Small;		
 		}
-		
-		if(playerList.size>1 && playerList.get(1)==1) {
+
+		if (playerList.size > 1 && playerList.get(1) == 0) {
 			p2 = Resources.getInstance().factoryP1Small;
-		} else if(playerList.size>1 && playerList.get(1)==2) {
+		} else if (playerList.size > 1 && playerList.get(1) == 1) {
 			p2 = Resources.getInstance().factoryP2Small;
-		} else if(playerList.size>1 && playerList.get(1)==3) {
+		} else if (playerList.size > 1 && playerList.get(1) == 2) {
 			p2 = Resources.getInstance().factoryP3Small;
-		} else if(playerList.size>1 && playerList.get(1)==4) {
+		} else if (playerList.size > 1 && playerList.get(1) == 3) {
 			p2 = Resources.getInstance().factoryP4Small;		
 		}
-		
-		if(playerList.size>2 && playerList.get(2)==1) {
+
+		if (playerList.size > 2 && playerList.get(2) == 0) {
 			p3 = Resources.getInstance().factoryP1Small;
-		} else if(playerList.size>2 && playerList.get(2)==2) {
+		} else if (playerList.size > 2 && playerList.get(2) == 1) {
 			p3 = Resources.getInstance().factoryP2Small;
-		} else if(playerList.size>2 && playerList.get(2)==3) {
+		} else if (playerList.size > 2 && playerList.get(2) == 2) {
 			p3 = Resources.getInstance().factoryP3Small;
-		} else if(playerList.size>2 && playerList.get(2)==4) {
+		} else if (playerList.size > 2 && playerList.get(2) == 3) {
 			p3 = Resources.getInstance().factoryP4Small;		
 		}
-		
-		if(playerList.size>3 && playerList.get(3)==1) {
+
+		if (playerList.size > 3 && playerList.get(3) == 0) {
 			p4 = Resources.getInstance().factoryP1Small;
-		} else if(playerList.size>3 && playerList.get(3)==2) {
+		} else if (playerList.size > 3 && playerList.get(3) == 1) {
 			p4 = Resources.getInstance().factoryP2Small;
-		} else if(playerList.size>3 && playerList.get(3)==3) {
+		} else if (playerList.size > 3 && playerList.get(3) == 2) {
 			p4 = Resources.getInstance().factoryP3Small;
-		} else if(playerList.size>3 && playerList.get(3)==4) {
+		} else if (playerList.size > 3 && playerList.get(3) == 3) {
 			p4 = Resources.getInstance().factoryP4Small;		
 		}
 		
@@ -582,11 +578,11 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
                 if (playerList.contains(ship.getID(), true)) {
 					playerList.removeValue(ship.getID(), true);
-					GameInstance.getInstance().playerList.removeValue(ship.getID(), true);
+					GameInstance.getInstance().getPlayerList().removeValue(ship.getID(), true);
 				}
 				else if (cpuList.contains(ship.getID(), true)) {
 					cpuList.removeValue(ship.getID(), true);
-					GameInstance.getInstance().cpuList.removeValue(ship.getID(), true);
+					GameInstance.getInstance().getCpuList().removeValue(ship.getID(), true);
 				}
 
                 //GameInstance.getInstance().removeFactory(ship.getID());
@@ -643,16 +639,16 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
         int[][] counts = GameInstance.getInstance().getCounts();
 
-        for (int i=1; i< 5; i++) {
+		for (int i = 0; i < 4; i++) {
 
-            if (i == 1)
+			if (i == 0)
                 font.setColor(Color.CYAN);
-            else if (i == 2)
-                font.setColor(Color.RED);
-            else if (i == 3)
-                font.setColor(Color.GREEN);
-			else//if (i == 4)
-                font.setColor(Color.YELLOW);
+			else if (i == 1)
+				font.setColor(Color.RED);
+			else if (i == 2)
+				font.setColor(Color.GREEN);
+			else
+				font.setColor(Color.YELLOW);
 
             if (factoryMap.containsKey(i)) {
                 //Gdx.app.log("[GS] ", "factoryMap.get(i-1) : " + factoryMap.get(i-1));
@@ -663,53 +659,49 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
                 font.draw(gameBatch,
 		        				Math.round(health * 10.0) / 10.0 + " %",
-                              -FPS_WIDTH+5, FPS_HEIGHT * 2 - i * 20);
+						-FPS_WIDTH + 5, FPS_HEIGHT * 2 - (i + 1) * 20);
 
                 font.draw(gameBatch,
-                                counts[i - 1][0]
-                                + "   " + counts[i - 1][1]
-                                + "   " + counts[i - 1][2]
+						counts[i][0]
+								+ "   " + counts[i][1]
+								+ "   " + counts[i][2]
                                 //+ " " + counts[3]
                                 + "]",
-                              0, FPS_HEIGHT * 2 - 5 - i * 20);
+						0, FPS_HEIGHT * 2 - 5 - (i + 1) * 20);
 
                 font.draw(gameBatch,
-	        					" " + counts[i - 1][3],
-                        FPS_WIDTH+5, FPS_HEIGHT * 2 - i * 20);
+						" " + counts[i][3],
+						FPS_WIDTH + 5, FPS_HEIGHT * 2 - (i + 1) * 20);
 
 				int j = targetingMap.get(i);
 
 				String target = null;
 
 				if (j == 0) {
-					font.setColor(Color.WHITE);
-					target = "Any";
-				}
-				else if (j == 1) {
 					font.setColor(Color.CYAN);
 					target = "Cyan";
-				}
-				else if (j == 2) {
+				} else if (j == 1) {
 					font.setColor(Color.RED);
 					target = "Red";
-				}
-				else if (j == 3) {
+				} else if (j == 2) {
 					font.setColor(Color.GREEN);
 					target = "Green";
-				}
-				else if (j == 4) {
+				} else if (j == 3) {
 					font.setColor(Color.YELLOW);
 					target = "Yellow";
+				} else {
+					font.setColor(Color.WHITE);
+					target = "Any";
 				}
 
 				font.draw(gameBatch,
 						" " + target,
-						FPS_WIDTH *2+5, FPS_HEIGHT * 2 - i * 20);
+						FPS_WIDTH * 2 + 5, FPS_HEIGHT * 2 - (i + 1) * 20);
 
 
-				int id = teamMap.get(i);
-				if (id != 0) {
-					teamString = id + "";
+				int tid = teamMap.get(i);
+				if (tid != 0) {
+					teamString = tid + "";
 					offset = 0;
 				}
 				else {
@@ -720,7 +712,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 				font.setColor(Color.GOLDENROD);
 				font.draw(gameBatch,
 						teamString,
-						FPS_WIDTH *3+15 - offset, FPS_HEIGHT * 2 - i * 20);
+						FPS_WIDTH * 3 + 15 - offset, FPS_HEIGHT * 2 - (i + 1) * 20);
 
 			}
         }
@@ -832,7 +824,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		if (target_id > 4)
 			// reset it back to zero
 			target_id = 0;
-		if (target_id != 0)
+		if (target_id != 4)
 			// go to the next color
 			target_id = determineTarget(player_id, target_id);
 		//Gdx.app.log("[GameScreen]", "rotateTarget() target_id : " + target_id);
@@ -846,7 +838,7 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 			//Gdx.app.log("[GameScreen]", "targetExisted() is true; target_id : " + target_id);
 			if (target_id != player_id) { // if this is player's own color
 				//Gdx.app.log("[GameScreen]", "target_id is not the same as player_id; target_id : " + target_id);
-				if (teamMap.get(player_id) == 0
+				if (teamMap.get(player_id) == GameInstance.TARGET_ANY
 						|| GameInstance.getInstance().isFinalEpicBattle()
 						|| teamMap.get(player_id) != teamMap.get(target_id)){ // if this color is on the same team
 					//Gdx.app.log("[GameScreen]", "they are not the same team; target_id : " + target_id);
@@ -873,11 +865,15 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 		if (target_id > 4)
 			// reset it back to zero
 			target_id = 0;
-		if (target_id != 0)
+		if (target_id != 4)
 			// call recursively to go to the next color
 			return determineTarget(player_id, target_id);
 		else
 			return target_id;
+	}
+
+	public void shieldUp(int player_id, boolean value) {
+		((FactoryProduction) (factoryMap.get(player_id))).setShieldUp(value);
 	}
 
 	@Override
@@ -894,39 +890,70 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 		if (factorys.size > 0) {
 			// Player 1
-			if (keycode == Input.Keys.S && factoryMap.get(1) != null) {
-				((FactoryProduction) factoryMap.get(1)).button_held = true;
-				touchedP1 = true;
-			}
-			if (keycode == Input.Keys.D && factoryMap.get(1) != null) {
-				rotateTarget(1);
+			if (factoryMap.get(0) != null) {
+				if (keycode == Input.Keys.A) {
+					((FactoryProduction) factoryMap.get(0)).button_held = true;
+					touchedP1 = true;
+				}
+
+				if (keycode == Input.Keys.S) {
+					shieldUp(0, true);
+				} else
+					shieldUp(0, false);
+
+				if (keycode == Input.Keys.D) {
+					rotateTarget(0);
+				}
 			}
 
 			// Player 2
-			if (keycode == Input.Keys.K && factoryMap.get(2) != null) {
-				((FactoryProduction) factoryMap.get(2)).button_held = true;
-				touchedP2 = true;
-			}
-			if (keycode == Input.Keys.L && factoryMap.get(2) != null) {
-				rotateTarget(2);
-			}
+			if (factoryMap.get(1) != null) {
+				if (keycode == Input.Keys.J) {
+					((FactoryProduction) factoryMap.get(1)).button_held = true;
+					touchedP2 = true;
+				}
 
-			// Player 3
-			if (keycode == Input.Keys.DOWN && factoryMap.get(3) != null) {
-				((FactoryProduction) factoryMap.get(3)).button_held = true;
-				touchedP3 = true;
+				if (keycode == Input.Keys.K) {
+					shieldUp(1, true);
+				} else
+					shieldUp(1, false);
+
+				if (keycode == Input.Keys.L) {
+					rotateTarget(1);
+				}
 			}
-			if (keycode == Input.Keys.RIGHT && factoryMap.get(3) != null) {
-				rotateTarget(3);
+			// Player 3
+			if (factoryMap.get(2) != null) {
+				if (keycode == Input.Keys.LEFT) {
+					((FactoryProduction) factoryMap.get(2)).button_held = true;
+					touchedP3 = true;
+				}
+
+				if (keycode == Input.Keys.DOWN) {
+					shieldUp(2, true);
+				} else
+					shieldUp(2, false);
+
+				if (keycode == Input.Keys.RIGHT) {
+					rotateTarget(2);
+				}
 			}
 
 			// Player 4
-			if (keycode == Input.Keys.NUMPAD_2 && factoryMap.get(4) != null) {
-				((FactoryProduction) factoryMap.get(4)).button_held = true;
-				touchedP4 = true;
-			}
-			if (keycode == Input.Keys.NUMPAD_6 && factoryMap.get(4) != null) {
-				rotateTarget(4);
+			if (factoryMap.get(3) != null) {
+				if (keycode == Input.Keys.NUMPAD_4) {
+					((FactoryProduction) factoryMap.get(3)).button_held = true;
+					touchedP4 = true;
+				}
+
+				if (keycode == Input.Keys.NUMPAD_2) {
+					shieldUp(3, true);
+				} else
+					shieldUp(3, false);
+
+				if (keycode == Input.Keys.NUMPAD_6) {
+					rotateTarget(3);
+				}
 			}
 		}
 		return false;
@@ -935,17 +962,17 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 	@Override
 	public boolean keyUp(int keycode) {
 		if (factorys.size > 0) {
-			if (keycode == Input.Keys.S && factoryMap.get(1) != null) {
+			if (keycode == Input.Keys.A && factoryMap.get(0) != null) {
+				((FactoryProduction) factoryMap.get(0)).button_held = false;
+			}
+			if (keycode == Input.Keys.J && factoryMap.get(1) != null) {
 				((FactoryProduction) factoryMap.get(1)).button_held = false;
 			}
-			if (keycode == Input.Keys.K && factoryMap.get(2) != null) {
+			if (keycode == Input.Keys.LEFT && factoryMap.get(2) != null) {
 				((FactoryProduction) factoryMap.get(2)).button_held = false;
 			}
-			if (keycode == Input.Keys.DOWN && factoryMap.get(3) != null) {
+			if (keycode == Input.Keys.NUMPAD_4 && factoryMap.get(3) != null) {
 				((FactoryProduction) factoryMap.get(3)).button_held = false;
-			}
-			if (keycode == Input.Keys.NUMPAD_2 && factoryMap.get(4) != null) {
-				((FactoryProduction) factoryMap.get(4)).button_held = false;
 			}
 		}
 		return false;
@@ -963,64 +990,108 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 		if (collisionRay != null && factorys.size > 0) {
 			// Player 1
-			if (m1 && !m2 && !m3 && !m4 && factoryMap.get(1) != null) {
+			if (m1 && !m2 && !m3 && !m4 && factoryMap.get(0) != null) {
+//				Gdx.app.log("GameScreen", " button : " + button);
+//				Gdx.app.log("GameScreen", " touchedP1 : " + touchedP1);
+//				Gdx.app.log("GameScreen", " Collided P1 : " + Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1));
+//				Gdx.app.log("GameScreen", " pointer : " + pointer);
+//				Gdx.app.log("GameScreen", " pointerP1 : " + pointerP1);
 
 				if (button == Input.Buttons.RIGHT) {
 //					Gdx.app.log("GameScreen", "rotateTarget(1)");
-					rotateTarget(1);
-				} else if (touchAreaP1 != null
-						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)
+					rotateTarget(0);
+				}
+
+				if (button == Input.Buttons.LEFT
+//						||	(touchAreaP1 != null
+//						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1))
 				) {
-					((FactoryProduction) factoryMap.get(1)).button_held = true;
+					((FactoryProduction) factoryMap.get(0)).button_held = true;
 					pointerP1 = pointer;
 					touchedP1 = true;
 				}
+
+				if (button == Input.Buttons.MIDDLE) {
+					shieldUp(0, true);
+				}
+//				else
+//					shieldUp(0, false);
+
 			}
 
 			// Player 2
-			if (m2 && !m1 && !m3 && !m4 && factoryMap.get(2) != null) {
+			if (m2 && !m1 && !m3 && !m4 && factoryMap.get(1) != null) {
+
 				if (button == Input.Buttons.RIGHT) {
 					//Gdx.app.log("GameScreen", "rotateTarget(2)");
-					rotateTarget(2);
-				} else if (touchAreaP2 != null
-						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2)
-//						|| button == Input.Buttons.LEFT
+					rotateTarget(1);
+				}
+
+				if (button == Input.Buttons.LEFT
+//						|| (touchAreaP2 != null
+//						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2))
 				) {
-					((FactoryProduction) factoryMap.get(2)).button_held = true;
+					((FactoryProduction) factoryMap.get(1)).button_held = true;
 					pointerP2 = pointer;
 					touchedP2 = true;
 				}
 
+				if (button == Input.Buttons.MIDDLE) {
+					shieldUp(1, true);
+				}
+//				else
+//					shieldUp(1, false);
+
 			}
 
 			// Player 3
-			if (m3 && !m1 && !m2 && !m4 && factoryMap.get(3) != null) {
+			if (m3 && !m1 && !m2 && !m4 && factoryMap.get(2) != null) {
+
 				if (button == Input.Buttons.RIGHT) {
 					//Gdx.app.log("GameScreen", "rotateTarget(3)");
-					rotateTarget(3);
-				} else if (touchAreaP3 != null
-						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3)
-//						|| button == Input.Buttons.LEFT
+					rotateTarget(2);
+				}
+
+				if (button == Input.Buttons.LEFT
+//						|| (touchAreaP3 != null
+//						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3))
 				) {
-					((FactoryProduction) factoryMap.get(3)).button_held = true;
+					((FactoryProduction) factoryMap.get(2)).button_held = true;
 					pointerP3 = pointer;
 					touchedP3 = true;
 				}
+
+				if (button == Input.Buttons.MIDDLE) {
+					shieldUp(2, true);
+				}
+//				else
+//					shieldUp(2, false);
+
 			}
 
 			// Player 4
-			if (m4 && !m1 && !m2 && !m3 && factoryMap.get(4) != null) {
+			if (m4 && !m1 && !m2 && !m3 && factoryMap.get(3) != null) {
+
 				if (button == Input.Buttons.RIGHT) {
 					//Gdx.app.log("GameScreen", "rotateTarget(4)");
-					rotateTarget(4);
-				} else if (touchAreaP4 != null
-						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4)
-//						|| button == Input.Buttons.LEFT
+					rotateTarget(3);
+				}
+
+				if (button == Input.Buttons.LEFT
+//						|| (touchAreaP4 != null
+//						&& Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4))
 				) {
-					((FactoryProduction) factoryMap.get(4)).button_held = true;
+					((FactoryProduction) factoryMap.get(3)).button_held = true;
 					pointerP4 = pointer;
 					touchedP4 = true;
 				}
+
+				if (button == Input.Buttons.MIDDLE) {
+					shieldUp(3, true);
+				}
+//				else
+//					shieldUp(3, false);
+
 			}
 			return false;
 		}
@@ -1033,67 +1104,80 @@ public class GameScreen extends DefaultScreen implements InputProcessor {
 
 		if (factorys.size > 0) {
 
-			if (m1 && !m2 && !m3 && !m4 && factoryMap.get(1) != null) {
-//				if ((pointer == pointerP1 && touchedP1 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1))){
-////						|| button == Input.Buttons.LEFT) {
-//					((FactoryProduction) factoryMap.get(1)).button_held = false;
-//					pointerP1 = -1;
-//					Gdx.app.log("GameScreen", "-");
-//				}
+			if (m1 && !m2 && !m3 && !m4 && factoryMap.get(0) != null) {
 
-				if (button != Input.Buttons.LEFT) return false;
-
-				if (pointer == pointerP1) {
-//						|| button == Input.Buttons.LEFT) {
-					((FactoryProduction) factoryMap.get(1)).button_held = false;
+				if (pointer == pointerP1 && button == Input.Buttons.LEFT) {
+					((FactoryProduction) factoryMap.get(0)).button_held = false;
 					pointerP1 = -1;
-//					Gdx.app.log("GameScreen", "	1-");
-				}
-
-				if (touchedP1) {
-//						|| button == Input.Buttons.LEFT) {
-					((FactoryProduction) factoryMap.get(1)).button_held = false;
-					pointerP1 = -1;
+					touchedP1 = false;
 //					Gdx.app.log("GameScreen", "	2-");
 				}
 
-				if (Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)) {
-//						|| button == Input.Buttons.LEFT) {
+//				if (pointer == pointerP1 && touchedP1 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP1)) {
+//					((FactoryProduction) factoryMap.get(0)).button_held = false;
+//					pointerP1 = -1;
+//					touchedP1 = false;
+////					Gdx.app.log("GameScreen", "	3-");
+//				}
+
+				if (button == Input.Buttons.MIDDLE)
+					shieldUp(0, false);
+
+			}
+
+			if (m2 && !m1 && !m3 && !m4 && factoryMap.get(1) != null) {
+
+				if (pointer == pointerP2 && button == Input.Buttons.LEFT) {
 					((FactoryProduction) factoryMap.get(1)).button_held = false;
-					pointerP1 = -1;
-//					Gdx.app.log("GameScreen", "	3-");
-				}
-
-			}
-
-			if (m2 && !m1 && !m3 && !m4 && factoryMap.get(2) != null) {
-
-				if (button != Input.Buttons.LEFT) return false;
-
-				else if (pointer == pointerP2 && touchedP2 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2)) {
-					((FactoryProduction) factoryMap.get(2)).button_held = false;
 					pointerP2 = -1;
+					touchedP2 = false;
 				}
+
+//				if (pointer == pointerP2 && touchedP2 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP2)) {
+//					((FactoryProduction) factoryMap.get(1)).button_held = false;
+//					pointerP2 = -1;
+//					touchedP2 = false;
+//				}
+
+				if (button == Input.Buttons.MIDDLE)
+					shieldUp(1, false);
 			}
 
-			if (m3 && !m1 && !m2 && !m4 && factoryMap.get(3) != null) {
+			if (m3 && !m1 && !m2 && !m4 && factoryMap.get(2) != null) {
 
-				if (button != Input.Buttons.LEFT) return false;
-
-				else if (pointer == pointerP3 && touchedP3 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3)) {
-					((FactoryProduction) factoryMap.get(3)).button_held = false;
+				if (pointer == pointerP3 && button == Input.Buttons.LEFT) {
+					((FactoryProduction) factoryMap.get(2)).button_held = false;
 					pointerP3 = -1;
+					touchedP2 = false;
 				}
+
+//				if (pointer == pointerP3 && touchedP3 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP3)) {
+//					((FactoryProduction) factoryMap.get(2)).button_held = false;
+//					pointerP3 = -1;
+//					touchedP3 = false;
+//				}
+
+				if (button == Input.Buttons.MIDDLE)
+					shieldUp(2, false);
+
 			}
 
-			if (m4 && !m1 && !m2 && !m3 && factoryMap.get(4) != null) {
+			if (m4 && !m1 && !m2 && !m3 && factoryMap.get(3) != null) {
 
-				if (button != Input.Buttons.LEFT) return false;
-
-				else if (pointer == pointerP4 && touchedP4 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4)) {
-					((FactoryProduction) factoryMap.get(4)).button_held = false;
+				if (pointer == pointerP4 && button != Input.Buttons.LEFT) {
+					((FactoryProduction) factoryMap.get(3)).button_held = false;
 					pointerP4 = -1;
+					touchedP4 = false;
 				}
+
+//				if (pointer == pointerP4 && touchedP4 && Intersector.intersectRayBoundsFast(collisionRay, touchAreaP4)) {
+//					((FactoryProduction) factoryMap.get(3)).button_held = false;
+//					pointerP4 = -1;
+//					touchedP3 = false;
+//				}
+
+				if (button == Input.Buttons.MIDDLE)
+					shieldUp(3, false);
 			}
 		}
 		return false;

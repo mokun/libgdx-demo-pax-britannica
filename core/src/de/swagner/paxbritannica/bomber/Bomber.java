@@ -31,20 +31,20 @@ public class Bomber extends Ship {
 		float hitPoints = DEFAULT_HIT_POINTS;
 
 		switch (id) {
-		case 1:
+            case 0:
 			this.set(Resources.getInstance().bomberP1);
 			break;
-		case 2:
+            case 1:
 			// Player 2 has bonus on bombers
 			turnSpeed *= 1.2f;
 			accel *= 1.2f;
 			hitPoints *= 1.2f;
 			this.set(Resources.getInstance().bomberP2);
 			break;
-		case 3:
+            case 2:
 			this.set(Resources.getInstance().bomberP3);
 			break;
-		case 4:
+            case 3:
 			this.set(Resources.getInstance().bomberP4);
 			break;
 		}

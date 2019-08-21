@@ -97,7 +97,6 @@ public class EasyEnemyProduction extends FactoryProduction {
 		
 		// what to do
 
-
 		int rand = MathUtils.random(0, 4);
 
 		if (rand == 0)
@@ -133,7 +132,5 @@ public class EasyEnemyProduction extends FactoryProduction {
 					action = 3;
 			}
 		}
-
 	}
-
 }

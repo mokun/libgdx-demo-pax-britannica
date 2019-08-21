@@ -54,7 +54,7 @@ public class Targeting {
 		int player_id = source.getID();
 		int target_id = GameInstance.getInstance().targetingMap.get(player_id);
 		boolean target_all_colors = false;
-		if (target_id == 0)
+		if (target_id == GameInstance.TARGET_ANY)
 			target_all_colors = true;
 
 		int size = ships.size;
@@ -88,7 +88,7 @@ public class Targeting {
 		int player_id = source.getID();
 		int target_id = GameInstance.getInstance().targetingMap.get(player_id);
 		boolean target_all_colors = false;
-		if (target_id == 0)
+		if (target_id == GameInstance.TARGET_ANY)
 			target_all_colors = true;
 
 		int size = ships.size;
@@ -155,7 +155,7 @@ public class Targeting {
 		int player_id = source.getID();
 		int target_id = GameInstance.getInstance().targetingMap.get(player_id);
 		boolean target_all_colors = false;
-		if (target_id == 0)
+		if (target_id == GameInstance.TARGET_ANY)
 			target_all_colors = true;
 
 		for (int i = 0; i < ships.size; i++) {

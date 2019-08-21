@@ -29,7 +29,7 @@ public class GameInstance {
 	private final static int PLAYER3_TEAM = 2;
 	private final static int PLAYER4_TEAM = 2;
 
-	private final static int TARGET_ANY = 0;
+	public final static int TARGET_ANY = 4;
 
 	public boolean debugMode = false;
 
@@ -49,11 +49,11 @@ public class GameInstance {
 	public Array<Bullet> bullets = new Array<Bullet>();
 
 	//public SparseArray<Array<Integer>> killMap = new SparseArray<Array<Integer>>();
-	public Map<Integer, Map<Integer, Integer>> killMap = new HashMap<Integer, Map<Integer, Integer>>();
+	public Map<Integer, Map<Ship.ShipType, Integer>> killMap = new HashMap<Integer, Map<Ship.ShipType, Integer>>();
 	//public Map<Integer, Map<Integer, Integer>> cpuKills = new HashMap<Integer, Map<Integer, Integer>>();
 
-	public Array<Integer> playerList;
-	public Array<Integer> cpuList;
+	private Array<Integer> playerList;
+	private Array<Integer> cpuList;
 
 	public BubbleParticleEmitter bubbleParticles = new BubbleParticleEmitter();
 	public BigBubbleParticleEmitter bigBubbleParticles = new BigBubbleParticleEmitter();
@@ -77,16 +77,16 @@ public class GameInstance {
 
 	public GameInstance() {
 		// Initialize teamMap
-		teamMap.put(1, PLAYER1_TEAM);
-		teamMap.put(2, PLAYER2_TEAM);
-		teamMap.put(3, PLAYER3_TEAM);
-		teamMap.put(4, PLAYER4_TEAM);
+		teamMap.put(0, PLAYER1_TEAM);
+		teamMap.put(1, PLAYER2_TEAM);
+		teamMap.put(2, PLAYER3_TEAM);
+		teamMap.put(3, PLAYER4_TEAM);
 
 		// Initialize targetingMap
+		targetingMap.put(0, TARGET_ANY);
 		targetingMap.put(1, TARGET_ANY);
 		targetingMap.put(2, TARGET_ANY);
 		targetingMap.put(3, TARGET_ANY);
-		targetingMap.put(4, TARGET_ANY);
 
 	}
 
@@ -153,10 +153,10 @@ public class GameInstance {
 			// Find the player id
 			int id = bullet.getID();
 			// Find the ship id
-			int shipType = ship.getShipType();
-            if (shipType != 4 || ship.deathCounter == 50f) {
+			Ship.ShipType shipType = ship.getShipType();
+			if (shipType != Ship.ShipType.FACTORY || ship.deathCounter == 50f) {
 
-				Map<Integer, Integer> kills = null;
+				Map<Ship.ShipType, Integer> kills = null;
 				if (killMap.containsKey(id)) {
 					kills = killMap.get(id);
 					int count = kills.get(shipType);
@@ -166,10 +166,12 @@ public class GameInstance {
 
 				}
 				else {
-					kills = new HashMap<Integer, Integer>();
-					for (int i=1; i < 5; i++) {
-						kills.put(i, 0);
-					}
+					kills = new HashMap<Ship.ShipType, Integer>();
+
+					kills.put(Ship.ShipType.FIGHTER, 0);
+					kills.put(Ship.ShipType.BOMBER, 0);
+					kills.put(Ship.ShipType.FRIGATE, 0);
+					kills.put(Ship.ShipType.FACTORY, 0);
 						// Record the kill
 					kills.put(shipType, 1);
 					killMap.put(id, kills);
@@ -178,34 +180,34 @@ public class GameInstance {
 				//int[] counts = new int[4];
 				int sum = 0;
 
-				for (int i=1; i < 4; i++) {
-					counts[id-1][i-1] = kills.get(i);
-					if (i-1 == 0)
-						sum += counts[id-1][i-1];
-					else if (i-1 == 1)
-						sum += counts[id-1][i-1] * 5;
-					else if (i-1 == 2)
-						sum += counts[id-1][i-1] * 15;
+				for (int i = 0; i < 4; i++) {
+					counts[id][i] = kills.get(Ship.getShipTypes()[i]);
+					if (i == 0)
+						sum += counts[id][i];
+					else if (i == 1)
+						sum += counts[id][i] * 5;
+					else //if (i-1 == 2)
+						sum += counts[id][i] * 15;
 					//else if (i-1 == 3)
 					//	sum += counts[i-1] * 50;
 				}
 
-				if (sum % 100 == 0) {
-					// reward the player with 3% of health bonus
-					factoryMap.get(id).rewardHitPoints();
-				}
+//				if (sum % 100 == 0) {
+//					// reward the player with 3% of health bonus
+//					factoryMap.get(id).rewardHitPoints();
+//				}
 
-				counts[id-1][3] = sum;
-/*
-				Gdx.app.log("[GI] ", obtainShipColor(playerID)
-						+ "    ["
-						+ counts[playerID-1][0]
-						+ " " + counts[playerID-1][1]
-						+ " " + counts[playerID-1][2]
-						//+ " " + counts[3]
-						+ "]"
-						+ "    Scores : " + sum);
-*/
+				counts[id][3] = sum;
+
+//				Gdx.app.log("[GI] ", obtainShipColor(playerID)
+//						+ "    ["
+//						+ counts[playerID-1][0]
+//						+ " " + counts[playerID-1][1]
+//						+ " " + counts[playerID-1][2]
+//						//+ " " + counts[3]
+//						+ "]"
+//						+ "    Scores : " + sum);
+
 			}
 		}
 	}
@@ -213,20 +215,20 @@ public class GameInstance {
 	public int[][] getCounts() {
 		return counts;
 	}
-/*
+
 	// Gets ship color in order to print log
-	public String obtainShipColor(int id) {
-		if (id == 1)
-			return "Blue";
-		else if (id == 2)
-			return "Red";
-		else if (id == 3)
-			return "Green";
-		else if (id == 4)
-			return "Yellow";
-		return "";
-	}
-*/
+//	public String obtainShipColor(int id) {
+//		if (id == 1)
+//			return "Blue";
+//		else if (id == 2)
+//			return "Red";
+//		else if (id == 3)
+//			return "Green";
+//		else if (id == 4)
+//			return "Yellow";
+//		return "";
+//	}
+
 	public void laser_hit(Vector2 pos, Vector2 vel) {
 		sparkParticles.addLaserExplosion(pos, vel);
 	}

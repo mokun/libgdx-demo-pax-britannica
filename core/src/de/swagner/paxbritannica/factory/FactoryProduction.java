@@ -15,6 +15,7 @@ public class FactoryProduction extends Ship {
 
 	private final float DEFAULT_TURN_SPEED = 2f;
 	private final float DEFAULT_ACCEL = 5f;
+	private final float SHIELD_POWER_USAGE = 30f;
 
 	public float harvestRate = 40f;
 	public float harvestRateUpgrade = 15f;
@@ -23,7 +24,7 @@ public class FactoryProduction extends Ship {
 	
 	public int ownShips = 0;
 
-	public int playerID;
+	public int id;
 
 	public boolean button_held = false;
 	
@@ -46,12 +47,14 @@ public class FactoryProduction extends Ship {
 	
 	private Vector2 facing90 = new Vector2();
 
+	private boolean isShieldedUp = false;
+
 	//private Array<Integer> playerList;
 
 	public FactoryProduction(int id, int team, Vector2 position, Vector2 facing) {
 		super(id, team, position, facing);
 
-		playerID = id;
+		this.id = id;
 
 		float turnSpeed = DEFAULT_TURN_SPEED;
 		float accel = DEFAULT_ACCEL;
@@ -69,16 +72,16 @@ public class FactoryProduction extends Ship {
 		velocity.set(facing.x, facing.y);
 
 		switch (id) {
-		case 1:
+			case 0:
 			this.set(Resources.getInstance().factoryP1);
 			break;
-		case 2:
+			case 1:
 			this.set(Resources.getInstance().factoryP2);
 			break;
-		case 3:
+			case 2:
 			this.set(Resources.getInstance().factoryP3);
 			break;
-			case 4:
+			case 3:
 				// Player 4 has bonus on factory ship
 				hitPoints *= 1.2f;
 			this.set(Resources.getInstance().factoryP4);
@@ -89,8 +92,17 @@ public class FactoryProduction extends Ship {
 		super.accel = accel;
 		super.hitPoints = hitPoints;
 
-		// Prints team id
-		Gdx.app.log("[FP] ", obtainShipColor(id) + " (Player " + id + ", Team " + team + ")");
+
+		String tag = "Player ";
+		for (int i : GameInstance.getInstance().getCpuList()) {
+			if (i == id) {
+				tag = "CPU ";
+				break;
+			}
+		}
+
+		// Prints player/cpu id and team id
+		Gdx.app.log("FP", obtainShipColor(id) + " (" + tag + " " + (id + 1) + ", Team " + team + ")");
 
 		light_damage1.set(Resources.getInstance().factoryLightDamage1);
 		light_damage2.set(Resources.getInstance().factoryLightDamage2);
@@ -106,13 +118,13 @@ public class FactoryProduction extends Ship {
 
 	// Gets ship color in order to print log
 	private String obtainShipColor(int id) {
-		if (id == 1)
+		if (id == 0)
 			return "Blue";
-		else if (id == 2)
+		else if (id == 1)
 			return "Red";
-		else if (id == 3)
+		else if (id == 2)
 			return "Green";
-		else if (id == 4)
+		else if (id == 3)
 			return "Yellow";
 		return "";
 	}
@@ -188,4 +200,17 @@ public class FactoryProduction extends Ship {
 		}
 	}
 
+	public void setShieldUp(boolean value) {
+		float newResourceAmt = resourceAmount - SHIELD_POWER_USAGE;
+		if (value && newResourceAmt >= 0) {
+			resourceAmount = newResourceAmt;
+			isShieldedUp = true;
+//			Gdx.app.log("FP", "Shield's up : " + ((FactoryProduction) this).resourceAmount);
+		} else
+			isShieldedUp = false;
+	}
+
+	public boolean isShieldedUp() {
+		return isShieldedUp;
+	}
 }

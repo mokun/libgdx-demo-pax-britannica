@@ -40,20 +40,20 @@ public class Fighter extends Ship {
         float hitPoints = DEFAULT_HIT_POINTS;
 
 		switch (id) {
-		case 1:
+            case 0:
 			// Player 1 has bonus on Fighters
 			turnSpeed *= 1.2f;
 			accel *= 1.2f;
 			hitPoints *= 1.2f;
 			this.set(Resources.getInstance().fighterP1);
 			break;
-		case 2:
+            case 1:
 			this.set(Resources.getInstance().fighterP2);
 			break;
-		case 3:
+            case 2:
 			this.set(Resources.getInstance().fighterP3);
 			break;
-			case 4:
+            case 3:
 			this.set(Resources.getInstance().fighterP4);
 			break;
 		}

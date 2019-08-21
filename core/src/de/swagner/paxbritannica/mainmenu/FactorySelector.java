@@ -46,16 +46,16 @@ public class FactorySelector extends Sprite {
 		this.setPosition(position.x, position.y);
 
 		switch (id) {
-		case 1:
+            case 0:
 			this.set(Resources.getInstance().factoryP1);
 			break;
-		case 2:
+            case 1:
 			this.set(Resources.getInstance().factoryP2);
 			break;
-		case 3:
+            case 2:
 			this.set(Resources.getInstance().factoryP3);
 			break;
-		default:
+            case 3:
 			this.set(Resources.getInstance().factoryP4);
 			break;
 		}
@@ -177,7 +177,5 @@ public class FactorySelector extends Sprite {
 			    playerButton.draw(batch);
 			}
 		}
-
-		
 	}
 }

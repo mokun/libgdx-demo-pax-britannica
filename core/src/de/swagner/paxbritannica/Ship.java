@@ -14,7 +14,32 @@ import de.swagner.paxbritannica.frigate.Frigate;
 
 public class Ship extends Sprite {
 
-	protected final float REPAIR_PERCENT = .1f;
+	private static ShipType[] shipTypes;
+	protected final float REPAIR_PERCENT = 10f;
+	protected final float PERCENT_DAMAGE_SHIELDED = 50f;
+
+	public Ship(int id, int team, Vector2 position, Vector2 facing) {
+		super();
+
+		shipTypes = ShipType.values();
+
+		playerList = GameInstance.getInstance().getPlayerList();
+
+//		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+//
+		this.id = id;
+		this.team = team;
+		this.position.set(position);
+		this.facing.set(facing);
+
+		collisionPoints.clear();
+		collisionPoints.add(new Vector2());
+		collisionPoints.add(new Vector2());
+		collisionPoints.add(new Vector2());
+		collisionPoints.add(new Vector2());
+
+		this.setOrigin(this.getWidth() / 2.f, this.getHeight() / 2.f);
+	}
 
 	protected float amount = 1.0f;
 
@@ -48,26 +73,8 @@ public class Ship extends Sprite {
 
 	private Array<Integer> playerList;
 
-
-	public Ship(int id, int team, Vector2 position, Vector2 facing) {
-		super();
-
-		playerList = GameInstance.getInstance().getPlayerList();
-
-//		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-//
-		this.id = id;
-		this.team = team;
-		this.position.set(position);
-		this.facing.set(facing);
-		
-		collisionPoints.clear();
-		collisionPoints.add(new Vector2());
-		collisionPoints.add(new Vector2());
-		collisionPoints.add(new Vector2());
-		collisionPoints.add(new Vector2());
-
-		this.setOrigin(this.getWidth() / 2.f, this.getHeight() / 2.f);
+	public static ShipType[] getShipTypes() {
+		return shipTypes;
 	}
 
 	@Override
@@ -145,23 +152,6 @@ public class Ship extends Sprite {
 	public float health() {
 		return Math.max(hitPoints / maxHitPoints, 0);
 	}
-
-    public enum ShipType {
-        FIGHTER, BOMBER, FRIGATE, FACTORY
-    }
-
-//	 Gets ship color in order to print log
-//	private String obtainShipColor(int id) {
-//		if (id == 1)
-//			return "Blue";
-//		else if (id == 2)
-//			return "Red";
-//		else if (id == 3)
-//			return "Green";
-//		else if (id == 4)
-//			return "Yellow";
-//		return "";
-//	}
 
 	public void destruct() {
 		if (this instanceof FactoryProduction) {
@@ -242,7 +232,7 @@ public class Ship extends Sprite {
 	public void addHitPoints() {
 		//float oldHealth = health();
 		//float oldHit = hitPoints;
-		hitPoints = hitPoints + (int) (maxHitPoints * REPAIR_PERCENT);
+		hitPoints = hitPoints + (int) (maxHitPoints * REPAIR_PERCENT / 100f);
 
 //		Gdx.app.log("[SH] Hit Points (", oldHit + "   ->   " + hitPoints + ")      Health : (" + Math.round(oldHealth*1000.0)/10.0
 //				+ " %   ->   " + Math.round(health()*1000.0)/10.0 + " %)");
@@ -250,25 +240,31 @@ public class Ship extends Sprite {
 	}
 
     // reward the player with 3% of health bonus
-    public void rewardHitPoints() {
-        hitPoints = hitPoints + (int) (maxHitPoints * .03);
-    }
+//    public void rewardHitPoints() {
+//        hitPoints = hitPoints + (int) (maxHitPoints * .03);
+//    }
 
-	public int getShipType() {
+	public ShipType getShipType() {
 		if (this instanceof Fighter)
-			return 1;
+			return ShipType.FIGHTER;
 		else if (this instanceof Bomber)
-			return 2;
+			return ShipType.BOMBER;
 		else if (this instanceof Frigate)
-			return 3;
+			return ShipType.FRIGATE;
 		else if (this instanceof FactoryProduction)
-			return 4;
+			return ShipType.FACTORY;
 		else
-			return 0;
+			return null;
 	}
 
 	public void damage(float amount) {
-		hitPoints = Math.max(hitPoints - amount, 0);
+
+		if (getShipType() == ShipType.FACTORY
+				&& ((FactoryProduction) this).isShieldedUp()) {
+			float rand = MathUtils.random(amount * PERCENT_DAMAGE_SHIELDED / 100f, amount);
+			hitPoints = Math.max(hitPoints - rand, 0);
+		} else
+			hitPoints = Math.max(hitPoints - amount, 0);
 
 //		if (this instanceof FactoryProduction) {
 //			int size = playerList.size;
@@ -287,4 +283,9 @@ public class Ship extends Sprite {
 //			}
 //		}
 	}
+
+	public enum ShipType {
+		FIGHTER, BOMBER, FRIGATE, FACTORY
+	}
+
 }

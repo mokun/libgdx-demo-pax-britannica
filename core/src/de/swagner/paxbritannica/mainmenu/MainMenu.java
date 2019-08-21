@@ -137,11 +137,11 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		settings.setPosition(135, 8);
 		settings.setColor(1,1,1,0.5f);
 		collisionSettings.set(new Vector3(settings.getVertices()[0], settings.getVertices()[1], -10),new Vector3(settings.getVertices()[10], settings.getVertices()[11], 10));
-		
-		p1 = new FactorySelector(new Vector2(055f, 150f), 1);
-		p2 = new FactorySelector(new Vector2(180f, 150f), 2);
-		p3 = new FactorySelector(new Vector2(305f, 150f), 3);
-		p4 = new FactorySelector(new Vector2(430f, 150f), 4);
+
+        p1 = new FactorySelector(new Vector2(055f, 150f), 0);
+        p2 = new FactorySelector(new Vector2(180f, 150f), 1);
+        p3 = new FactorySelector(new Vector2(305f, 150f), 2);
+        p4 = new FactorySelector(new Vector2(430f, 150f), 3);
 
 		countdown = new Countdown(new Vector2(380f, -10f));
 
@@ -292,29 +292,29 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			if (fade >= 1 && cnt>=2) {
 				Array<Integer> playerList = new Array<Integer>();
 				if (p1.playerSelect) {
-					playerList.add(1);
+                    playerList.add(0);
 				}
-				if (p2.playerSelect) {
-					playerList.add(2);
-				}
-				if (p3.playerSelect) {
+                if (p2.playerSelect) {
+                    playerList.add(1);
+                }
+                if (p3.playerSelect) {
+                    playerList.add(2);
+                }
+                if (p4.playerSelect) {
 					playerList.add(3);
 				}
-				if (p4.playerSelect) {
-					playerList.add(4);
-				}
 				Array<Integer> cpuList = new Array<Integer>();
-				if (p1.cpuSelect) {
-					cpuList.add(1);
-				}
-				if (p2.cpuSelect) {
-					cpuList.add(2);
-				}
+                if (p1.cpuSelect) {
+                    cpuList.add(0);
+                }
+                if (p2.cpuSelect) {
+                    cpuList.add(1);
+                }
 				if (p3.cpuSelect) {
-					cpuList.add(3);
+                    cpuList.add(2);
 				}
 				if (p4.cpuSelect) {
-					cpuList.add(4);
+                    cpuList.add(3);
 				}
 				game.setScreen(new GameScreen(game, playerList, cpuList));
 
@@ -345,9 +345,9 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		font.draw(gameBatch, "Select Team :", INITIAL_WIDTH - OFFSET1 - 10, TEAM_HEIGHT);
 
 		// Team 1
-		int id = teamMap.get(1);
-		if (id != 0) {
-			team = id + "";
+        int tid = teamMap.get(0);
+        if (tid != 0) {
+            team = tid + "";
 			offset2 = 0;
 		}
 		else {
@@ -358,9 +358,9 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		font.draw(gameBatch, team, INITIAL_WIDTH + OFFSET1 * 3 + TEAM_WIDTH - offset2, TEAM_HEIGHT);
 
 		// Team 2
-		id = teamMap.get(2);
-		if (id != 0) {
-			team = id + "";
+        tid = teamMap.get(1);
+        if (tid != 0) {
+            team = tid + "";
 			offset2 = 0;
 		}
 		else {
@@ -371,9 +371,9 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		font.draw(gameBatch, team, INITIAL_WIDTH + OFFSET1 * 3 + TEAM_WIDTH * 2 - offset2, TEAM_HEIGHT);
 
 		// Team 3
-		id = teamMap.get(3);
-		if (id != 0) {
-			team = id + "";
+        tid = teamMap.get(2);
+        if (tid != 0) {
+            team = tid + "";
 			offset2 = 0;
 		}
 		else {
@@ -384,9 +384,9 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 		font.draw(gameBatch, team, INITIAL_WIDTH + OFFSET1 * 3 + TEAM_WIDTH * 3 - offset2, TEAM_HEIGHT);
 
 		// Team 4
-		id = teamMap.get(4);
-		if (id != 0) {
-			team = id + "";
+        tid = teamMap.get(3);
+        if (tid != 0) {
+            team = tid + "";
 			offset2 = 0;
 		}
 		else {
@@ -430,38 +430,74 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 				}
 			}
 		}
-		
-		if(keycode == Input.Keys.A) {
+
+        if (keycode == Input.Keys.S) {
 			if (!p1.picked) {
-				p1.picked = true;
-			} else {
-				p1.playerSelect = true;
-				p1.cpuSelect = false;
-			}			
-		}		
-		if(keycode == Input.Keys.F) {
+                p1.picked = true;
+            }
+
+            if (!p1.playerSelect && !p1.cpuSelect) {
+                p1.playerSelect = true;
+                p1.cpuSelect = false;
+            } else if (p1.playerSelect) {
+                p1.playerSelect = false;
+                p1.cpuSelect = true;
+            } else {
+                p1.playerSelect = true;
+                p1.cpuSelect = false;
+            }
+
+        }
+
+        if (keycode == Input.Keys.K) {
 			if (!p2.picked) {
 				p2.picked = true;
-			}  else {
+            }
+
+            if (!p2.playerSelect && !p2.cpuSelect) {
+                p2.playerSelect = true;
+                p2.cpuSelect = false;
+            } else if (p2.playerSelect) {
+                p2.playerSelect = false;
+                p2.cpuSelect = true;
+            } else {
 				p2.playerSelect = true;
 				p2.cpuSelect = false;
-			}	
-		}		
-		if(keycode == Input.Keys.H) {
+            }
+        }
+
+        if (keycode == Input.Keys.DOWN) {
 			if (!p3.picked) {
 				p3.picked = true;
-			}  else {
+            }
+
+            if (!p3.playerSelect && !p3.cpuSelect) {
+                p3.playerSelect = true;
+                p3.cpuSelect = false;
+            } else if (p3.playerSelect) {
+                p3.playerSelect = false;
+                p3.cpuSelect = true;
+            } else {
 				p3.playerSelect = true;
 				p3.cpuSelect = false;
-			}	
-		}
-		if(keycode == Input.Keys.L) {
+            }
+        }
+
+        if (keycode == Input.Keys.NUMPAD_2) {
 			if (!p4.picked) {
 				p4.picked = true;
-			}  else {
+            }
+
+            if (!p4.playerSelect && !p4.cpuSelect) {
+                p4.playerSelect = true;
+                p4.cpuSelect = false;
+            } else if (p4.playerSelect) {
+                p4.playerSelect = false;
+                p4.cpuSelect = true;
+            } else {
 				p4.playerSelect = true;
 				p4.cpuSelect = false;
-			}	
+            }
 		}
 		
 		if(keycode == Input.Keys.M) {
@@ -489,40 +525,40 @@ public class MainMenu extends DefaultScreen implements InputProcessor {
 			countdown.finished = true;
 			changeToScreen = 0;
 		}
-		
-		if(keycode == Input.Keys.S) {
+
+        if (keycode == Input.Keys.F2) {
 			if (cnt >= 1)
 				return false;
 			countdown.finished = true;
 			changeToScreen = 1;
 		}
 
-		if (keycode == Input.Keys.NUM_1 || keycode == Input.Keys.NUMPAD_1) {
+        if (keycode == Input.Keys.NUM_1) {
+            int i = GameInstance.getInstance().teamMap.get(0);
+            i++;
+            if (i > 2) i = 0;
+            GameInstance.getInstance().teamMap.put(0, i);
+        }
+
+        if (keycode == Input.Keys.NUM_2) {
 			int i = GameInstance.getInstance().teamMap.get(1);
 			i++;
 			if (i > 2) i = 0;
 			GameInstance.getInstance().teamMap.put(1, i);
 		}
 
-		if (keycode == Input.Keys.NUM_2 || keycode == Input.Keys.NUMPAD_2) {
+        if (keycode == Input.Keys.NUM_3) {
 			int i = GameInstance.getInstance().teamMap.get(2);
 			i++;
 			if (i > 2) i = 0;
 			GameInstance.getInstance().teamMap.put(2, i);
 		}
 
-		if (keycode == Input.Keys.NUM_3 || keycode == Input.Keys.NUMPAD_3) {
+        if (keycode == Input.Keys.NUM_4) {
 			int i = GameInstance.getInstance().teamMap.get(3);
 			i++;
 			if (i > 2) i = 0;
 			GameInstance.getInstance().teamMap.put(3, i);
-		}
-
-		if (keycode == Input.Keys.NUM_4 || keycode == Input.Keys.NUMPAD_4) {
-			int i = GameInstance.getInstance().teamMap.get(4);
-			i++;
-			if (i > 2) i = 0;
-			GameInstance.getInstance().teamMap.put(4, i);
 		}
 		return false;
 	}
